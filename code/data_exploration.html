@@ -171,389 +171,810 @@ pre code {
 </div>
 
 
-<div id="hello-world" class="section level2">
-<h2>Hello World</h2>
-<pre class="r"><code>raw_data &lt;- rio::import(&quot;../data/raw/census-base-anonymized-2020.xlsx&quot;)
-# glimpse(raw_data)
-head(raw_data)</code></pre>
-<pre><code>##   ID          Start time     Completion time     Email Name
-## 1  6 2020-10-15 09:13:45 2020-10-15 09:24:31 anonymous   NA
-## 2  7 2020-10-15 09:16:07 2020-10-15 09:25:39 anonymous   NA
-## 3  8 2020-10-15 09:20:53 2020-10-15 09:29:42 anonymous   NA
-## 4  9 2020-10-15 09:12:06 2020-10-15 09:30:56 anonymous   NA
-## 5 10 2020-10-15 09:23:29 2020-10-15 09:33:27 anonymous   NA
-## 6 11 2020-10-15 09:24:23 2020-10-15 09:39:03 anonymous   NA
-##   Which of the following options best describes you today? Here, by &quot;developer&quot; we mean someone who writes code.
-## 1                                                                                 I am a developer by profession
-## 2                                                       I used to be a developer by profession, but no longer am
-## 3                                                                                 I am a developer by profession
-## 4                                  I am not primarily a developer, but I write code sometimes as part of my work
-## 5                                                                         I am a student who is learning to code
-## 6                                                                                 I am a developer by profession
-##   Do you code as a hobby?
-## 1                     Yes
-## 2                      No
-## 3                     Yes
-## 4                     Yes
-## 5                     Yes
-## 6                     Yes
-##   Which of the following best describes your current employment status?
-## 1                  Independent contractor, freelancer, or self-employed
-## 2                  Independent contractor, freelancer, or self-employed
-## 3                                                    Employed part-time
-## 4                  Independent contractor, freelancer, or self-employed
-## 5                                                               Student
-## 6                                    Not employed, but looking for work
-##   In which region do you live? In which city or town do you live?
-## 1         Greater Accra Region                              Accra
-## 2         Greater Accra Region                              Accra
-## 3         Greater Accra Region                            kutunse
-## 4         Greater Accra Region                     Golf City Tema
-## 5         Greater Accra Region                              Accra
-## 6         Greater Accra Region                           Dansoman
-##   How old are you? How frequently do you learn a new language or framework?
-## 1          20 - 25                                              Once a year
-## 2          26 - 30                                         Every few months
-## 3          20 - 25                                                     &lt;NA&gt;
-## 4          20 - 25                                              Once a year
-## 5          20 - 25                                         Every few months
-## 6          20 - 25                                     Once every few years
-##      C   C#  C++                    HTML/CSS                     Java
-## 1 &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;    Worked with in PAST year                     &lt;NA&gt;
-## 2 &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;    Worked with in PAST year Worked with in PAST year
-## 3 &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;                        &lt;NA&gt;                     &lt;NA&gt;
-## 4 &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;    Worked with in PAST year                     &lt;NA&gt;
-## 5 &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; Want to work with NEXT year Worked with in PAST year
-## 6 &lt;NA&gt; &lt;NA&gt; &lt;NA&gt;    Worked with in PAST year                     &lt;NA&gt;
-##                    JavaScript                   Kotlin
-## 1    Worked with in PAST year                     &lt;NA&gt;
-## 2    Worked with in PAST year Worked with in PAST year
-## 3                        &lt;NA&gt;                     &lt;NA&gt;
-## 4    Worked with in PAST year                     &lt;NA&gt;
-## 5 Want to work with NEXT year                     &lt;NA&gt;
-## 6    Worked with in PAST year                     &lt;NA&gt;
-##                           PHP                      Python Ruby
-## 1    Worked with in PAST year                        &lt;NA&gt; &lt;NA&gt;
-## 2    Worked with in PAST year    Worked with in PAST year &lt;NA&gt;
-## 3                        &lt;NA&gt;                        &lt;NA&gt; &lt;NA&gt;
-## 4    Worked with in PAST year                        &lt;NA&gt; &lt;NA&gt;
-## 5 Want to work with NEXT year Want to work with NEXT year &lt;NA&gt;
-## 6                        &lt;NA&gt;                        &lt;NA&gt; &lt;NA&gt;
-##                           SQL Swift TypeScript                     Android
-## 1                        &lt;NA&gt;  &lt;NA&gt;       &lt;NA&gt; Want to work with NEXT year
-## 2                        &lt;NA&gt;  &lt;NA&gt;       &lt;NA&gt;    Worked with in PAST year
-## 3                        &lt;NA&gt;  &lt;NA&gt;       &lt;NA&gt;                        &lt;NA&gt;
-## 4    Worked with in PAST year  &lt;NA&gt;       &lt;NA&gt;                        &lt;NA&gt;
-## 5 Want to work with NEXT year  &lt;NA&gt;       &lt;NA&gt;                        &lt;NA&gt;
-## 6    Worked with in PAST year  &lt;NA&gt;       &lt;NA&gt;                        &lt;NA&gt;
-##                       Arduino                         AWS
-## 1                        &lt;NA&gt;                        &lt;NA&gt;
-## 2                        &lt;NA&gt;                        &lt;NA&gt;
-## 3                        &lt;NA&gt; Want to work with NEXT year
-## 4                        &lt;NA&gt; Want to work with NEXT year
-## 5 Want to work with NEXT year                        &lt;NA&gt;
-## 6                        &lt;NA&gt;                        &lt;NA&gt;
-##                        Docker       Google Cloud Platform
-## 1                        &lt;NA&gt;    Worked with in PAST year
-## 2                        &lt;NA&gt;                        &lt;NA&gt;
-## 3 Want to work with NEXT year Want to work with NEXT year
-## 4                        &lt;NA&gt;                        &lt;NA&gt;
-## 5                        &lt;NA&gt;                        &lt;NA&gt;
-## 6                        &lt;NA&gt;                        &lt;NA&gt;
-##                        Heroku IBM Cloud or Watson                         iOS
-## 1                        &lt;NA&gt;                &lt;NA&gt; Want to work with NEXT year
-## 2                        &lt;NA&gt;                &lt;NA&gt;                        &lt;NA&gt;
-## 3 Want to work with NEXT year                &lt;NA&gt;                        &lt;NA&gt;
-## 4    Worked with in PAST year                &lt;NA&gt;                        &lt;NA&gt;
-## 5                        &lt;NA&gt;                &lt;NA&gt;                        &lt;NA&gt;
-## 6                        &lt;NA&gt;                &lt;NA&gt;                        &lt;NA&gt;
-##                         Linux                       MacOS
-## 1                        &lt;NA&gt;                        &lt;NA&gt;
-## 2                        &lt;NA&gt;                        &lt;NA&gt;
-## 3                        &lt;NA&gt;                        &lt;NA&gt;
-## 4 Want to work with NEXT year Want to work with NEXT year
-## 5 Want to work with NEXT year                        &lt;NA&gt;
-## 6                        &lt;NA&gt;                        &lt;NA&gt;
-##               Microsoft Azure                Raspberry Pi
-## 1                        &lt;NA&gt;                        &lt;NA&gt;
-## 2                        &lt;NA&gt;                        &lt;NA&gt;
-## 3                        &lt;NA&gt;                        &lt;NA&gt;
-## 4 Want to work with NEXT year Want to work with NEXT year
-## 5                        &lt;NA&gt; Want to work with NEXT year
-## 6                        &lt;NA&gt;                        &lt;NA&gt;
-##                    Windows                   WordPress Angular ASP.NET
-## 1 Worked with in PAST year    Worked with in PAST year    &lt;NA&gt;    &lt;NA&gt;
-## 2                     &lt;NA&gt;                        &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
-## 3                     &lt;NA&gt;                        &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
-## 4 Worked with in PAST year    Worked with in PAST year    &lt;NA&gt;    &lt;NA&gt;
-## 5                     &lt;NA&gt; Want to work with NEXT year    &lt;NA&gt;    &lt;NA&gt;
-## 6                     &lt;NA&gt;                        &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;
-##                     Django Express                      jQuery
-## 1                     &lt;NA&gt;    &lt;NA&gt;    Worked with in PAST year
-## 2                     &lt;NA&gt;    &lt;NA&gt;                        &lt;NA&gt;
-## 3                     &lt;NA&gt;    &lt;NA&gt;                        &lt;NA&gt;
-## 4 Worked with in PAST year    &lt;NA&gt; Want to work with NEXT year
-## 5                     &lt;NA&gt;    &lt;NA&gt; Want to work with NEXT year
-## 6                     &lt;NA&gt;    &lt;NA&gt;                        &lt;NA&gt;
-##                       Laravel                    React.js Ruby on Rails
-## 1 Want to work with NEXT year                        &lt;NA&gt;          &lt;NA&gt;
-## 2                        &lt;NA&gt;                        &lt;NA&gt;          &lt;NA&gt;
-## 3                        &lt;NA&gt;    Worked with in PAST year          &lt;NA&gt;
-## 4    Worked with in PAST year Want to work with NEXT year          &lt;NA&gt;
-## 5                        &lt;NA&gt;                        &lt;NA&gt;          &lt;NA&gt;
-## 6                        &lt;NA&gt;                        &lt;NA&gt;          &lt;NA&gt;
-##                        Vue.js Spring .NET .NET Core                     Flutter
-## 1 Want to work with NEXT year   &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt; Want to work with NEXT year
-## 2                        &lt;NA&gt;   &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt; Want to work with NEXT year
-## 3                        &lt;NA&gt;   &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt; Want to work with NEXT year
-## 4 Want to work with NEXT year   &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt;                        &lt;NA&gt;
-## 5                        &lt;NA&gt;   &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt; Want to work with NEXT year
-## 6                        &lt;NA&gt;   &lt;NA&gt; &lt;NA&gt;      &lt;NA&gt; Want to work with NEXT year
-##                       Node.js Puppet React Native Deno.js
-## 1 Want to work with NEXT year   &lt;NA&gt;         &lt;NA&gt;    &lt;NA&gt;
-## 2 Want to work with NEXT year   &lt;NA&gt;         &lt;NA&gt;    &lt;NA&gt;
-## 3    Worked with in PAST year   &lt;NA&gt;         &lt;NA&gt;    &lt;NA&gt;
-## 4                        &lt;NA&gt;   &lt;NA&gt;         &lt;NA&gt;    &lt;NA&gt;
-## 5                        &lt;NA&gt;   &lt;NA&gt;         &lt;NA&gt;    &lt;NA&gt;
-## 6                        &lt;NA&gt;   &lt;NA&gt;         &lt;NA&gt;    &lt;NA&gt;
-##                     GitHub GitLab Facebook Workplace                    Slack
-## 1 Worked with in PAST year   &lt;NA&gt;               &lt;NA&gt; Worked with in PAST year
-## 2 Worked with in PAST year   &lt;NA&gt;               &lt;NA&gt; Worked with in PAST year
-## 3 Worked with in PAST year   &lt;NA&gt;               &lt;NA&gt;                     &lt;NA&gt;
-## 4 Worked with in PAST year   &lt;NA&gt;               &lt;NA&gt; Worked with in PAST year
-## 5                     &lt;NA&gt;   &lt;NA&gt;               &lt;NA&gt;                     &lt;NA&gt;
-## 6                     &lt;NA&gt;   &lt;NA&gt;               &lt;NA&gt;                     &lt;NA&gt;
-##            Microsoft Teams Microsoft Azure2                      Trello
-## 1                     &lt;NA&gt;             &lt;NA&gt;    Worked with in PAST year
-## 2                     &lt;NA&gt;             &lt;NA&gt; Want to work with NEXT year
-## 3                     &lt;NA&gt;             &lt;NA&gt;    Worked with in PAST year
-## 4 Worked with in PAST year             &lt;NA&gt;    Worked with in PAST year
-## 5                     &lt;NA&gt;             &lt;NA&gt;                        &lt;NA&gt;
-## 6                     &lt;NA&gt;             &lt;NA&gt;                        &lt;NA&gt;
-##   Google Suite (Docs, Meet, etc) Stack Overflow for Teams Jira
-## 1       Worked with in PAST year                     &lt;NA&gt; &lt;NA&gt;
-## 2       Worked with in PAST year Worked with in PAST year &lt;NA&gt;
-## 3                           &lt;NA&gt;                     &lt;NA&gt; &lt;NA&gt;
-## 4       Worked with in PAST year                     &lt;NA&gt; &lt;NA&gt;
-## 5                           &lt;NA&gt;                     &lt;NA&gt; &lt;NA&gt;
-## 6                           &lt;NA&gt;                     &lt;NA&gt; &lt;NA&gt;
-##   If there are any other technologies you&#39;ve worked with this year or plan to work with next year that were not listed, please list them as follows, separated by commas. \r\n\r\neg. JavaScript - this year...
-## 1                                                                                                                                                                                                          &lt;NA&gt;
-## 2                                                                                                                                                                                                          &lt;NA&gt;
-## 3                                                                                                                                                                                                          &lt;NA&gt;
-## 4                                                                                                                                                                                                          &lt;NA&gt;
-## 5                                                                                                                                                                                                          &lt;NA&gt;
-## 6                                                                                                                                                                                                          &lt;NA&gt;
-##   What is the primary operating system in which you work?
-## 1                                                 Windows
-## 2                                                 Windows
-## 3                                                   MacOS
-## 4                                                   MacOS
-## 5                                                 Windows
-## 6                                                 Windows
-##   In which operating system would you rather work?
-## 1                                             &lt;NA&gt;
-## 2                                             &lt;NA&gt;
-## 3                                             &lt;NA&gt;
-## 4                                             &lt;NA&gt;
-## 5                                             &lt;NA&gt;
-## 6                                             &lt;NA&gt;
-##   What level of influence do you, personally, have over new technology purchases at your organization?
-## 1                                                                     I have a great deal of influence
-## 2                                                                     I have a great deal of influence
-## 3                                                                        I have little or no influence
-## 4                                                                        I have little or no influence
-## 5                                                                        I have little or no influence
-## 6                                                                        I have little or no influence
-##                                               When buying a new tool or software, how do you discover and research available solutions? Select all that apply.
-## 1                                 Read ratings or reviews on third party siteslike G2Crowd;Visit developer communities like Stack Overflow;Start a free trial;
-## 2                                                          Start a free trial;Ask developers I know/work with;Visit developer communities like Stack Overflow;
-## 3                                                                                                          Start a free trial;Ask developers I know/work with;
-## 4 Read ratings or reviews on third party siteslike G2Crowd;Ask developers I know/work with;Start a free trial;Visit developer communities like Stack Overflow;
-## 5                                                                                                                                          Start a free trial;
-## 6                                                                                                                                          Start a free trial;
-##   Which of the following best describes the highest level of formal education that you have completed?
-## 1                                                                                    Bachelor&#39;s degree
-## 2                                                                                      Master&#39;s degree
-## 3                                                                                    Bachelor&#39;s degree
-## 4                                                                                    Bachelor&#39;s degree
-## 5                                                                                      Master&#39;s degree
-## 6                                                                                                 &lt;NA&gt;
-##                                  What was your primary field of study?
-## 1 Information studies, information technology or system administration
-## 2       Computer science. computer engineering or software engineering
-## 3       Computer science. computer engineering or software engineering
-## 4       Computer science. computer engineering or software engineering
-## 5                                                                 &lt;NA&gt;
-## 6       Computer science. computer engineering or software engineering
-##   How important is a formal education, such as a university degree in computer science, to your career?
-## 1                                                                                        Very important
-## 2                                                                                      Fairly important
-## 3                                                                                      Fairly important
-## 4                                                                                        Very important
-## 5                                                                                                  &lt;NA&gt;
-## 6                                                                    Not at all important/not necessary
-##   From Q18, if you could go back and change your educational path (but end up in the same career), what would you change?
-## 1                                                                                                Working on more projects
-## 2                                            Tech entrepreneurship should be a course to understand the business of tech.
-## 3                                                                                                                    &lt;NA&gt;
-## 4                                                                            Will advocate for modern trends to be taught
-## 5                                                                                                                    &lt;NA&gt;
-## 6                                                                                                                  School
-##   How satisfied are you with your current job? (If you work multiple jobs, answer for one you spend the most hours on.)
-## 1                                                                                    Neither satisfied nor dissatisfied
-## 2                                                                                                     Very dissatisfied
-## 3                                                                                                     Very dissatisfied
-## 4                                                                                                    Slightly satisfied
-## 5                                                                                                                  &lt;NA&gt;
-## 6                                                                                                     Very dissatisfied
-##   Approximately how many people are employed by the company or organization you currently work for?
-## 1                                                                                  2 to 9 employees
-## 2                                                Just me - I am a freelancer, sole proprietor, etc.
-## 3                                                                                20 to 99 employees
-## 4                                                                                10 to 19 employees
-## 5                                                                                              &lt;NA&gt;
-## 6                                                                                10 to 19 employees
-##   On average, how many hours per week do you work? Please enter a whole number in the box.
-## 1                                                                                       30
-## 2                                                                                       20
-## 3                                                                                       40
-## 4                                                                                       40
-## 5                                                                                     &lt;NA&gt;
-## 6                                                                                       10
-##   How often do you work overtime or beyond the formal time expectation of your job?
-## 1                                                          Often: 1-2 days per week
-## 2                                               Frequently: 3 or more days per week
-## 3                                                 Rarely: 1-2 days per year or less
-## 4                                Sometimes: 1-2 days per month but less than weekly
-## 5                                                                              &lt;NA&gt;
-## 6                                               Frequently: 3 or more days per week
-##   Do you think your company has a good on-boarding process? (By on-boarding, we mean the structured process of getting you settled in to your new role at a company)
-## 1                                                                                                                                                                 No
-## 2                                                                                                                                                                 No
-## 3                                                                                                                                                                 No
-## 4                                                                                                                                                                Yes
-## 5                                                                                                                                                               &lt;NA&gt;
-## 6                                                                                                                                                                 No
-##                                           How could on-boarding at your company be improved?
-## 1                                                                                       &lt;NA&gt;
-## 2                                                                                       &lt;NA&gt;
-## 3 set up a tutorial on the stack being used, architecture and how the development cycle goes
-## 4                                                                                       &lt;NA&gt;
-## 5                                                                                       &lt;NA&gt;
-## 6                                                                                       &lt;NA&gt;
-##   How much is your monthly salary in Ghana Cedis?
-## 1                             Less than GHS 1,500
-## 2                             Less than GHS 1,500
-## 3                             Less than GHS 1,500
-## 4                           GHS 2,000 - GHS 2,500
-## 5                                            &lt;NA&gt;
-## 6                             Less than GHS 1,500
-##   Which of the following best describes your current job-seeking status?
-## 1           I&#39;m not actively looking, but I am open to new opportunities
-## 2                                        I am actively looking for a job
-## 3                                        I am actively looking for a job
-## 4           I&#39;m not actively looking, but I am open to new opportunities
-## 5           I&#39;m not actively looking, but I am open to new opportunities
-## 6                                        I am actively looking for a job
-##                                                                              In general, what drives you to look for a new job? Select all that apply.
-## 1                                       Curious about other opportunities;Better compensation;Better work/life balance;Wanting to improve your skills;
-## 2                                                                                                                   Curious about other opportunities;
-## 3          Wanting to share accomplishments with a wider network;Curious about other opportunities;Better compensation;Wanting to improve your skills;
-## 4 Wanting to improve your skills;Wanting to work with new technologies;Better work/life balance;Better compensation;Curious about other opportunities;
-## 5                                                                                                                                                 &lt;NA&gt;
-## 6                          Curious about other opportunities;Better compensation;Trouble with leadership at my company;Wanting to improve your skills;
-##                                                                                                                  When job searching, how do you learn more about a company? Select all that apply.
-## 1 Company reviews from third party sites (e.g. Glassdoor, Blind);Publicly available financial information (e.g. Crunchbase);Read company media, such as employees blogs or company culture videos;
-## 2                                                                                                                           Read company media, such as employees blogs or company culture videos;
-## 3                                                                                                                           Read company media, such as employees blogs or company culture videos;
-## 4                                                                                      Read company media, such as employees blogs or company culture videos;Personal network - friends or family;
-## 5                                                                                                                                                                                             &lt;NA&gt;
-## 6                       Read company media, such as employees blogs or company culture videos;Personal network - friends or family;Company reviews from third party sites (e.g. Glassdoor, Blind);
-##   Are you a member of any other online/offline developer communities?
-## 1                                                                 Yes
-## 2                                                                  No
-## 3                                                                 Yes
-## 4                                                                 Yes
-## 5                                                                 Yes
-## 6                                                                 Yes
-##                                Developer communities you are a member of
-## 1 Flutter Ghana, Laravel Ghana, Ghana Developers Group, ALC, UI/UX Ghana
-## 2                                                                   &lt;NA&gt;
-## 3                                               dev Congress\r\njs space
-## 4                                                PyGhana and DevCongress
-## 5                                                                   &lt;NA&gt;
-## 6                                                                   &lt;NA&gt;
-##   What is your age (in years)? If you prefer not to answer, you may leave this question blank.
-## 1                                                                                           25
-## 2                                                                                           27
-## 3                                                                                         &lt;NA&gt;
-## 4                                                                                           25
-## 5                                                                                           22
-## 6                                                                                           24
-##   Which of the following do you currently identify as? Please select all that apply. If you prefer not to answer, you may leave this question blank.
-## 1                                                                                                                                                Man
-## 2                                                                                                                                                Man
-## 3                                                                                                                                                Man
-## 4                                                                                                                                                Man
-## 5                                                                                                                                                Man
-## 6                                                                                                                                                Man
-##   Do you identify as transgender?
-## 1                              No
-## 2                              No
-## 3                              No
-## 4                              No
-## 5                            &lt;NA&gt;
-## 6                              No
-##   Which of the following do you currently identify as? Please select all that apply. If you prefer not to answer, you may leave this question blank.2
-## 1                                                                                                                             Straight / Heterosexual
-## 2                                                                                                                                   Prefer not to say
-## 3                                                                                                                             Straight / Heterosexual
-## 4                                                                                                                             Straight / Heterosexual
-## 5                                                                                                                             Straight / Heterosexual
-## 6                                                                                                                             Straight / Heterosexual
-##   Which of the following do you identify as? Please check all that apply. If you prefer not to answer, you may leave this question blank.
-## 1                                                                                                             Black or of African descent
-## 2                                                                                                             Black or of African descent
-## 3                                                                                                             Black or of African descent
-## 4                                                                                                             Black or of African descent
-## 5                                                                                                                                    &lt;NA&gt;
-## 6                                                                                                             Black or of African descent
-##   Which of the following describe you, if any? This information will be kept private. If you prefer not to answer, you may leave this question blank.
-## 1                                                                                                                                  None of the above;
-## 2                                                                                                                             I prefer not to answer;
-## 3                                                                                                                                  None of the above;
-## 4                                                                                                                                  None of the above;
-## 5                                                                                                                                                &lt;NA&gt;
-## 6                                                                                                                                  None of the above;
-##   Which of the following describe you, if any? This information will be kept private. If you prefer not to answer, you may leave this question blank.2
-## 1                                                                                                                                   None of the above;
-## 2                                                                                                                              I prefer not to answer;
-## 3                                                                                                                                   None of the above;
-## 4                                                                                                                                   None of the above;
-## 5                                                                                                                                                 &lt;NA&gt;
-## 6                                                                                                                                   None of the above;
-##   Do you have any dependents (e.g., children, elders, or others) that you care for?
-## 1                                                                                No
-## 2                                                               I prefer not to say
-## 3                                                                                No
-## 4                                                                               Yes
-## 5                                                                                No
-## 6                                                                               Yes
-##   How do you feel about the length of this survey?
-## 1                                         Too long
-## 2                                         Too long
-## 3                            Appropriate in length
-## 4                            Appropriate in length
-## 5                            Appropriate in length
-## 6                                         Too long
-##   How easy or difficult was this survey to complete? Any final thoughts?
-## 1                                               Easy                &lt;NA&gt;
-## 2                                               Easy                &lt;NA&gt;
-## 3                                               Easy                &lt;NA&gt;
-## 4                         Neither easy nor difficult                &lt;NA&gt;
-## 5                                               Easy                &lt;NA&gt;
-## 6                                               Easy                &lt;NA&gt;</code></pre>
+<div id="overview-of-the-dataset" class="section level2">
+<h2>Overview of the dataset</h2>
+<p>The dataset consists of 272 observations (rows) and 98 columns. Each column is a question. We will have to think how to handles all the columns that are a coding language.</p>
+<p>The count of NAs by column:</p>
+<pre class="r"><code># glimpse(raw_data)
+
+raw_data %&gt;%
+  select(everything()) %&gt;%  # replace to your needs
+  summarise_all(list(~ sum(is.na(.)))) %&gt;%
+  t() %&gt;%
+  kable(format = &quot;html&quot;)</code></pre>
+<table>
+<tbody>
+<tr>
+<td style="text-align:left;">
+ID
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Start time
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Completion time
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Email
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Name
+</td>
+<td style="text-align:right;">
+272
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Which of the following options best describes you today? Here, by “developer” we mean someone who writes code.
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Do you code as a hobby?
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Which of the following best describes your current employment status?
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+In which region do you live?
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+In which city or town do you live?
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+How old are you?
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+How frequently do you learn a new language or framework?
+</td>
+<td style="text-align:right;">
+39
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:right;">
+220
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C#
+</td>
+<td style="text-align:right;">
+211
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C++
+</td>
+<td style="text-align:right;">
+204
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HTML/CSS
+</td>
+<td style="text-align:right;">
+76
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Java
+</td>
+<td style="text-align:right;">
+166
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+JavaScript
+</td>
+<td style="text-align:right;">
+88
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kotlin
+</td>
+<td style="text-align:right;">
+228
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PHP
+</td>
+<td style="text-align:right;">
+154
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Python
+</td>
+<td style="text-align:right;">
+102
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ruby
+</td>
+<td style="text-align:right;">
+243
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SQL
+</td>
+<td style="text-align:right;">
+124
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Swift
+</td>
+<td style="text-align:right;">
+236
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TypeScript
+</td>
+<td style="text-align:right;">
+189
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Android
+</td>
+<td style="text-align:right;">
+148
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arduino
+</td>
+<td style="text-align:right;">
+215
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AWS
+</td>
+<td style="text-align:right;">
+179
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Docker
+</td>
+<td style="text-align:right;">
+199
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Google Cloud Platform
+</td>
+<td style="text-align:right;">
+189
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Heroku
+</td>
+<td style="text-align:right;">
+184
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IBM Cloud or Watson
+</td>
+<td style="text-align:right;">
+232
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+iOS
+</td>
+<td style="text-align:right;">
+219
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Linux
+</td>
+<td style="text-align:right;">
+168
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MacOS
+</td>
+<td style="text-align:right;">
+212
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Microsoft Azure
+</td>
+<td style="text-align:right;">
+209
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Raspberry Pi
+</td>
+<td style="text-align:right;">
+229
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Windows
+</td>
+<td style="text-align:right;">
+134
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+WordPress
+</td>
+<td style="text-align:right;">
+155
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Angular
+</td>
+<td style="text-align:right;">
+198
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ASP.NET
+</td>
+<td style="text-align:right;">
+222
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Django
+</td>
+<td style="text-align:right;">
+172
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Express
+</td>
+<td style="text-align:right;">
+179
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+jQuery
+</td>
+<td style="text-align:right;">
+175
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Laravel
+</td>
+<td style="text-align:right;">
+184
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+React.js
+</td>
+<td style="text-align:right;">
+129
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ruby on Rails
+</td>
+<td style="text-align:right;">
+237
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Vue.js
+</td>
+<td style="text-align:right;">
+186
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Spring
+</td>
+<td style="text-align:right;">
+239
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+.NET
+</td>
+<td style="text-align:right;">
+208
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+.NET Core
+</td>
+<td style="text-align:right;">
+227
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Flutter
+</td>
+<td style="text-align:right;">
+139
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Node.js
+</td>
+<td style="text-align:right;">
+125
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Puppet
+</td>
+<td style="text-align:right;">
+255
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+React Native
+</td>
+<td style="text-align:right;">
+172
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Deno.js
+</td>
+<td style="text-align:right;">
+242
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GitHub
+</td>
+<td style="text-align:right;">
+27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GitLab
+</td>
+<td style="text-align:right;">
+178
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Facebook Workplace
+</td>
+<td style="text-align:right;">
+236
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Slack
+</td>
+<td style="text-align:right;">
+102
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Microsoft Teams
+</td>
+<td style="text-align:right;">
+181
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Microsoft Azure2
+</td>
+<td style="text-align:right;">
+219
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Trello
+</td>
+<td style="text-align:right;">
+151
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Google Suite (Docs, Meet, etc)
+</td>
+<td style="text-align:right;">
+168
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Stack Overflow for Teams
+</td>
+<td style="text-align:right;">
+194
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jira
+</td>
+<td style="text-align:right;">
+206
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<p>If there are any other technologies you’ve worked with this year or plan to work with next year that were not listed, please list them as follows, separated by commas.</p>
+eg. JavaScript - this year…
+</td>
+<td style="text-align:right;">
+207
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+What is the primary operating system in which you work?
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+In which operating system would you rather work?
+</td>
+<td style="text-align:right;">
+16
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+What level of influence do you, personally, have over new technology purchases at your organization?
+</td>
+<td style="text-align:right;">
+18
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+When buying a new tool or software, how do you discover and research available solutions? Select all that apply.
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Which of the following best describes the highest level of formal education that you have completed?
+</td>
+<td style="text-align:right;">
+28
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+What was your primary field of study?
+</td>
+<td style="text-align:right;">
+31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+How important is a formal education, such as a university degree in computer science, to your career?
+</td>
+<td style="text-align:right;">
+32
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+From Q18, if you could go back and change your educational path (but end up in the same career), what would you change?
+</td>
+<td style="text-align:right;">
+133
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+How satisfied are you with your current job? (If you work multiple jobs, answer for one you spend the most hours on.)
+</td>
+<td style="text-align:right;">
+56
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Approximately how many people are employed by the company or organization you currently work for?
+</td>
+<td style="text-align:right;">
+53
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+On average, how many hours per week do you work? Please enter a whole number in the box.
+</td>
+<td style="text-align:right;">
+64
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+How often do you work overtime or beyond the formal time expectation of your job?
+</td>
+<td style="text-align:right;">
+48
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Do you think your company has a good on-boarding process? (By on-boarding, we mean the structured process of getting you settled in to your new role at a company)
+</td>
+<td style="text-align:right;">
+68
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+How could on-boarding at your company be improved?
+</td>
+<td style="text-align:right;">
+205
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+How much is your monthly salary in Ghana Cedis?
+</td>
+<td style="text-align:right;">
+60
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Which of the following best describes your current job-seeking status?
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+In general, what drives you to look for a new job? Select all that apply.
+</td>
+<td style="text-align:right;">
+16
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+When job searching, how do you learn more about a company? Select all that apply.
+</td>
+<td style="text-align:right;">
+24
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Are you a member of any other online/offline developer communities?
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Developer communities you are a member of
+</td>
+<td style="text-align:right;">
+103
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+What is your age (in years)? If you prefer not to answer, you may leave this question blank.
+</td>
+<td style="text-align:right;">
+86
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Which of the following do you currently identify as? Please select all that apply. If you prefer not to answer, you may leave this question blank.
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Do you identify as transgender?
+</td>
+<td style="text-align:right;">
+18
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Which of the following do you currently identify as? Please select all that apply. If you prefer not to answer, you may leave this question blank.2
+</td>
+<td style="text-align:right;">
+35
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Which of the following do you identify as? Please check all that apply. If you prefer not to answer, you may leave this question blank.
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Which of the following describe you, if any? This information will be kept private. If you prefer not to answer, you may leave this question blank.
+</td>
+<td style="text-align:right;">
+41
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Which of the following describe you, if any? This information will be kept private. If you prefer not to answer, you may leave this question blank.2
+</td>
+<td style="text-align:right;">
+51
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Do you have any dependents (e.g., children, elders, or others) that you care for?
+</td>
+<td style="text-align:right;">
+19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+How do you feel about the length of this survey?
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+How easy or difficult was this survey to complete?
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Any final thoughts?
+</td>
+<td style="text-align:right;">
+208
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="each-question-in-more-details" class="section level2">
+<h2>Each question in more details</h2>
+<p>…</p>
 </div>
 
 

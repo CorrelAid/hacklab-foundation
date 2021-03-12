@@ -9,16 +9,40 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
-
-```
-
-## Hello World
-
-
-```{r data_import}
+library(knitr) # for kable()
 
 raw_data <- rio::import("../data/raw/census-base-anonymized-2020.xlsx")
-# glimpse(raw_data)
-head(raw_data)
 
 ```
+
+## Overview of the dataset
+
+The dataset consists of `r dim(raw_data)[1]` observations (rows) and `r dim(raw_data)[2]` columns. Each column is a question. We will have to think how to handles all the columns that are a coding language.  
+
+The count of NAs by column:
+
+```{r overview}
+
+# glimpse(raw_data)
+
+raw_data %>%
+  select(everything()) %>%  # replace to your needs
+  summarise_all(list(~ sum(is.na(.)))) %>%
+  t() %>%
+  kable(format = "html")
+
+```
+
+
+
+## Each question in more details
+
+...
+
+
+
+
+
+
+
+
