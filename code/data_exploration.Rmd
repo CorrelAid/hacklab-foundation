@@ -17,7 +17,7 @@ raw_data <- rio::import("../data/raw/census-base-anonymized-2020.xlsx")
 
 ## Overview of the dataset
 
-The dataset consists of `r dim(raw_data)[1]` observations (rows) and `r dim(raw_data)[2]` columns. Each column is a question. We will have to think how to handles all the columns that are a coding language.  
+The dataset consists of `r dim(raw_data)[1]` observations (rows) and `r dim(raw_data)[2]` columns. Each column is a question. We will have to think about how to handles all the columns that are a coding language.  
 
 The count of NAs by column:
 
@@ -26,7 +26,7 @@ The count of NAs by column:
 # glimpse(raw_data)
 
 raw_data %>%
-  select(everything()) %>%  # replace to your needs
+  select(everything()) %>%  
   summarise_all(list(~ sum(is.na(.)))) %>%
   t() %>%
   kable(format = "html")
@@ -35,11 +35,112 @@ raw_data %>%
 
 
 
-## Each question in more details
+## Each question/column in more details
 
-...
+Aim: see if some cleaning is needed, get an understanding of what the data is/mean.
+
+The ID starts at 6. Check with Hamzah that we have all the data? 
+
+```{r ID}
+
+raw_data$ID
 
 
+```
+
+The time looks good, not sure if interesting information for us, though.
+
+```{r time}
+
+raw_data$`Start time` %>% head()
+
+raw_data$`Completion time`  %>% head()
+
+```
+
+__TODO: delete the Name and email__
+
+```{r email}
+
+raw_data$Email %>% head()
+
+```
+
+```{r name}
+
+raw_data$Name %>% head()
+
+```
+
+&nbsp;  
+__TODO: We may want to group some of those in the visualizations?__  
+
+```{r developer}
+
+raw_data %>% 
+  group_by(`Which of the following options best describes you today? Here, by "developer" we mean someone who writes code.`) %>%
+  tally() %>%
+  kable()
+
+```
+
+&nbsp;  
+
+```{r hobby}
+
+raw_data %>% 
+  group_by(`Do you code as a hobby?`) %>%
+  tally() %>%
+  kable()
+```
+
+&nbsp;  
+__TODO Some cleaning needed, e.g. National sService__
+
+```{r employment}
+raw_data %>% 
+  group_by(`Which of the following best describes your current employment status?` ) %>%
+  tally() %>%
+  kable()
+```
+
+&nbsp;  
+Looks clean, see [map](https://en.wikipedia.org/wiki/Regions_of_Ghana#/media/File:Ghana,_administrative_divisions_2018_-_de_-_colored.svg). Will need to decide what to do with respondents outside of Ghana (e.g. group them?).  
+
+```{r region}
+
+raw_data %>% 
+  group_by(`In which region do you live?`) %>%
+  tally() %>%
+  kable()
+```
+
+&nbsp;  
+__TODO: some cleaning needed, e.g. Accra, Ho, Tema, ...__  
+Note: if we want a map, we could use together with the region to geolocalize 
+
+```{r city}
+
+raw_data %>% 
+  group_by(`In which city or town do you live?`) %>%
+  tally() %>%
+  kable()
+```
+
+
+&nbsp;  
+
+```{r age}
+raw_data %>% 
+  group_by(`How old are you?`) %>%
+  tally() %>%
+  kable()
+```
+
+&nbsp;
+&nbsp;
+&nbsp;
+...  
 
 
 

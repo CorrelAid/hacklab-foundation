@@ -173,12 +173,12 @@ pre code {
 
 <div id="overview-of-the-dataset" class="section level2">
 <h2>Overview of the dataset</h2>
-<p>The dataset consists of 272 observations (rows) and 98 columns. Each column is a question. We will have to think how to handles all the columns that are a coding language.</p>
+<p>The dataset consists of 272 observations (rows) and 98 columns. Each column is a question. We will have to think about how to handles all the columns that are a coding language.</p>
 <p>The count of NAs by column:</p>
 <pre class="r"><code># glimpse(raw_data)
 
 raw_data %&gt;%
-  select(everything()) %&gt;%  # replace to your needs
+  select(everything()) %&gt;%  
   summarise_all(list(~ sum(is.na(.)))) %&gt;%
   t() %&gt;%
   kable(format = &quot;html&quot;)</code></pre>
@@ -972,9 +972,789 @@ Any final thoughts?
 </tbody>
 </table>
 </div>
-<div id="each-question-in-more-details" class="section level2">
-<h2>Each question in more details</h2>
-<p>…</p>
+<div id="each-questioncolumn-in-more-details" class="section level2">
+<h2>Each question/column in more details</h2>
+<p>Aim: see if some cleaning is needed, get an understanding of what the data is/mean.</p>
+<p>The ID starts at 6. Check with Hamzah that we have all the data?</p>
+<pre class="r"><code>raw_data$ID</code></pre>
+<pre><code>##   [1]   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23
+##  [19]  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41
+##  [37]  42  43  44  45  46  47  48  49  50  51  52  53  54  55  56  57  58  59
+##  [55]  60  61  62  63  64  65  66  67  68  69  70  71  72  73  74  75  76  77
+##  [73]  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92  93  94  95
+##  [91]  96  97  98  99 100 101 102 103 104 105 106 107 108 109 110 111 112 113
+## [109] 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131
+## [127] 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149
+## [145] 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167
+## [163] 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185
+## [181] 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203
+## [199] 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221
+## [217] 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239
+## [235] 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 256 257
+## [253] 258 259 260 261 262 263 264 265 266 267 268 269 270 271 272 273 274 275
+## [271] 276 277</code></pre>
+<p>The time looks good, not sure if interesting information for us, though.</p>
+<pre class="r"><code>raw_data$`Start time` %&gt;% head()</code></pre>
+<pre><code>## [1] &quot;2020-10-15 09:13:45 UTC&quot; &quot;2020-10-15 09:16:07 UTC&quot;
+## [3] &quot;2020-10-15 09:20:53 UTC&quot; &quot;2020-10-15 09:12:06 UTC&quot;
+## [5] &quot;2020-10-15 09:23:29 UTC&quot; &quot;2020-10-15 09:24:23 UTC&quot;</code></pre>
+<pre class="r"><code>raw_data$`Completion time`  %&gt;% head()</code></pre>
+<pre><code>## [1] &quot;2020-10-15 09:24:31 UTC&quot; &quot;2020-10-15 09:25:39 UTC&quot;
+## [3] &quot;2020-10-15 09:29:42 UTC&quot; &quot;2020-10-15 09:30:56 UTC&quot;
+## [5] &quot;2020-10-15 09:33:27 UTC&quot; &quot;2020-10-15 09:39:03 UTC&quot;</code></pre>
+<p><strong>TODO: delete the Name and email</strong></p>
+<pre class="r"><code>raw_data$Email %&gt;% head()</code></pre>
+<pre><code>## [1] &quot;anonymous&quot; &quot;anonymous&quot; &quot;anonymous&quot; &quot;anonymous&quot; &quot;anonymous&quot; &quot;anonymous&quot;</code></pre>
+<pre class="r"><code>raw_data$Name %&gt;% head()</code></pre>
+<pre><code>## [1] NA NA NA NA NA NA</code></pre>
+<p> <br />
+<strong>TODO: We may want to group some of those in the visualizations?</strong></p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Which of the following options best describes you today? Here, by &quot;developer&quot; we mean someone who writes code.`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="96%" />
+<col width="3%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Which of the following options best describes you today? Here, by “developer” we mean someone who writes code.</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">A Developer</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Currently in Transition to Dveloper</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I am a business admin student learning how to code both as a hobby and towards a career.</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I am a developer and a student</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I am a developer by profession</td>
+<td align="right">129</td>
+</tr>
+<tr class="even">
+<td align="left">I am a student who is learning to code</td>
+<td align="right">80</td>
+</tr>
+<tr class="odd">
+<td align="left">I am not primarily a developer, but I write code sometimes as part of my work</td>
+<td align="right">26</td>
+</tr>
+<tr class="even">
+<td align="left">I am studying to occupy a data scientist role</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I code primarily as a hobby</td>
+<td align="right">20</td>
+</tr>
+<tr class="even">
+<td align="left">I used to be a developer by profession, but no longer am</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">I want to keanr how to cods</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I work closely with Developers</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">None of these</td>
+<td align="right">5</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Do you code as a hobby?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Do you code as a hobby?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">No</td>
+<td align="right">81</td>
+</tr>
+<tr class="even">
+<td align="left">Yes</td>
+<td align="right">191</td>
+</tr>
+</tbody>
+</table>
+<p> <br />
+<strong>TODO Some cleaning needed, e.g. National sService</strong></p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Which of the following best describes your current employment status?` ) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Which of the following best describes your current employment status?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Both student and a part time worker</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Employed full-time</td>
+<td align="right">103</td>
+</tr>
+<tr class="odd">
+<td align="left">Employed part-time</td>
+<td align="right">20</td>
+</tr>
+<tr class="even">
+<td align="left">I prefer not to say</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I run my own business</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Independent contractor, freelancer, or self-employed</td>
+<td align="right">37</td>
+</tr>
+<tr class="odd">
+<td align="left">National service</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">National Service</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">National Service Personnel</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Not employed, but looking for work</td>
+<td align="right">41</td>
+</tr>
+<tr class="odd">
+<td align="left">Student</td>
+<td align="right">63</td>
+</tr>
+<tr class="even">
+<td align="left">Student and working</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p> <br />
+Looks clean, see <a href="https://en.wikipedia.org/wiki/Regions_of_Ghana#/media/File:Ghana,_administrative_divisions_2018_-_de_-_colored.svg">map</a>. Will need to decide what to do with respondents outside of Ghana (e.g. group them?).</p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`In which region do you live?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">In which region do you live?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Ahafo Region</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Ashanti Region</td>
+<td align="right">32</td>
+</tr>
+<tr class="odd">
+<td align="left">Bono East Region</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Central Region</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">Eastern Region</td>
+<td align="right">13</td>
+</tr>
+<tr class="even">
+<td align="left">From Ghana but live outside Ghana</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Greater Accra Region</td>
+<td align="right">186</td>
+</tr>
+<tr class="even">
+<td align="left">India</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Northern Region</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">Outside Ghana</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Upper East Region</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Upper West Region</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">USA</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Volta Region</td>
+<td align="right">9</td>
+</tr>
+<tr class="odd">
+<td align="left">Western Region</td>
+<td align="right">2</td>
+</tr>
+</tbody>
+</table>
+<p> <br />
+<strong>TODO: some cleaning needed, e.g. Accra, Ho, Tema, …</strong><br />
+Note: if we want a map, we could use together with the region to geolocalize</p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`In which city or town do you live?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">In which city or town do you live?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Ablekuma</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Ablekuma Fanmilk</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">accra</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Accra</td>
+<td align="right">59</td>
+</tr>
+<tr class="odd">
+<td align="left">ACCRA</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Accra - Ashaley Botwe</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Accra (lapaz)</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Accra, Ashongman</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Accra, Sowutuom</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Accra, Spintex</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Achimota</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Ada-Foah</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Adabraka</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Adenta</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">Adenta municipality</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Adenta New Legon</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Aflao</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Airport West Residential Area, Accra</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Ajiringanor</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Akatsi</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Akosombo</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Akuse</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Amanfrom</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Amasaman</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Aplaku New weija</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Ashaiman</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Ashaley Botwe</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Ashiaman</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Ashiyie</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Awomaso</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Awoshie</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Awoshie, A-Lang</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Bolgatanga</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Bomso</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Cantonment</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Cape coast</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Cincinnati, OH</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Dansoman</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Dichemso</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Dzorwulu</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">East Legon</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">fijai</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">GA-West, Ablekuma</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Gbawe</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Ghana</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Golf City Tema</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Haatso</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Ho</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">HO</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Kaneshie</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Kasoa</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">Kasoa - Peace town</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Kintampo</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Koforidua</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Kukuom</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">kumasi</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Kumasi</td>
+<td align="right">25</td>
+</tr>
+<tr class="even">
+<td align="left">kutunse</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Kwabenya</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">La</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Labadi</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Labone, Accra</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Larterbiokorshie</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Legon</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Madina</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Mallam</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Mampong Akuapem</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Mamprobi - Banana Inn</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">New Achimota,Accra</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">New Aplaku</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">New Bortianor, Accra</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">New Gbawe</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">New Ningo</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">New Weija</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Nkawkaw</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">North Legon ( Haatso )</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Nsawam</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Obuasi</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Odumase Krobo</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Oduom</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Old Ashongman</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Old Ningo</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Old Weija</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Osu , Accra</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Osu, Accra</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Outside Ghana</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Oyibi</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Pigfarm</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Pune</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Rabat</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Saboba</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Sogakope</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Somanya</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Sowutuom</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Spintex</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Tafo, Kumasi</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Taifa,Accra</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Tamale</td>
+<td align="right">9</td>
+</tr>
+<tr class="odd">
+<td align="left">Tarkwa</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Techiman</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Tema</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">TEMA</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Tema C12</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Tema community 25</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Tema-Afariwaa</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Tema, Prampram</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Teshie</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Teshie Agblezaa</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Teshie, Accra</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Twifo praso</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wa</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Weija, Oblogo</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">West Adenta</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Winneba</td>
+<td align="right">2</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`How old are you?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">How old are you?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">20 - 25</td>
+<td align="right">161</td>
+</tr>
+<tr class="even">
+<td align="left">26 - 30</td>
+<td align="right">66</td>
+</tr>
+<tr class="odd">
+<td align="left">31 - 35</td>
+<td align="right">21</td>
+</tr>
+<tr class="even">
+<td align="left">36 - 40</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Above 45</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Below 20</td>
+<td align="right">16</td>
+</tr>
+</tbody>
+</table>
+<p>      …</p>
 </div>
 
 
