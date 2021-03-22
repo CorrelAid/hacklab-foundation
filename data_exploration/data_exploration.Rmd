@@ -80,6 +80,7 @@ __TODO: We may want to group some of those in the visualizations?__
 raw_data %>% 
   group_by(`Which of the following options best describes you today? Here, by "developer" we mean someone who writes code.`) %>%
   tally() %>%
+  arrange(-n) %>%
   kable()
 
 ```
@@ -91,6 +92,7 @@ raw_data %>%
 raw_data %>% 
   group_by(`Do you code as a hobby?`) %>%
   tally() %>%
+  arrange(-n) %>%
   kable()
 ```
 
@@ -101,6 +103,7 @@ __TODO Some cleaning needed, e.g. National sService__
 raw_data %>% 
   group_by(`Which of the following best describes your current employment status?` ) %>%
   tally() %>%
+  arrange(-n) %>%
   kable()
 ```
 
@@ -112,6 +115,7 @@ Looks clean, see [map](https://en.wikipedia.org/wiki/Regions_of_Ghana#/media/Fil
 raw_data %>% 
   group_by(`In which region do you live?`) %>%
   tally() %>%
+  arrange(-n) %>%
   kable()
 ```
 
@@ -129,17 +133,94 @@ raw_data %>%
 
 
 &nbsp;  
+TODO: probably convertt to factor and set order.
 
 ```{r age}
 raw_data %>% 
   group_by(`How old are you?`) %>%
   tally() %>%
+  ggplot(aes(x=`How old are you?`, y=n)) + 
+  geom_col() +
+  theme_minimal() + 
+  geom_text(aes(label = n), vjust = -0.5)
+
+```
+
+&nbsp;
+TODO: need to take some decision on how to group the catetgories for plots
+
+```{r new}
+raw_data %>% 
+  group_by(`How frequently do you learn a new language or framework?`) %>%
+  tally() %>%
+  arrange(-n) %>%
+  kable()
+
+```
+&nbsp;
+What, no R? :)  
+Frie: "for the questions about tool proficiency, you could think about putting them into a second data frame “skills” or similar and then putting it in a long format with pivot_longer from tidyr (so that you have a column with the participant ID, a column “tool” and a column “level”)"  
+
+```{r C}
+raw_data %>% 
+  group_by(C) %>%
+  tally() %>%
+  arrange(-n) %>%
+  kable()
+
+```
+
+&nbsp;
+
+```{r other}
+raw_data %>% 
+  group_by(`If there are any other technologies you've worked with this year or plan to work with next year that were not listed, please list them as follows, separated by commas. \r\n\r\neg. JavaScript - this year...`) %>%
+  tally() %>%
+  arrange(-n) %>%
+  kable()
+```
+
+
+&nbsp;
+```{r OS}
+raw_data %>% 
+  group_by(`In which operating system would you rather work?`) %>%
+  tally() %>%
+  arrange(-n) %>%
   kable()
 ```
 
 &nbsp;
+```{r }
+raw_data %>% 
+  group_by(`What level of influence do you, personally, have over new technology purchases at your organization?` ) %>%
+  tally() %>%
+  arrange(-n) %>%
+  kable()
+```
+
+&nbsp;  
+We will need to handle this once we decide what/how to plot:  
+```{r }
+raw_data %>% 
+  group_by(`When buying a new tool or software, how do you discover and research available solutions? Select all that apply.`) %>%
+  tally() %>%
+  arrange(-n) %>%
+  kable()
+```
+
+&nbsp;
+```{r }
+raw_data %>% 
+  group_by(`Which of the following best describes the highest level of formal education that you have completed?`) %>%
+  tally() %>%
+  arrange(-n) %>%
+  kable()
+```
 &nbsp;
 &nbsp;
+&nbsp;
+
 ...  
 
 ```{r code frequency}
