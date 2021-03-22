@@ -11,9 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(knitr) # for kable()
 
-raw_data <- rio::import("../data/raw/census-base-anonymized-20201.xlsx")
-raw_data <- rio::import("../data/raw/")
-
+raw_data <- rio::import("../data/raw/census-base-anonymized-2020_without_parsing_errors.xlsx")
 
 ```
 
