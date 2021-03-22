@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(knitr) # for kable()
 
-raw_data <- rio::import("../data/raw/census-base-anonymized-2020.xlsx")
+raw_data <- rio::import("../data/raw/census-base-anonymized-20201.xlsx")
 
 ```
 
@@ -142,8 +142,237 @@ raw_data %>%
 &nbsp;
 ...  
 
+```{r code frequency}
+raw_data %>% 
+  group_by(`How frequently do you learn a new language or framework?`) %>%
+  tally() %>%
+  kable()
+```
+
+__TODO: some cleaning needed, e.g. When Neccessary,When there is a need to, ...__  
+Note: maybe we can group them in other ways
+
+__TODO:  The Variable 'If there are any other technologies you’ve worked with this year or plan to work with next year that were not listed, please list them as follows, separated by commas.__
+
+__eg. JavaScript - this year…'__   
+needs to be renamed   
+
+```{r primary operating system}
+raw_data %>% 
+  group_by(`What is the primary operating system in which you work?`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r preferred operating system}
+raw_data %>% 
+  group_by(`In which operating system would you rather work?`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r level of influence}
+raw_data %>% 
+  group_by(`What level of influence do you, personally, have over new technology purchases at your organization?`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r discover available solutions}
+raw_data %>% 
+  group_by(`When buying a new tool or software, how do you discover and research available solutions? Select all that apply.`) %>%
+  tally() %>%
+  kable()
+```
+__TODO: separate the sentences by semicolon and create a wide format (so it looks the same as the programming languages they use___
+
+```{r education}
+raw_data %>% 
+  group_by(`Which of the following best describes the highest level of formal education that you have completed?`) %>%
+  tally() %>%
+  kable()
+```
+
+__TODO: ask Hamzah in the next meeting about the education system in Ghana e.g. is advanced and higher national diploma the same? and also professional degree and professional diploma is the same?__
+
+```{r importance education}
+raw_data %>% 
+  group_by(`How important is a formal education, such as a university degree in computer science, to your career?`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r change education}
+raw_data %>% 
+  group_by(`From Q18, if you could go back and change your educational path (but end up in the same career), what would you change?`) %>%
+  tally() %>%
+  kable()
+```
+__TODO: data cleaning, summarizing similar answes such as nothing, Nothing, no etc.__
+
+```{r job satisfaction}
+raw_data %>% 
+  group_by(`How satisfied are you with your current job? (If you work multiple jobs, answer for one you spend the most hours on.)`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r number of employees}
+raw_data %>% 
+  group_by(`Approximately how many people are employed by the company or organization you currently work for?`) %>%
+  tally() %>%
+  kable()
+```
+__TODO: summarizing answers that are the same and recode as a integer__
+
+```{r working hours}
+raw_data %>% 
+  group_by(`On average, how many hours per week do you work? Please enter a whole number in the box.`) %>%
+  tally() %>%
+  kable()
+```
+__TODO: summarize and recode as a integer__
 
 
+```{r overtime hours}
+raw_data %>% 
+  group_by(`How often do you work overtime or beyond the formal time expectation of your job?`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r onboarding quality}
+raw_data %>% 
+  group_by(`Do you think your company has a good on-boarding process? (By on-boarding, we mean the structured process of getting you settled in to your new role at a company)`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r onboarding improvement}
+raw_data %>% 
+  group_by(`How could on-boarding at your company be improved?`) %>%
+  tally() %>%
+  kable()
+```
+__TODO: maybe first summarize those who are satisfied or we just leave this variable completely out of the analysis because there is not enough data?__
+
+```{r monthly salary}
+raw_data %>% 
+  group_by(`How much is your monthly salary in Ghana Cedis?`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r job seeking status}
+raw_data %>% 
+  group_by(`Which of the following best describes your current job-seeking status?`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r drive new job}
+raw_data %>% 
+  group_by(`In general, what drives you to look for a new job? Select all that apply.`) %>%
+  tally() %>%
+  kable()
+```
+__TODO: separate the options by semicolon and put into wide format (if the option was ticked, it can be coded 1 and if not ticked then 0__
+
+```{r information new job}
+raw_data %>% 
+  group_by(`When job searching, how do you learn more about a company? Select all that apply.`) %>%
+  tally() %>%
+  kable()
+```
+__TODO: separate the options by semicolon and put into wide format (if the option was ticked, it can be coded 1 and if not ticked then 0__
+
+```{r membership community}
+raw_data %>% 
+  group_by(`Are you a member of any other online/offline developer communities?`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r membership which community}
+raw_data %>% 
+  group_by(`Developer communities you are a member of`) %>%
+  tally() %>%
+  kable()
+```
+__TODO: separate the options by comma and put into wide format (if the option was ticked, it can be coded 1 and if not ticked then 0__
+
+```{r age years}
+raw_data %>% 
+  group_by(`What is your age (in years)? If you prefer not to answer, you may leave this question blank.`) %>%
+  tally() %>%
+  kable()
+```
+__TODO: recode as integers and delete characters e.g. yrs__
+
+```{r gender}
+raw_data %>% 
+  group_by(`Which of the following do you currently identify as? Please select all that apply. If you prefer not to answer, you may leave this question blank.`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r transgender}
+raw_data %>% 
+  group_by(`Do you identify as transgender?`) %>%
+  tally() %>%
+  kable()
+```
+only someone is transgender, maybe this is not so important to include in the analysis
+
+```{r sexual orientation}
+raw_data %>% 
+  group_by(`Which of the following do you currently identify as? Please select all that apply. If you prefer not to answer, you may leave this question blank.2`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r Ethnicity}
+raw_data %>% 
+  group_by(`Which of the following do you identify as? Please check all that apply. If you prefer not to answer, you may leave this question blank.`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r mental health}
+raw_data %>% 
+  group_by(`Which of the following describe you, if any? This information will be kept private. If you prefer not to answer, you may leave this question blank.2`) %>%
+  tally() %>%
+  kable()
+```
+__TODO: separate by semicolon__
+
+```{r people to care for}
+raw_data %>% 
+  group_by(`Do you have any dependents (e.g., children, elders, or others) that you care for?`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r length of survey}
+raw_data %>% 
+  group_by(`How do you feel about the length of this survey?`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r difficulty of survey}
+raw_data %>% 
+  group_by(`How easy or difficult was this survey to complete?`) %>%
+  tally() %>%
+  kable()
+```
+
+```{r final thoughts}
+raw_data %>% 
+  group_by(`Any final thoughts?`) %>%
+  tally() %>%
+  kable()
+```
 
 
-
+__ TODO IN GENERAL for Data Cleaning
