@@ -3,13 +3,14 @@ library(janitor)
 library(tidyr)
 library(knitr)
 library(dplyr)
+library(dbplyr)
 
 raw_data <- import("~/CorrelAid/hacklab-foundation/data/raw/census-base-anonymized-2020.xlsx")
 cleaned_data <- clean_names(raw_data)
 
 #Removing names, mails and times
 head(cleaned_data)
-cleaned_data <- cleaned_data[-c(2:5)]
+cleaned_data <- cleaned_data[-c(4:5)]
 colnames(cleaned_data)
 
 #separate dataframe for tools 
@@ -27,28 +28,38 @@ head(skills)
 #Cleaning the individual answers
 
 #Creating a dataframe without the individual skills 
-data_questions <- cbind(cleaned_data[1:8], cleaned_data[63:94])
+data_questions <- cbind(cleaned_data[1:10], cleaned_data[65:96])
 colnames(data_questions)
 #Changing the column names
-colnames(data_questions)[2:40] <- c("developer", "hobby", "employment", "region", "city", "age_range", 
+colnames(data_questions)[4:42] <- c("developer", "hobby", "employment", "region", "city", "age_range", 
                           "learning", "new_tools", "operating_system", "operating_system_2", 
                           "influence", "discovery", "education", "study", "importance_ed", 
                           "change_ed", "job_sat", "orga_size", "work_hours", "overtime", 
-                          "on-boarding", "improve_on-boarding", "salary", "seeking", "jobsearch", 
+                          "on-boarding", "improve_on-boarding", "salary", "job_seeking", "jobsearch", 
                           "info_sources", "communities_1", "communities_2", "age", "gender", 
-                          "trans", "sexuality", "descent", "disability", "psychiatric_disorder", 
+                          "trans", "sexuality", "ethnicity", "disability", "psychiatric_disorder", 
                           "care", "length", "difficulty", "comments")
 colnames(data_questions)
 
 #Employment
+data_questions$employment <- tolower(data_questions$employment)
+
 data_questions %>% 
   group_by(employment) %>%
   tally() %>%
   kable()
 
-data_questions$employment[startsWith(data_questions$employment, "Both")] <- "Student and working"
-data_questions$employment[startsWith(data_questions$employment, "National")] <- "National Service"
-data_questions$employment[startsWith(data_questions$employment, "I run")] <- "Independent contractor, freelancer, or self-employed"
+data_questions$employment_cleaned <- data_questions$employment
+
+data_questions$employment_cleaned[grep("student", data_questions$employment_cleaned)] <- "student"
+data_questions$employment_cleaned[startsWith(data_questions$employment_cleaned, "national")] <- "national service"
+data_questions$employment_cleaned[startsWith(data_questions$employment_cleaned, "i run")] <- "independent contractor, freelancer, or self-employed"
+
+data_questions %>% 
+  group_by(employment_cleaned) %>%
+  tally() %>%
+  kable()
+
 
 #City
 data_questions %>% 
