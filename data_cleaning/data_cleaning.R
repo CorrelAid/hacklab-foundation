@@ -4,17 +4,19 @@ library(tidyr)
 library(knitr)
 library(dplyr)
 library(dbplyr)
+install.packages("tmap")
+library(tmap)
 
 raw_data <- import("~/CorrelAid/hacklab-foundation/data/raw/census-base-anonymized-2020.xlsx")
 cleaned_data <- clean_names(raw_data)
 
-#Removing names, mails and times
+#Removing names and mails
 head(cleaned_data)
 cleaned_data <- cleaned_data[-c(4:5)]
 colnames(cleaned_data)
 
 #separate dataframe for tools 
-skills <- cbind(cleaned_data$id, cleaned_data[,9:62])
+skills <- cbind(cleaned_data$id, cleaned_data[,11:64])
 head(skills)
 colnames(skills)[1] <- "id"
 colnames(skills)
@@ -25,9 +27,7 @@ head(skills)
 #maybe we should replace n/a by 0?
 
 
-#Cleaning the individual answers
-
-#Creating a dataframe without the individual skills 
+#Creating a dataframe without the skills 
 data_questions <- cbind(cleaned_data[1:10], cleaned_data[65:96])
 colnames(data_questions)
 #Changing the column names
@@ -40,6 +40,17 @@ colnames(data_questions)[4:42] <- c("developer", "hobby", "employment", "region"
                           "trans", "sexuality", "ethnicity", "disability", "psychiatric_disorder", 
                           "care", "length", "difficulty", "comments")
 colnames(data_questions)
+
+#Times
+#Creating a column including the completion time
+data_questions$time_s <- data_questions$completion_time - data_questions$start_time
+data_questions$time_m <- data_questions$time_s/60
+
+#Developer
+data_questions %>% 
+  group_by(developer) %>%
+  tally() %>%
+  kable()
 
 #Employment
 data_questions$employment <- tolower(data_questions$employment)
@@ -81,4 +92,6 @@ data_questions %>%
   tally() %>%
   kable()
 
+geocode_OSM("Ghana")
 
+data_questions$city_geo <- geocode_OSM(data_questions$city, as.sf = FALSE, keep.unfound = TRUE)
