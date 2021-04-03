@@ -20,7 +20,7 @@ cleaning_data <- raw_data %>%
          overtime_work_25 = `How often do you work overtime or beyond the formal time expectation of your job?`,
          company_onboarding_process_26 = `Do you think your company has a good on-boarding process? (By on-boarding, we mean the structured process of getting you settled in to your new role at a company)`,
          improve_onboarding_27 = `How could on-boarding at your company be improved?`,
-         montthly_salary_28 = `How much is your monthly salary in Ghana Cedis?`,
+         monthly_salary_28 = `How much is your monthly salary in Ghana Cedis?`,
          job_status_29 = `Which of the following best describes your current job-seeking status?`,
          drivers_for_new_jobs_30 = `In general, what drives you to look for a new job? Select all that apply.`,
          how_learn_about_company_31 = `When job searching, how do you learn more about a company? Select all that apply.`,
@@ -29,7 +29,38 @@ cleaning_data <- raw_data %>%
   )
 
 # and now we check one by one each column and try to fix problems.
-
+cleaning_data <- cleaning_data %>%
+  mutate(
+    weekly_work_hours_24 = as.integer(weekly_work_hours_24), # note: one 37.5 is becoming a 37
+    overtime_work_25 = fct_relevel(overtime_work_25, 
+                                   "Never", 
+                                   "Rarely: 1-2 days per year or less",
+                                   "Occasionally: 1-2 days per quarter but less than monthly",
+                                   "Sometimes: 1-2 days per month but less than weekly",
+                                   "Often: 1-2 days per week",
+                                   "Frequently: 3 or more days per week"
+    ), # convert to factor and order levels
+    company_onboarding_process_26 = fct_relevel(company_onboarding_process_26, "Yes", "No"), # convert to factor
+    improve_onboarding_27 = improve_onboarding_27, # manual work will be needed once we decide if using this or not
+    monthly_salary_28 = fct_relevel(monthly_salary_28, 
+                                   "Less than GHS 1,500", 
+                                   "GHS 1,500 - GHS 2,000",
+                                   "GHS 2,000 - GHS 2,500",
+                                   "GHS 2,500 - GHS 3,000",
+                                   "GHS 3,000 - GHS 3,500",
+                                   "GHS 3500 - GHS 4,000",
+                                   "GHS 4,000 - GHS 5,000",
+                                   "GHS 5,000 - GHS 6,000",
+                                   "GHS 6,000 - GHS 8,000",
+                                   "GHS 8,000 - GHS 10,000",
+                                   "GHS 10,000 - GHS 15,000",
+                                   "GHS 15,000 - GHS 20,000",
+                                   "GHS 20,000 - GHS 25,000",
+                                   "Greater than GHS 25,000"
+    ), # convert to factor and order levels
+    monthly_salary_28 = fct_recode(monthly_salary_28, "GHS 3,500 - GHS 4,000" = "GHS 3500 - GHS 4,000") # correct issue in the levels of the factor
+    
+  ) 
 
 
 
