@@ -2335,6 +2335,3260 @@ We will need to handle this once we decide what/how to plot:</p>
 </table>
 <p>     </p>
 <p>…</p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`How frequently do you learn a new language or framework?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="94%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">How frequently do you learn a new language or framework?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">As and when it’s necessary for a project</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">As needed for work and research</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Every few months</td>
+<td align="right">128</td>
+</tr>
+<tr class="even">
+<td align="left">I don’t remember the last time</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I started learning not long ago and so far I’ve learnt only one language.</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">i stick to a selected few.</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Once a decade</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Once a year</td>
+<td align="right">60</td>
+</tr>
+<tr class="odd">
+<td align="left">Once every few years</td>
+<td align="right">31</td>
+</tr>
+<tr class="even">
+<td align="left">Project dependent</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Usually not…stuck with python for a long time now</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">When I feel the need to</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">When i have someone to help me learn it</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">When Neccessary</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">When the need arises</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">When there is a need to</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">When work requires it</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">39</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TODO: some cleaning needed, e.g. When Neccessary,When there is a need to, …</strong><br />
+Note: maybe we can group them in other ways</p>
+<p><strong>TODO: The Variable ’If there are any other technologies you’ve worked with this year or plan to work with next year that were not listed, please list them as follows, separated by commas.</strong></p>
+<p><strong>eg. JavaScript - this year…’</strong><br />
+needs to be renamed</p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`What is the primary operating system in which you work?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">What is the primary operating system in which you work?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">BSD</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Linux-based</td>
+<td align="right">39</td>
+</tr>
+<tr class="odd">
+<td align="left">MacOS</td>
+<td align="right">41</td>
+</tr>
+<tr class="even">
+<td align="left">Windows</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`In which operating system would you rather work?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">In which operating system would you rather work?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">BSD</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Linux-based</td>
+<td align="right">83</td>
+</tr>
+<tr class="odd">
+<td align="left">MacOS</td>
+<td align="right">88</td>
+</tr>
+<tr class="even">
+<td align="left">Windows</td>
+<td align="right">84</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">16</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`What level of influence do you, personally, have over new technology purchases at your organization?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="96%" />
+<col width="3%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">What level of influence do you, personally, have over new technology purchases at your organization?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">I have a great deal of influence</td>
+<td align="right">81</td>
+</tr>
+<tr class="even">
+<td align="left">I have little or no influence</td>
+<td align="right">105</td>
+</tr>
+<tr class="odd">
+<td align="left">I have some influence</td>
+<td align="right">68</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">18</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`When buying a new tool or software, how do you discover and research available solutions? Select all that apply.`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="98%" />
+<col width="1%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">When buying a new tool or software, how do you discover and research available solutions? Select all that apply.</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Ask developers I know/work with;</td>
+<td align="right">19</td>
+</tr>
+<tr class="even">
+<td align="left">Ask developers I know/work with;Read ratings or reviews on third party siteslike G2Crowd;</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Ask developers I know/work with;Read ratings or reviews on third party siteslike G2Crowd;Start a free trial;</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Ask developers I know/work with;Read ratings or reviews on third party siteslike G2Crowd;Visit developer communities like Stack Overflow;</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Ask developers I know/work with;Start a free trial;</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">Ask developers I know/work with;Start a free trial;Read ratings or reviews on third party siteslike G2Crowd;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Ask developers I know/work with;Start a free trial;Read ratings or reviews on third party siteslike G2Crowd;Visit developer communities like Stack Overflow;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Ask developers I know/work with;Start a free trial;Visit developer communities like Stack Overflow;</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Ask developers I know/work with;Start a free trial;Visit developer communities like Stack Overflow;Read ratings or reviews on third party siteslike G2Crowd;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Ask developers I know/work with;Visit developer communities like Stack Overflow;</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">Ask developers I know/work with;Visit developer communities like Stack Overflow;Read ratings or reviews on third party siteslike G2Crowd;</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">Ask developers I know/work with;Visit developer communities like Stack Overflow;Read ratings or reviews on third party siteslike G2Crowd;Start a free trial;</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Ask developers I know/work with;Visit developer communities like Stack Overflow;Start a free trial;</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Depends on the use case;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Read ratings or reviews on third party siteslike G2Crowd;</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Read ratings or reviews on third party siteslike G2Crowd;Ask developers I know/work with;</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Read ratings or reviews on third party siteslike G2Crowd;Ask developers I know/work with;Start a free trial;Visit developer communities like Stack Overflow;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Read ratings or reviews on third party siteslike G2Crowd;Ask developers I know/work with;Visit developer communities like Stack Overflow;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Read ratings or reviews on third party siteslike G2Crowd;Start a free trial;</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Read ratings or reviews on third party siteslike G2Crowd;Visit developer communities like Stack Overflow;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Read ratings or reviews on third party siteslike G2Crowd;Visit developer communities like Stack Overflow;Ask developers I know/work with;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Read ratings or reviews on third party siteslike G2Crowd;Visit developer communities like Stack Overflow;Start a free trial;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Start a free trial;</td>
+<td align="right">49</td>
+</tr>
+<tr class="even">
+<td align="left">Start a free trial;Ask developers I know/work with;</td>
+<td align="right">20</td>
+</tr>
+<tr class="odd">
+<td align="left">Start a free trial;Ask developers I know/work with;Read ratings or reviews on third party siteslike G2Crowd;</td>
+<td align="right">11</td>
+</tr>
+<tr class="even">
+<td align="left">Start a free trial;Ask developers I know/work with;Visit developer communities like Stack Overflow;</td>
+<td align="right">16</td>
+</tr>
+<tr class="odd">
+<td align="left">Start a free trial;Ask developers I know/work with;Visit developer communities like Stack Overflow;Read ratings or reviews on third party siteslike G2Crowd;</td>
+<td align="right">20</td>
+</tr>
+<tr class="even">
+<td align="left">Start a free trial;Ask developers I know/work with;Visit developer communities like Stack Overflow;Read ratings or reviews on third party siteslike G2Crowd;I contact solutions support staff ;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Start a free trial;Ask developers I know/work with;Visit developer communities like Stack Overflow;Read ratings or reviews on third party siteslike G2Crowd;YouTube Videos;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Start a free trial;Read ratings or reviews on third party siteslike G2Crowd;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Start a free trial;Read ratings or reviews on third party siteslike G2Crowd;Ask developers I know/work with;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Start a free trial;Read ratings or reviews on third party siteslike G2Crowd;Ask developers I know/work with;Visit developer communities like Stack Overflow;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Start a free trial;Visit developer communities like Stack Overflow;</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Start a free trial;Visit developer communities like Stack Overflow;Ask developers I know/work with;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Start a free trial;Visit developer communities like Stack Overflow;Ask developers I know/work with;Read ratings or reviews on third party siteslike G2Crowd;</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Start a free trial;Visit developer communities like Stack Overflow;Ask developers I know/work with;Read ratings or reviews on third party siteslike G2Crowd;Read a documentary of that software ;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Start a free trial;Visit developer communities like Stack Overflow;Read ratings or reviews on third party siteslike G2Crowd;</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Start a free trial;Visit developer communities like Stack Overflow;Read ratings or reviews on third party siteslike G2Crowd;Ask developers I know/work with;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Visit developer communities like Stack Overflow;</td>
+<td align="right">12</td>
+</tr>
+<tr class="even">
+<td align="left">Visit developer communities like Stack Overflow;Ask developers I know/work with;</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Visit developer communities like Stack Overflow;Ask developers I know/work with;Read ratings or reviews on third party siteslike G2Crowd;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Visit developer communities like Stack Overflow;Ask developers I know/work with;Start a free trial;</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Visit developer communities like Stack Overflow;Read ratings or reviews on third party siteslike G2Crowd;</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Visit developer communities like Stack Overflow;Read ratings or reviews on third party siteslike G2Crowd;Ask developers I know/work with;</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Visit developer communities like Stack Overflow;Read ratings or reviews on third party siteslike G2Crowd;Ask developers I know/work with;Start a free trial;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Visit developer communities like Stack Overflow;Read ratings or reviews on third party siteslike G2Crowd;Start a free trial;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Visit developer communities like Stack Overflow;Read ratings or reviews on third party siteslike G2Crowd;Start a free trial;Ask developers I know/work with;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Visit developer communities like Stack Overflow;Start a free trial;</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Visit developer communities like Stack Overflow;Start a free trial;Ask developers I know/work with;</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Visit developer communities like Stack Overflow;Start a free trial;Ask developers I know/work with;Read ratings or reviews on third party siteslike G2Crowd;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Visit developer communities like Stack Overflow;Start a free trial;Read ratings or reviews on third party siteslike G2Crowd;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Visit developer communities like Stack Overflow;Start a free trial;Read ratings or reviews on third party siteslike G2Crowd;Ask developers I know/work with;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">YouTube ;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">10</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TODO: separate the sentences by semicolon and create a wide format (so it looks the same as the programming languages they use</strong>_</p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Which of the following best describes the highest level of formal education that you have completed?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="96%" />
+<col width="3%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Which of the following best describes the highest level of formal education that you have completed?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Advanced National Diploma</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Bachelor’s degree</td>
+<td align="right">171</td>
+</tr>
+<tr class="odd">
+<td align="left">College</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Diploma</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Diploma in Basic Education</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Higher National Diploma</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Higher National Diploma (HND)</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">HND</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Master’s degree</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">Professional degree</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Professional Diploma</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Secondary school</td>
+<td align="right">45</td>
+</tr>
+<tr class="odd">
+<td align="left">Still in shs</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Still in the University</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Will finish bachelor’s degree in 2021</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">28</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TODO: ask Hamzah in the next meeting about the education system in Ghana e.g. is advanced and higher national diploma the same? and also professional degree and professional diploma is the same?</strong></p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`How important is a formal education, such as a university degree in computer science, to your career?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="97%" />
+<col width="2%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">How important is a formal education, such as a university degree in computer science, to your career?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Critically important</td>
+<td align="right">36</td>
+</tr>
+<tr class="even">
+<td align="left">Fairly important</td>
+<td align="right">74</td>
+</tr>
+<tr class="odd">
+<td align="left">Not at all important/not necessary</td>
+<td align="right">23</td>
+</tr>
+<tr class="even">
+<td align="left">Somewhat important</td>
+<td align="right">27</td>
+</tr>
+<tr class="odd">
+<td align="left">Very important</td>
+<td align="right">80</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">32</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`From Q18, if you could go back and change your educational path (but end up in the same career), what would you change?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="97%" />
+<col width="2%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">From Q18, if you could go back and change your educational path (but end up in the same career), what would you change?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Approach to learning</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Attend bootcamps</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Avoid the norm that Medicine and Pharmacy are the best , rather re-engineered my mind to channel a keen attention on Coding and Computers. The Physics and the E-Maths combined with IT.</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Begin professional certifications earlier</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Business or graphic design</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Change Master’s to Professional Certificates</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Change my field of study to computer science</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Coding</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Combination of modules I select for the course</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Commitment</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">computer science</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Computer Science</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Computer Science degrees should be mode practical with modern employable languages</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">CS</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Curriculum</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Do more mathematics</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">field of study</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Go to a Boot Camp</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Going to university. I would rather do certifications straight forward</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">How I learned programming</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">How the courses are taught</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I will change the course I chose.</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I will just add computer science to my program of study</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I will still prefer the same educational career</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I won’t change</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I won’t change a thing</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I won’t go to university.</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I would change my programme of study to computer science, or software engineering.</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I would do more Math</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I would have learnt programming alongside the programme I did</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I would include some social programs, maybe a little health. Something along the lines of human Psychology</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I would not change anything</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I would probably do computer engineering or science</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I would rather opt for a computer science discipline</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I would select information technology</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I would study Computer Science</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I wouldn’t do university, but training in web development</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I’d probably do Science for the elective math but I might stick with Visual Arts</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I’d probably have studied general arts in senior high, then turned the Computer Science department ict labs into my playground in University.</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I’ll do electronic and electrical engineering instead of computer science</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I’m good</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I’ll Study computer science</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">In the university at the moment</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Include entrepreneurship program</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Invested in e-learning</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Learn Coding earlier</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Learn online rather than pursuing a degree</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Learn programming earlier</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Learning how to code earlier, understanding data structures and algorithms and doing lots of programming projects</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Master Degree</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Master’s degree</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Masters</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Material engineering</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Maybe yes</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">More practical learning</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">My choice of course in high school because i was a visual arts student</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">My Choice of university of study</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">My Education</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">My final year elective courses</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">My tertiary institution</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">N/A</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">no</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">No</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">NO</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">None</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">nothing</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Nothing</td>
+<td align="right">27</td>
+</tr>
+<tr class="even">
+<td align="left">Nothing at all</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Nothing but would have added up Ui and Ux design</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Nothing much</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Nothing to change</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Nothing, will do same.</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Nothing.</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Nothing. I will take more professional courses alongside my degree</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Nothing.. I would just not go to school and just learn stuff on my as am already doing</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Offer BSc Mathematics instead of Computer Science</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Offer Mathematics</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Probably study computer science/ Computer Eng</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Really really take Data Structures And Algorithms seriously.</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">School</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Start coding at early stage</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Still will pursue computer science</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Study Computer Science</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Take a professional certificate course in Programming before taking Computer Science.</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Tech entrepreneurship should be a course to understand the business of tech.</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">The business course in secondary school</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">The learning platforms used</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">The non practical aspects of studies</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">The program of study. I would probably take a computer science course</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">The school I attended</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">There will be more practical work compared to theories. And there will be more practical quizzes and assignments.</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Will advocate for modern trends to be taught</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Working on more projects</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Would do computer engineering</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Would have studied CS/IT</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Would Involve technological studies</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">would take mathematics at university</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">yes</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Yes</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Yes Please</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Yes, any day</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">133</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TODO: data cleaning, summarizing similar answes such as nothing, Nothing, no etc.</strong></p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`How satisfied are you with your current job? (If you work multiple jobs, answer for one you spend the most hours on.)`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="97%" />
+<col width="2%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">How satisfied are you with your current job? (If you work multiple jobs, answer for one you spend the most hours on.)</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Neither satisfied nor dissatisfied</td>
+<td align="right">48</td>
+</tr>
+<tr class="even">
+<td align="left">Slightly dissatisfied</td>
+<td align="right">27</td>
+</tr>
+<tr class="odd">
+<td align="left">Slightly satisfied</td>
+<td align="right">67</td>
+</tr>
+<tr class="even">
+<td align="left">Very dissatisfied</td>
+<td align="right">20</td>
+</tr>
+<tr class="odd">
+<td align="left">Very satisfied</td>
+<td align="right">54</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">56</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Approximately how many people are employed by the company or organization you currently work for?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="97%" />
+<col width="2%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Approximately how many people are employed by the company or organization you currently work for?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">10 to 19 employees</td>
+<td align="right">27</td>
+</tr>
+<tr class="even">
+<td align="left">100+</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">100+ Large Corporation</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">1000 to ..</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">1000+</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">150</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">185</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">2 to 9 employees</td>
+<td align="right">52</td>
+</tr>
+<tr class="odd">
+<td align="left">20 to 99 employees</td>
+<td align="right">60</td>
+</tr>
+<tr class="even">
+<td align="left">20,000 +</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">250</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">300-500</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">400</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">400+</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">500</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">500 to 1000</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">700</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">About 600</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Above 500</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Am not employed</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Can’t really tell</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Just me - I am a freelancer, sole proprietor, etc.</td>
+<td align="right">49</td>
+</tr>
+<tr class="odd">
+<td align="left">More Educational</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">more than 100</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">More than 100</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Not employed</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Not employed mainly working on side projects</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Over 1000</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Over 500</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Over 99</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Student</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">The entire staff is made up of individual contractors and I’d place a number between 9-25</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">53</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TODO: summarizing answers that are the same and recode as a integer</strong></p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`On average, how many hours per week do you work? Please enter a whole number in the box.`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="96%" />
+<col width="3%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">On average, how many hours per week do you work? Please enter a whole number in the box.</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">0</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">10</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">100</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">105</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">12</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">120</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">15</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">19</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">20</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">21</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">24</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">25</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">28</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">30</td>
+<td align="right">16</td>
+</tr>
+<tr class="even">
+<td align="left">32</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">35</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">36</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">37.5</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">4</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">40</td>
+<td align="right">55</td>
+</tr>
+<tr class="even">
+<td align="left">42</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">45</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">46</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">47</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">48</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">5</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">50</td>
+<td align="right">18</td>
+</tr>
+<tr class="odd">
+<td align="left">52</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">54</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">55</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">56</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">60</td>
+<td align="right">15</td>
+</tr>
+<tr class="odd">
+<td align="left">63</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">7</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">70</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">72</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">75</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">78</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">8</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">80</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">84</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">9</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">90</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">98</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">64</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TODO: summarize and recode as a integer</strong></p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`How often do you work overtime or beyond the formal time expectation of your job?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="96%" />
+<col width="3%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">How often do you work overtime or beyond the formal time expectation of your job?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Frequently: 3 or more days per week</td>
+<td align="right">79</td>
+</tr>
+<tr class="even">
+<td align="left">Never</td>
+<td align="right">15</td>
+</tr>
+<tr class="odd">
+<td align="left">Occasionally: 1-2 days per quarter but less than monthly</td>
+<td align="right">31</td>
+</tr>
+<tr class="even">
+<td align="left">Often: 1-2 days per week</td>
+<td align="right">48</td>
+</tr>
+<tr class="odd">
+<td align="left">Rarely: 1-2 days per year or less</td>
+<td align="right">23</td>
+</tr>
+<tr class="even">
+<td align="left">Sometimes: 1-2 days per month but less than weekly</td>
+<td align="right">28</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">48</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Do you think your company has a good on-boarding process? (By on-boarding, we mean the structured process of getting you settled in to your new role at a company)`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="97%" />
+<col width="2%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Do you think your company has a good on-boarding process? (By on-boarding, we mean the structured process of getting you settled in to your new role at a company)</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">No</td>
+<td align="right">87</td>
+</tr>
+<tr class="even">
+<td align="left">Yes</td>
+<td align="right">117</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">68</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`How could on-boarding at your company be improved?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="96%" />
+<col width="3%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">How could on-boarding at your company be improved?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">A little interview on the chosen choice of language</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">A standardized structure for onboard ding</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Adequate funds for the right role</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Assign mentors to newly assigned employees</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better background check</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">By applying more practical tests for the individual</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">By clearly defining the core functions of the various units/departments</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">By defining a structure in the first place</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">By establishing an HR Department</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">By improving the organisational structure to facilitate the work flow</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Capacity building</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Communication</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Company needs to allow the organisational structures to work without interference and clear task to be assigned to new hires</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Could have someone to take me through the code instead of having to understand it myself</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Dedicated staff to handle on boarding process</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Developing better internship systems for prospective workers</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Documenting a structure</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">External trainings</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Have orientation sessions before on-boarding</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Having a standard onboarding process</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I am quitting after nss</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I don’t know</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I think just keep doing what they’re doing will suffice.</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I’m not sure</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Improve the organizational structure</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">inclusiveness</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">It’s great. Nothing comes to mind</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">It’s fine</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">It’s the best</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Job positions should be made known</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Let IT help desk raise tickets for each unit responsible for delivering into the process</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">more</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">More coding workshops</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">More documentation of code</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">More employment</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">More focus on developers</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">More innovation and creativity</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">More interaction with leads</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">More specific training to understand fully the role as opposed to general orientation.</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">N/A</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Need new machines</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">No idea</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">None</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Not working in a company</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Observation through hard work</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Orientation for new employees</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Pair a new developer with developer skilled in his art within the organization and is willing to help</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Proper documentation of existing softwares</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Proper documentation of infrastructure</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Providing mentorship and an enabling environment for learning</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Retention of talents..</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Roles could be properly defined and documented</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Roles need to be well spelt out and every necessary document handed before start of work.</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Scripts to set up devices, documentation of help new team members familiarize themselves with the different projects</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Set the expectations on the role earlier</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">set up a tutorial on the stack being used, architecture and how the development cycle goes</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Slower rollout. Everything happens too fast, so it doesn’t stick</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Structured Onboarding program</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">The best I have encounter, won’t change a thing.</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">There is no nee for any improvement</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Through IT skills</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Through orientation</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">to employee more workers</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Training in specific fields should be better encouraged</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">With some experience</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">205</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TODO: maybe first summarize those who are satisfied or we just leave this variable completely out of the analysis because there is not enough data?</strong></p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`How much is your monthly salary in Ghana Cedis?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">How much is your monthly salary in Ghana Cedis?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">GHS 1,500 - GHS 2,000</td>
+<td align="right">41</td>
+</tr>
+<tr class="even">
+<td align="left">GHS 10,000 - GHS 15,000</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">GHS 15,000 - GHS 20,000</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">GHS 2,000 - GHS 2,500</td>
+<td align="right">17</td>
+</tr>
+<tr class="odd">
+<td align="left">GHS 2,500 - GHS 3,000</td>
+<td align="right">16</td>
+</tr>
+<tr class="even">
+<td align="left">GHS 20,000 - GHS 25,000</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">GHS 3,000 - GHS 3,500</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">GHS 3500 - GHS 4,000</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">GHS 4,000 - GHS 5,000</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">GHS 5,000 - GHS 6,000</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">GHS 6,000 - GHS 8,000</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">GHS 8,000 - GHS 10,000</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Greater than GHS 25,000</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Less than GHS 1,500</td>
+<td align="right">90</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">60</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Which of the following best describes your current job-seeking status?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Which of the following best describes your current job-seeking status?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">I am actively looking for a job</td>
+<td align="right">89</td>
+</tr>
+<tr class="even">
+<td align="left">I am not interested in new job oportunities</td>
+<td align="right">15</td>
+</tr>
+<tr class="odd">
+<td align="left">I’m not actively looking, but I am open to new opportunities</td>
+<td align="right">168</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`In general, what drives you to look for a new job? Select all that apply.`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="98%" />
+<col width="1%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">In general, what drives you to look for a new job? Select all that apply.</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Better compensation;</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Better work/life balance;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Better work/life balance;Looking to relocate;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Better work/life balance;Looking to relocate;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Better work/life balance;Trouble with leadership at my company;Looking to relocate;Wanting to improve your skills;Curious about other opportunities;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Better work/life balance;Trouble with leadership at my company;Wanting to improve your skills;Wanting to work with new technologies;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Better work/life balance;Wanting to improve your skills;</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Better work/life balance;Wanting to improve your skills;Curious about other opportunities;Wanting to work with new technologies;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Better work/life balance;Wanting to improve your skills;Wanting to work with new technologies;Curious about other opportunities;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Better work/life balance;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Better work/life balance;Wanting to work with new technologies;Curious about other opportunities;Wanting to share accomplishments with a wider network;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Better work/life balance;Wanting to work with new technologies;Looking to relocate;Curious about other opportunities;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Better work/life balance;Wanting to work with new technologies;Looking to relocate;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;Trouble with leadership at my company;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Better work/life balance;Wanting to work with new technologies;Wanting to share accomplishments with a wider network;Curious about other opportunities;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Curious about other opportunities;Better work/life balance;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Curious about other opportunities;Better work/life balance;Wanting to improve your skills;</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Curious about other opportunities;Looking to relocate;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Curious about other opportunities;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Curious about other opportunities;Wanting to share accomplishments with a wider network;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Looking to relocate;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Trouble with leadership at my company;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Trouble with leadership at my company;Better work/life balance;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Trouble with leadership at my company;Better work/life balance;Looking to relocate;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Trouble with leadership at my company;Better work/life balance;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Trouble with leadership at my company;Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Wanting to improve your skills;Better work/life balance;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Wanting to improve your skills;Wanting to work with new technologies;Looking to relocate;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Wanting to share accomplishments with a wider network;Better work/life balance;Looking to relocate;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Wanting to share accomplishments with a wider network;Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better compensation;Wanting to work with new technologies;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better compensation;Wanting to work with new technologies;Better work/life balance;Wanting to improve your skills;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better work/life balance;</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Better work/life balance;Better compensation;Curious about other opportunities;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better work/life balance;Better compensation;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better work/life balance;Better compensation;Wanting to work with new technologies;Wanting to improve your skills;Curious about other opportunities;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better work/life balance;Looking to relocate;Better compensation;Curious about other opportunities;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better work/life balance;Wanting to improve your skills;Looking to relocate;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Better work/life balance;Wanting to share accomplishments with a wider network;Curious about other opportunities;Better compensation;Wanting to improve your skills;Wanting to work with new technologies;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;Better compensation;Wanting to share accomplishments with a wider network;</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;Wanting to share accomplishments with a wider network;Curious about other opportunities;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Building Credibility and Connections(Relationships). As well making my skills practical.;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Better compensation;Better work/life balance;</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Better compensation;Better work/life balance;I have a self motivated personality;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Better compensation;Better work/life balance;Looking to relocate;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Better compensation;Better work/life balance;Wanting to improve your skills;</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Better compensation;Better work/life balance;Wanting to work with new technologies;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Better compensation;Better work/life balance;Wanting to work with new technologies;Looking to relocate;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Better compensation;Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">11</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Better compensation;Trouble with leadership at my company;Better work/life balance;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Better compensation;Trouble with leadership at my company;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Better compensation;Trouble with leadership at my company;Wanting to work with new technologies;Looking to relocate;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Better compensation;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Better compensation;Wanting to improve your skills;Looking to relocate;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Better compensation;Wanting to improve your skills;Wanting to work with new technologies;</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Better compensation;Wanting to work with new technologies;Better work/life balance;Wanting to improve your skills;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Better compensation;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Better work/life balance;</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Better work/life balance;Better compensation;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Better work/life balance;Wanting to improve your skills;</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Better work/life balance;Wanting to improve your skills;Better compensation;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;Looking to relocate;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Looking to relocate;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Wanting to improve your skills;</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Wanting to improve your skills;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Wanting to share accomplishments with a wider network;Better compensation;Funds to seed stuffs;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Wanting to share accomplishments with a wider network;Better compensation;Trouble with leadership at my company;Better work/life balance;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Wanting to work with new technologies;</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Wanting to work with new technologies;Looking to relocate;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Wanting to work with new technologies;Looking to relocate;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Wanting to work with new technologies;Wanting to improve your skills;A job i love and how challenging it is;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Curious about other opportunities;Wanting to work with new technologies;Wanting to improve your skills;Better work/life balance;Better compensation;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Curious about other opportunities;Wanting to work with new technologies;Wanting to improve your skills;Better work/life balance;Wanting to share accomplishments with a wider network;Better compensation;Trouble with leadership at my company;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I am focussed on running my business.;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Looking to relocate;Wanting to improve your skills;Better work/life balance;Better compensation;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Looking to relocate;Wanting to improve your skills;Curious about other opportunities;Better compensation;Wanting to share accomplishments with a wider network;Better work/life balance;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">to be in an environment where am challenged beyond my current capabilities;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Trouble with leadership at my company;Better work/life balance;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Trouble with leadership at my company;Better work/life balance;Wanting to work with new technologies;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to improve your skills;</td>
+<td align="right">14</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to improve your skills;Better compensation;Better work/life balance;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to improve your skills;Better compensation;Better work/life balance;Curious about other opportunities;Trouble with leadership at my company;Wanting to work with new technologies;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to improve your skills;Better compensation;Curious about other opportunities;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to improve your skills;Better compensation;Curious about other opportunities;Wanting to work with new technologies;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to improve your skills;Better compensation;Wanting to work with new technologies;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to improve your skills;Better work/life balance;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to improve your skills;Better work/life balance;Better compensation;Looking to relocate;Trouble with leadership at my company;Curious about other opportunities;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to improve your skills;Better work/life balance;Curious about other opportunities;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to improve your skills;Curious about other opportunities;Better work/life balance;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to improve your skills;Curious about other opportunities;Wanting to work with new technologies;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to improve your skills;Curious about other opportunities;Wanting to work with new technologies;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to improve your skills;Looking to relocate;Wanting to work with new technologies;Better work/life balance;Better compensation;Curious about other opportunities;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to improve your skills;Wanting to share accomplishments with a wider network;Better compensation;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to improve your skills;Wanting to share accomplishments with a wider network;Curious about other opportunities;Looking to relocate;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to improve your skills;Wanting to share accomplishments with a wider network;Curious about other opportunities;Wanting to work with new technologies;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to improve your skills;Wanting to work with new technologies;Better compensation;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to improve your skills;Wanting to work with new technologies;Better compensation;Curious about other opportunities;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to improve your skills;Wanting to work with new technologies;Better work/life balance;Better compensation;Curious about other opportunities;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to improve your skills;Wanting to work with new technologies;Better work/life balance;Better compensation;Curious about other opportunities;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to improve your skills;Wanting to work with new technologies;Better work/life balance;Curious about other opportunities;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Better compensation;Better work/life balance;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Better compensation;Better work/life balance;Wanting to work with new technologies;Looking to relocate;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Better compensation;Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Better compensation;Curious about other opportunities;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Better compensation;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Better work/life balance;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;A Fulltime / Stable Employment ;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Better compensation;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Better compensation;Better work/life balance;Wanting to improve your skills;</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Better compensation;Better work/life balance;Wanting to work with new technologies;Looking to relocate;Wanting to improve your skills;</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Better compensation;Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Better compensation;Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;Looking to relocate;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Better compensation;Trouble with leadership at my company;Better work/life balance;Wanting to improve your skills;Wanting to work with new technologies;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Better compensation;Trouble with leadership at my company;Better work/life balance;Wanting to work with new technologies;Looking to relocate;Wanting to improve your skills;</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Better compensation;Trouble with leadership at my company;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Better compensation;Wanting to improve your skills;</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Better compensation;Wanting to work with new technologies;</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Better compensation;Wanting to work with new technologies;Better work/life balance;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Better compensation;Wanting to work with new technologies;Looking to relocate;Wanting to improve your skills;Trouble with leadership at my company;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Better compensation;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Better work/life balance;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Better work/life balance;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Trouble with leadership at my company;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Curious about other opportunities;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Wanting to improve your skills;Better compensation;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Wanting to improve your skills;Better compensation;Better work/life balance;Wanting to work with new technologies;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Wanting to improve your skills;Wanting to work with new technologies;Better compensation;Curious about other opportunities;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Wanting to work with new technologies;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Wanting to work with new technologies;Looking to relocate;Wanting to improve your skills;Better work/life balance;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to share accomplishments with a wider network;Wanting to work with new technologies;Wanting to improve your skills;Better compensation;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to share accomplishments with a wider network;Wanting to work with new technologies;Wanting to improve your skills;Better work/life balance;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to work with new technologies;</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to work with new technologies;Better compensation;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to work with new technologies;Curious about other opportunities;Better compensation;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to work with new technologies;Curious about other opportunities;Wanting to improve your skills;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to work with new technologies;Wanting to improve your skills;</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to work with new technologies;Wanting to improve your skills;Better compensation;Curious about other opportunities;Wanting to share accomplishments with a wider network;Better work/life balance;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to work with new technologies;Wanting to improve your skills;Better compensation;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to work with new technologies;Wanting to improve your skills;Better work/life balance;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to work with new technologies;Wanting to improve your skills;Curious about other opportunities;</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to work with new technologies;Wanting to improve your skills;Curious about other opportunities;Wanting to share accomplishments with a wider network;</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to work with new technologies;Wanting to improve your skills;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to work with new technologies;Wanting to improve your skills;Wanting to share accomplishments with a wider network;Curious about other opportunities;Better work/life balance;Better compensation;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wanting to work with new technologies;Wanting to share accomplishments with a wider network;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Wanting to work with new technologies;Wanting to share accomplishments with a wider network;Curious about other opportunities;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">16</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TODO: separate the options by semicolon and put into wide format (if the option was ticked, it can be coded 1 and if not ticked then 0</strong></p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`When job searching, how do you learn more about a company? Select all that apply.`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="98%" />
+<col width="1%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">When job searching, how do you learn more about a company? Select all that apply.</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Company reviews from third party sites (e.g. Glassdoor, Blind);</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">Company reviews from third party sites (e.g. Glassdoor, Blind);Personal network - friends or family;</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Company reviews from third party sites (e.g. Glassdoor, Blind);Personal network - friends or family;Read company media, such as employees blogs or company culture videos;</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Company reviews from third party sites (e.g. Glassdoor, Blind);Publicly available financial information (e.g. Crunchbase);</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Company reviews from third party sites (e.g. Glassdoor, Blind);Publicly available financial information (e.g. Crunchbase);Personal network - friends or family;Read company media, such as employees blogs or company culture videos;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Company reviews from third party sites (e.g. Glassdoor, Blind);Publicly available financial information (e.g. Crunchbase);Read company media, such as employees blogs or company culture videos;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Company reviews from third party sites (e.g. Glassdoor, Blind);Publicly available financial information (e.g. Crunchbase);Read company media, such as employees blogs or company culture videos;Personal network - friends or family;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Company reviews from third party sites (e.g. Glassdoor, Blind);Read company media, such as employees blogs or company culture videos;</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Company reviews from third party sites (e.g. Glassdoor, Blind);Read company media, such as employees blogs or company culture videos;Personal network - friends or family;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Company reviews from third party sites (e.g. Glassdoor, Blind);Read company media, such as employees blogs or company culture videos;Personal network - friends or family;Publicly available financial information (e.g. Crunchbase);</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Online (Linkedin;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Personal network - friends or family;</td>
+<td align="right">9</td>
+</tr>
+<tr class="odd">
+<td align="left">Personal network - friends or family;Company reviews from third party sites (e.g. Glassdoor, Blind);</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Personal network - friends or family;Company reviews from third party sites (e.g. Glassdoor, Blind);Publicly available financial information (e.g. Crunchbase);Read company media, such as employees blogs or company culture videos;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Personal network - friends or family;Company reviews from third party sites (e.g. Glassdoor, Blind);Read company media, such as employees blogs or company culture videos;</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Personal network - friends or family;linkedin;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Personal network - friends or family;Publicly available financial information (e.g. Crunchbase);</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Personal network - friends or family;Read company media, such as employees blogs or company culture videos;</td>
+<td align="right">14</td>
+</tr>
+<tr class="odd">
+<td align="left">Personal network - friends or family;Read company media, such as employees blogs or company culture videos;Company reviews from third party sites (e.g. Glassdoor, Blind);</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Personal network - friends or family;Read company media, such as employees blogs or company culture videos;Company reviews from third party sites (e.g. Glassdoor, Blind);Publicly available financial information (e.g. Crunchbase);</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Personal network - friends or family;Read company media, such as employees blogs or company culture videos;Personal assessment.. Occasionally going to the company to see how they cooperate with one another ;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Publicly available financial information (e.g. Crunchbase);</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Publicly available financial information (e.g. Crunchbase);Read company media, such as employees blogs or company culture videos;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Publicly available financial information (e.g. Crunchbase);Read company media, such as employees blogs or company culture videos;Company reviews from third party sites (e.g. Glassdoor, Blind);</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Publicly available financial information (e.g. Crunchbase);Read company media, such as employees blogs or company culture videos;Personal network - friends or family;</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Read company media, such as employees blogs or company culture videos;</td>
+<td align="right">41</td>
+</tr>
+<tr class="odd">
+<td align="left">Read company media, such as employees blogs or company culture videos;Company reviews from third party sites (e.g. Glassdoor, Blind);</td>
+<td align="right">31</td>
+</tr>
+<tr class="even">
+<td align="left">Read company media, such as employees blogs or company culture videos;Company reviews from third party sites (e.g. Glassdoor, Blind);Personal network - friends or family;</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Read company media, such as employees blogs or company culture videos;Company reviews from third party sites (e.g. Glassdoor, Blind);Personal network - friends or family;Publicly available financial information (e.g. Crunchbase);</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Read company media, such as employees blogs or company culture videos;Company reviews from third party sites (e.g. Glassdoor, Blind);Publicly available financial information (e.g. Crunchbase);</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">Read company media, such as employees blogs or company culture videos;Company reviews from third party sites (e.g. Glassdoor, Blind);Publicly available financial information (e.g. Crunchbase);Personal network - friends or family;</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Read company media, such as employees blogs or company culture videos;Company website;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Read company media, such as employees blogs or company culture videos;Personal network - friends or family;</td>
+<td align="right">26</td>
+</tr>
+<tr class="even">
+<td align="left">Read company media, such as employees blogs or company culture videos;Personal network - friends or family;Company reviews from third party sites (e.g. Glassdoor, Blind);</td>
+<td align="right">17</td>
+</tr>
+<tr class="odd">
+<td align="left">Read company media, such as employees blogs or company culture videos;Personal network - friends or family;Company reviews from third party sites (e.g. Glassdoor, Blind);Publicly available financial information (e.g. Crunchbase);</td>
+<td align="right">21</td>
+</tr>
+<tr class="even">
+<td align="left">Read company media, such as employees blogs or company culture videos;Personal network - friends or family;Google &amp; their website;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Read company media, such as employees blogs or company culture videos;Personal network - friends or family;Just going there frequently just access their interpersonal relationships with each other ;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Read company media, such as employees blogs or company culture videos;Personal network - friends or family;Publicly available financial information (e.g. Crunchbase);</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">Read company media, such as employees blogs or company culture videos;Personal network - friends or family;Publicly available financial information (e.g. Crunchbase);Company reviews from third party sites (e.g. Glassdoor, Blind);</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Read company media, such as employees blogs or company culture videos;Publicly available financial information (e.g. Crunchbase);</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Read company media, such as employees blogs or company culture videos;Publicly available financial information (e.g. Crunchbase);Company reviews from third party sites (e.g. Glassdoor, Blind);</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Read company media, such as employees blogs or company culture videos;Publicly available financial information (e.g. Crunchbase);Company reviews from third party sites (e.g. Glassdoor, Blind);Personal network - friends or family;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Websites ;</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">24</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TODO: separate the options by semicolon and put into wide format (if the option was ticked, it can be coded 1 and if not ticked then 0</strong></p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Are you a member of any other online/offline developer communities?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Are you a member of any other online/offline developer communities?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">No</td>
+<td align="right">76</td>
+</tr>
+<tr class="even">
+<td align="left">Yes</td>
+<td align="right">185</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">11</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Developer communities you are a member of`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="97%" />
+<col width="2%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Developer communities you are a member of</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">.NET User Group Accra</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">1. Matlab Users and Integrators —LinkedIn</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">2. Python Data Science, Machine Learning and Natural Language Processing —— LinkedIn</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">1) Zero to Mastery</td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<ol start="2" style="list-style-type: decimal">
+<li>Academind</li>
+<li>Python Ghana | 1| |Accra .net | 1| |Aenics, Diversity Tech | 1| |Andela | 1| |Andela Learning Community, DevC, Laravel Developers Ghana | 1| |Arduino developer community Raspberry pi developer community Stack exchange Tensorflow developers | 1| |AWS Accra Meetup Hacklab Foundation | 1| |Azubi Africa Python Ghana | 1| |Code 404 | 1| |CodeHive | 1| |Codewars | 1| |De Congress FB Community Circles | 1| |De Congress, Python Ghana | 1| |Dev Stack overflow Clever programmer | 1| |Dev Congress | 1| |dev Congress js space | 1| |Dev Congress, Facebook Developer Circle | 1| |Dev Congress, Video Game Developers Ghana, Unity User Group GH | 1| |Dev.to devCongress | 1| |Dev.to, hacker rank , github | 1| |Devcongress | 3| |DevCongress | 5| |DevCongress Developer in Vogue Python Ghana Women TechMakers | 1| |DevCongress Facebok Devs Accra | 1| |DevCongress Flutter Ghana | 1| |DevCongress - Slack | 1| |devcongress-community.slack.com | 1| |DevCongress, | 1| |DevCongress, Facebook Developer circles, Google developer groups | 1| |DevCongress, Hacklab , Codnetlab, AIA | 1| |DevCongress, Pyladies | 1| |Developer Circle from Facebook | 1| |Developer Circles from Facebook Developers in Vogue Google Women Techmakers Accra Google Developers Group Accra | 1| |Developer Student Club IoT Network Hub | 1| |Developer Student Club - KNUST Chapter | 1| |Developer Student Clubs - KNUST Creativity Group - KNUST | 1| |Developer Students Clubs, KNUST | 1| |Developers in vogue | 3| |Developers in vogue PyLadies Ghana Facebook developer circles DSG | 1| |Developers in vogue Google developers student club | 1| |DIV, Hacklab, DSC KNUST | 1| |Django, Facebook Circles, Andela Learning Community | 1| |DSC Knust | 1| |DSC University of Ghana. Django girls. | 1| |DSC, IoTNetwork Hub | 1| |DSC, PyLadies | 1| |Everything Javascript, Node Js gh, Vue js, Curious class | 1| |Facebook Accra , GDG Legon , CodeTrain , AVS devs , CWT , BSG | 1| |Facebook Developer Circle GDG | 1| |Facebook Developer Circle accra, Devcongress, Google Developers Group | 1| |Facebook Developer Circles | 1| |Facebook Developer Circles, DevCongress | 1| |Facebook Developer Circles, Google Andela Accra, Google Developers | 1| |Facebook Developer circles, Google Developers Ghana | 1| |Facebook developer community | 2| |Facebook Developer Community, DevCongress on Slack | 1| |FB developer circles, DevCongress, GDG | 1| |Flutter Ghana Andela Learning community Facebook Developers Circle Accra Devcongress Android Community Ghana | 1| |Flutter Ghana, Angular Discord, Knust flutter, Solo learn Ghana, Flutter discord | 1| |Flutter Ghana, Laravel Ghana, Ghana Developers Group, ALC, UI/UX Ghana | 1| |Flutter Ghana, Python Ghana | 1| |Flutter, python | 1| |FreeCodeCamp SoloLearn | 1| |Freecodecamp, stackoverflow, reddit | 1| |GADS | 1| |GADS, React / React Native Communities, Gophers | 1| |Game Developers of Ghana | 1| |GDC | 1| |GDG | 1| |GDG-Kumasi Kumasi Tech Community | 1| |GDG, Hacklab, Kumasi konnect, IOT HUB, Global startup ecosystem | 1| |gdgKumasi, KNUST developer students club | 1| |Geek for Geeks, | 1| |Ghana Developers Network | 1| |Ghana Game Developers | 1| |Ghana ladies in tech Facebook developers circle | 1| |Ghana Python Developer’s Community | 1| |Github | 4| |GitHub | 2| |Github KNUST, | 1| |GitHub, Slack, stack overflow | 1| |GitHub, Stack Overflow, freeCodeCamp, Reddit, Dev.to, Google Developers Groups, HackLab | 1| |Github, StackOverflow | 1| |Google Developers Group, Developer Students Clubs, Facebook Developers Circle, DevCongress, Hacklab | 1| |GOOGLE DEVELOPERS KNUST, FLUTTER GHANA | 1| |Google students developers | 1| |Hacklab | 3| |Hacklab Dev Congress | 1| |Hacklab Foundation iSpace Foundation | 1| |Hacklab Foundation, Ghana Developers | 1| |Hacklab Foundation, PyLadies Ghana, GDG Accra | 1| |Hacklab, Devcongresss and Face Developer Circles | 1| |Hacklab, GDG Accra, Facebook Developer Community, Wikimedia Developers, etc | 1| |Hacklab, GhanaTechLab, Ho node hub, Developer circle, IOT Network hub, | 1| |Hacklab, GhanatTechLab, IOT Network Hub, Flutter Ghana, Js space, Ho Node Hub, | 1| |Hacklab, Laravel Developers Ghana, DevCongress, Google Developers Accra, | 1| |Ho node developers | 1| |HTU Developer Hub | 1| |icrate IT systems | 1| |IOT Network Hub, Ghana Tech Lab, Accra Power platform | 1| |Java Developers on linkedin | 1| |K.B.O. Dev Support Group, BarcampGhana, Ghana Developers | 1| |Kodex World(online whatsapp), Facebook Developers, | 1| |Kumasi Developer Community Mozilla Campus Network | 1| |Laravel | 1| |Laravel Developers Ghana, PHP Loung, PHP Grammers, Flutter Ghana, IOT Network Hub Ghana | 1| |Laravel Developers Ghana, Hacklab Ghana | 1| |Laravel Gh, Node.js | 1| |MEST | 1| |Microsoft User Group | 1| |N/A | 1| |None | 3| |Program-X | 1| |PyGhana | 1| |PyGhana and DevCongress | 1| |Pyladies | 2| |PyLadies | 1| |PyLadies Ghana | 1| |Pyladies Ghana Developers in Vogue Pycon Africa. YAAW | 1| |PyLadies Ghana Python Ghana Developers on Vogue | 1| |Pyladies Ghana, Django girls | 1| |PyLadies Ghana, MUG_GH | 1| |PyLadies Ghana, OpenSource Knowledge, GHTechNerds, | 1| |Pyladies, DIV, Iot, | 1| |PyLadies, PyData | 1| |PyladiyGhana | 1| |Python Africa | 1| |Python cape coast Code coast | 1| |Python Cape coast. | 1| |Python Developers Ghana | 1| |Python Ghana | 1| |Python ghana and devcongress | 1| |Python Ghana, DSC, Women Techmakers, Hacklab | 1| |React Developers | 1| |She Code Africa, Python Ghana, Global Code | 1| |Slack | 1| |Stack Exchange platforms including Stack Overflow, DevPost, etc. | 1| |Stack overflow | 1| |Stack Overflow Github | 1| |Stack Overflow, Microsoft Learn Student Ambassador | 1| |Stackoverflow | 3| |Stackoverflow Spiceworks HackerRank | 1| |Stackoverflow | 1| |StackOverflow, Angular Developers, Real Python | 1| |Stackoverflow, IIPGH dev community, company slack community | 1| |Students Scholar Network | 1| |Unity forums Game dev stack exchange Gamedev.net forums | 1| |NA | 103| <strong>TODO: separate the options by comma and put into wide format (if the option was ticked, it can be coded 1 and if not ticked then 0</strong></li>
+</ol>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`What is your age (in years)? If you prefer not to answer, you may leave this question blank.`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="96%" />
+<col width="3%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">What is your age (in years)? If you prefer not to answer, you may leave this question blank.</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">16</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">17</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">18</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">19</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">20</td>
+<td align="right">16</td>
+</tr>
+<tr class="even">
+<td align="left">20 years</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">21</td>
+<td align="right">15</td>
+</tr>
+<tr class="even">
+<td align="left">21 years</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">22</td>
+<td align="right">19</td>
+</tr>
+<tr class="even">
+<td align="left">23</td>
+<td align="right">11</td>
+</tr>
+<tr class="odd">
+<td align="left">24</td>
+<td align="right">21</td>
+</tr>
+<tr class="even">
+<td align="left">25</td>
+<td align="right">27</td>
+</tr>
+<tr class="odd">
+<td align="left">26</td>
+<td align="right">14</td>
+</tr>
+<tr class="even">
+<td align="left">27</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">28</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">28yrs</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">29</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">31</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">32</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">33</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">35</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">37</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">39</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">48</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">61</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">86</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TODO: recode as integers and delete characters e.g. yrs</strong></p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Which of the following do you currently identify as? Please select all that apply. If you prefer not to answer, you may leave this question blank.`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="97%" />
+<col width="2%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Which of the following do you currently identify as? Please select all that apply. If you prefer not to answer, you may leave this question blank.</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Man</td>
+<td align="right">224</td>
+</tr>
+<tr class="even">
+<td align="left">Woman</td>
+<td align="right">47</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Do you identify as transgender?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Do you identify as transgender?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">No</td>
+<td align="right">253</td>
+</tr>
+<tr class="even">
+<td align="left">Yes</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">18</td>
+</tr>
+</tbody>
+</table>
+<p>only someone is transgender, maybe this is not so important to include in the analysis</p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Which of the following do you currently identify as? Please select all that apply. If you prefer not to answer, you may leave this question blank.2`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="97%" />
+<col width="2%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Which of the following do you currently identify as? Please select all that apply. If you prefer not to answer, you may leave this question blank.2</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Bisexual</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Gay or Lesbian</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Natural</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">None</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Prefer not to say</td>
+<td align="right">16</td>
+</tr>
+<tr class="even">
+<td align="left">Straight / Heterosexual</td>
+<td align="right">215</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">35</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Which of the following do you identify as? Please check all that apply. If you prefer not to answer, you may leave this question blank.`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="97%" />
+<col width="2%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Which of the following do you identify as? Please check all that apply. If you prefer not to answer, you may leave this question blank.</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">African</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Biracial</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Black or of African descent</td>
+<td align="right">253</td>
+</tr>
+<tr class="even">
+<td align="left">I prefer not to answer</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">12</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Which of the following describe you, if any? This information will be kept private. If you prefer not to answer, you may leave this question blank.2`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="97%" />
+<col width="2%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Which of the following describe you, if any? This information will be kept private. If you prefer not to answer, you may leave this question blank.2</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">I have a concentration and/or memory disorder (e.g. ADHD);</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">I have a concentration and/or memory disorder (e.g. ADHD);I have a mood or emotional disorder (e.g. depression, bipolar disorder);I have an anxiety disorder;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I have a mood or emotional disorder (e.g. depression, bipolar disorder);</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">I have a mood or emotional disorder (e.g. depression, bipolar disorder);None of the above;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I have an anxiety disorder;</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">I have an anxiety disorder;OCD;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I prefer not to answer;</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">N/A;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">None of the above;</td>
+<td align="right">197</td>
+</tr>
+<tr class="even">
+<td align="left">None of the above;I sleep a lot;</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">51</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TODO: separate by semicolon</strong></p>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Do you have any dependents (e.g., children, elders, or others) that you care for?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="95%" />
+<col width="4%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Do you have any dependents (e.g., children, elders, or others) that you care for?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">I prefer not to say</td>
+<td align="right">16</td>
+</tr>
+<tr class="even">
+<td align="left">No</td>
+<td align="right">147</td>
+</tr>
+<tr class="odd">
+<td align="left">Yes</td>
+<td align="right">90</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">19</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`How do you feel about the length of this survey?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">How do you feel about the length of this survey?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Appropriate in length</td>
+<td align="right">149</td>
+</tr>
+<tr class="even">
+<td align="left">Too long</td>
+<td align="right">115</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">8</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`How easy or difficult was this survey to complete?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">How easy or difficult was this survey to complete?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Difficult</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">Easy</td>
+<td align="right">126</td>
+</tr>
+<tr class="odd">
+<td align="left">Neither easy nor difficult</td>
+<td align="right">127</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">9</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>raw_data %&gt;% 
+  group_by(`Any final thoughts?`) %&gt;%
+  tally() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="98%" />
+<col width="1%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Any final thoughts?</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">???</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">👊🏾👊🏾</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">All the best to Hacklab. Great team</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Enjoyed it. Open to learn and join your team. Thank you</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Feedback: I couldnt fill this form on mobile cause I couldnt scroll past number 4 for whatever reason. The web is ok thats what I used</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Glad I took this survey</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Good initiative</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Good survey. Will be happy to view and analyze responses.</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Great survey</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Great survey , it will be great if hacklab foundation can assist both upcoming and senior engineers to find jobs either internship , part-time ,and full-time in the corona period .</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Hmm</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Hope to hear from you with opportunities</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I am a professional Graphic Designer and a beginner in web development. I am looking for an opportunity to work as an intern.</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I have a question, will the community have access to the results/report of this survey?</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I hope the developer Community in Ghana grows in numbers and expertise.</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I look forward for your assistance</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I look forward to more networking opportunities from HackLab Foundation. Keep up the great work!</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">I love programming</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">I think tech literacy among the youth in this country is very low and the logistics and resources which should be in place to facilitate easy learning of various technologies are not enough</td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<p>I am learning technology the hard way mostly by self-learning My wish is that, in some years to come, every Ghanaian child should learn to code and play around with technology | 1| |I think this survey is a good thing and keep it up. | 1| |I think this survey platform,is difficult to navigate especially on safari iphone. Almost stopped filling. Continued anyway out of goodwill. | 1| |I think this survey was good | 1| |I was expecting more dev community questions based | 1| |I will be glad if recommendations based on the reviews can be shared to help improve the developer community in Ghana | 1| |I will like to take part in your Hackathons and i wish if you hard other programs to teach new skills aside the Hackathons. Thank you | 1| |I will suggest the Survey should be conducted most often | 1| |I would be glad if I am offered an opportunity to learn and become a full stack developer (if a mentor it’s also fine) I’m a computer science student level 200 at the moment and I would like to learn more technologies and up skill to become the better version of my self. :) | 1| |I’d like to move to a country outside africa. Hihi | 1| |I’m not very clear on the subject matter or overall purpose of this survey so I can’t gather any conclusive thoughts | 1| |If there are any opportunities u can offer I’d be grateful | 1| |Interessing survey tho | 1| |It was a great survey …..Hope my answers would be of immense help | 1| |Just happy that, as an african country we’re upgrading tech-wise | 1| |Keep up | 1| |Looking forward to hearing from you for internship, attachments or job opportunities | 1| |Looking forward to the findings from this survey. | 1| |Looking forward to working with Hacklab Foundation | 1| |Make me the winner. I only took because of the cash prize | 1| |Most of my answers do not make me out as much of a developer but I am really eager to learn | 1| |N/A | 1| |Next button doesn’t take you to top of the next page but rather the bottom of it. Clicking on a blank space sometimes opened ads | 1| |Nice Survey | 1| |No | 1| |No comments | 1| |No please | 2| |No, but this survey was great. I kinda made me feel i have a lot to go for. Thank you for this survey. | 1| |No. | 1| |None | 2| |Nope | 1| |Not really. | 1| |Please be honest in your survey estimation time | 1| |Survey was moderate. But some people say you can’t learn multiple programming languages but I personally think it’s possible and necessary. That is my debate often with my colleagues in class. | 1| |Thank you | 1| |Thank you for this survey | 1| |Thanks :-). Great initiative! | 1| |Thanks for having the welfare of developers at heaet. | 1| |There was no option for no interest in learning/working with a technology | 1| |This is a very good initiative to map out developer community in Ghana. | 1| |We are fast approaching a more advanced world, the earlier you learn how to code, the better, regardless of your educational background, everyone can learn how to code. | 1| |Well designed questions, long though | 1| |Would like to have an improved skill and field to have practicalexperience | 1| |Yo, we good [;&gt;) | 1| |NA | 208|</p>
+<p>__ TODO IN GENERAL for Data Cleaning</p>
 </div>
 
 

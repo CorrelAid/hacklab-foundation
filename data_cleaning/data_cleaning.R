@@ -3,17 +3,19 @@ library(janitor)
 library(tidyr)
 library(knitr)
 library(dplyr)
+library(dbplyr)
+library(tmaptools)
 
 raw_data <- import("~/CorrelAid/hacklab-foundation/data/raw/census-base-anonymized-2020.xlsx")
-cleaned_data <- clean_names(raw_data)
+raw_data <- clean_names(raw_data)
 
-#Removing names, mails and times
-head(cleaned_data)
-cleaned_data <- cleaned_data[-c(2:5)]
-colnames(cleaned_data)
+#Removing names and mails
+head(raw_data)
+raw_data <- raw_data[-c(4:5)]
+colnames(raw_data)
 
 #separate dataframe for tools 
-skills <- cbind(cleaned_data$id, cleaned_data[,9:62])
+skills <- cbind(raw_data$id, raw_data[,11:64])
 head(skills)
 colnames(skills)[1] <- "id"
 colnames(skills)
@@ -24,51 +26,107 @@ head(skills)
 #maybe we should replace n/a by 0?
 
 
-#Cleaning the individual answers
-
-#Creating a dataframe without the individual skills 
-data_questions <- cbind(cleaned_data[1:8], cleaned_data[63:94])
+#Creating a dataframe without the skills 
+data_questions <- cbind(raw_data[1:10], raw_data[65:96])
 colnames(data_questions)
 #Changing the column names
-colnames(data_questions)[2:40] <- c("developer", "hobby", "employment", "region", "city", "age_range", 
+colnames(data_questions)[4:42] <- c("developer", "hobby", "employment", "region", "city", "age_range", 
                           "learning", "new_tools", "operating_system", "operating_system_2", 
                           "influence", "discovery", "education", "study", "importance_ed", 
                           "change_ed", "job_sat", "orga_size", "work_hours", "overtime", 
-                          "on-boarding", "improve_on-boarding", "salary", "seeking", "jobsearch", 
+                          "on-boarding", "improve_on-boarding", "salary", "job_seeking", "jobsearch", 
                           "info_sources", "communities_1", "communities_2", "age", "gender", 
-                          "trans", "sexuality", "descent", "disability", "psychiatric_disorder", 
+                          "trans", "sexuality", "ethnicity", "disability", "psychiatric_disorder", 
                           "care", "length", "difficulty", "comments")
 colnames(data_questions)
 
+#Extracting the columns I will clean
+cleaned_data <- data_questions[1:9]
+
+#Times
+#Creating a column including the completion time
+cleaned_data$time_s <- cleaned_data$completion_time - cleaned_data$start_time
+cleaned_data$time_m <- cleaned_data$time_s/60
+
+head(cleaned_data)
+
+#Developer
+cleaned_data %>% 
+  group_by(developer) %>%
+  tally() %>%
+  kable()
+
+#some cleaning needed (forming clear categories)
+
 #Employment
-data_questions %>% 
+cleaned_data$employment <- tolower(cleaned_data$employment)
+
+cleaned_data %>% 
   group_by(employment) %>%
   tally() %>%
   kable()
 
-data_questions$employment[startsWith(data_questions$employment, "Both")] <- "Student and working"
-data_questions$employment[startsWith(data_questions$employment, "National")] <- "National Service"
-data_questions$employment[startsWith(data_questions$employment, "I run")] <- "Independent contractor, freelancer, or self-employed"
+#Some cleaning in a new row 
+cleaned_data$employment_cleaned <- cleaned_data$employment
+
+cleaned_data$employment_cleaned[grep("student", cleaned_data$employment_cleaned)] <- "student"
+cleaned_data$employment_cleaned[startsWith(cleaned_data$employment_cleaned, "national")] <- "national service"
+cleaned_data$employment_cleaned[startsWith(cleaned_data$employment_cleaned, "i run")] <- "independent contractor, freelancer, or self-employed"
+
+cleaned_data %>% 
+  group_by(employment_cleaned) %>%
+  tally() %>%
+  kable()
+
+#Question: Transferring "I prefer not to say" to n/a?
 
 #City
-data_questions %>% 
+cleaned_data %>% 
   group_by(tolower(city)) %>%
   tally() %>%
   kable()
 
 
-data_questions$city[grep("accra", tolower(data_questions$city))] <- "accra"
-data_questions$city[grep("ablekuma", tolower(data_questions$city))] <- "ablekuma"
-data_questions$city[startsWith(tolower(data_questions$city), "adenta")] <- "adenta"
-data_questions$city[startsWith(tolower(data_questions$city), "awoshie")] <- "awoshie"
-data_questions$city[startsWith(tolower(data_questions$city), "kasoa")] <- "kasoa"
-data_questions$city[grep("tema", tolower(data_questions$city))] <- "tema"
-data_questions$city[startsWith(tolower(data_questions$city), "teshie")] <- "teshie"
+cleaned_data$city[grep("accra", tolower(cleaned_data$city))] <- "accra"
+cleaned_data$city[grep("ablekuma", tolower(cleaned_data$city))] <- "ablekuma"
+cleaned_data$city[startsWith(tolower(cleaned_data$city), "adenta")] <- "adenta"
+cleaned_data$city[startsWith(tolower(cleaned_data$city), "awoshie")] <- "awoshie"
+cleaned_data$city[startsWith(tolower(cleaned_data$city), "kasoa")] <- "kasoa"
+cleaned_data$city[grep("tema", tolower(cleaned_data$city))] <- "tema"
+cleaned_data$city[startsWith(tolower(cleaned_data$city), "teshie")] <- "teshie"
 
-data_questions %>% 
+cleaned_data %>% 
   group_by(tolower(city)) %>%
   tally() %>%
   kable()
+
+#Geocoding the cities
+geocode_OSM("Ghana")
+
+cleaned_data$city_geo <- geocode_OSM(cleaned_data$city, as.sf = FALSE, keep.unfound = TRUE)
+#No results: 
+#Kutunse = kuntunse? 
+#Awomaso 
+#Tema-Afariwaa
+#Outside Ghana = exclude
+#Adenta municipality = District of Accra
+#Pigfarm = exclude
+#Kasoa - Peace town = Kasoa?
+#Mamprobi - Banana Inn = mamprobi? 
+#La = exclude
+#Ajiringanor = district of Madina
+#Tema, Prampram = seem to be two cities
+#Mampong Akuapem = Maybe Mampong is the city? 
+#Larterbiokorshie = District of Accra? 
+
+cleaned_data$city[cleaned_data$city == "kutunse"] <- "kuntunse"
+cleaned_data$city[cleaned_data$city == "Adenta municipality"] <- "accra"
+cleaned_data$city[cleaned_data$city == "Larterbiokorshie"] <- "accra"
+cleaned_data$city[cleaned_data$city == "Kasoa - Peace town"] <- "kasoa"
+cleaned_data$city[cleaned_data$city == "Mamprobi - Banana Inn"] <- "mamprobi"
+cleaned_data$city[cleaned_data$city == "Ajiringanor"] <- "Madina"
+
+cleaned_data$city_geo <- geocode_OSM(cleaned_data$city, as.sf = FALSE, keep.unfound = TRUE)
 
 
 
