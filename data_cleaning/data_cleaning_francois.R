@@ -6,6 +6,7 @@
 #   Developer communities you are a member of
 # (included)
 
+
 library(tidyverse)
 
 
@@ -69,12 +70,11 @@ cleaning_data <- cleaning_data %>%
     which_dev_community_33 = str_replace_all(which_dev_community_33, " ,", ";"),
     which_dev_community_33 = str_replace_all(which_dev_community_33, ", ", ";"),
     which_dev_community_33 = str_replace_all(which_dev_community_33, ",", ";"),
-    # which_dev_community_33 = str_replace_all(which_dev_community_33, "[:digit:]\)", ";"), # need \ before ) because 
-    # which_dev_community_33 = str_replace_all(which_dev_community_33, "2)", ";"),
-    # which_dev_community_33 = str_replace_all(which_dev_community_33, "3)", ";"),
+    which_dev_community_33 = str_replace_all(which_dev_community_33, "[:digit:]\\)", ";"), # need \\ before )
     which_dev_community_33 = str_replace_all(which_dev_community_33, "[:digit:].", ";"),
-    # which_dev_community_33 = str_replace_all(which_dev_community_33, "2.", ";"),
+    which_dev_community_33 = str_replace_all(which_dev_community_33, " and ", ";"),
     
+
     which_dev_community_33 = case_when(
       which_dev_community_33 == "N/A" ~ NA_character_, # else, throw an error. all the values need to be of the same type: char (and not logical)
       TRUE ~ which_dev_community_33
@@ -84,7 +84,7 @@ cleaning_data <- cleaning_data %>%
     #     -> 0. convert a maximum of delimiters to ; (done above)
     #     -> 1. select ID and which_dev_community_33, split by ";", pivot to long format
     #     -> 2. clean
-    #     -> 3. left_join back to main tibble
+    #     -> 3. unite and left_join back to main tibble
   )
 
 cleaning_q33 <- cleaning_data %>% 
@@ -97,10 +97,12 @@ cleaning_q33 <- cleaning_data %>%
 
 # OK, ready to group the organizations!
 cleaning_q33 %>% count(which_dev_community_33) %>% arrange(-n) %>% View()
-cleaned_q33 %>% count(which_dev_community_33) %>% arrange(-n) %>% View()
 
 # Notes:
 #   GDG = Google Developer Groups GDG Accra
+#   AIA = https://aiagh.net/ Artificial Intelligence Association of Ghana
+#   ALC = The Andela Learning Community (ALC) is a network of technologists and tech enthusiasts across Africa dedicated to learning how to use technology to solve humanity’s problems. 
+#   KNUST = Kwame Nkrumah University of Science and Technology (KNUST) is a university in Kumasi, Ashanti, Ghana
 
 cleaned_q33 <- cleaning_q33 %>%
   mutate(
@@ -108,12 +110,23 @@ cleaned_q33 <- cleaning_q33 %>%
       which_dev_community_33 == "Devcongress" ~ "DevCongress",
       which_dev_community_33 == "De Congress" ~ "DevCongress",
       which_dev_community_33 == "Dev Congress" ~ "DevCongress",
+      which_dev_community_33 == "Dev" ~ "DevCongress", # assumption.
+      which_dev_community_33 == "dev Congress" ~ "DevCongress",
+      which_dev_community_33 == "DevC" ~ "DevCongress",
+      which_dev_community_33 == "devcongress" ~ "DevCongress",
+      which_dev_community_33 == "devCongress" ~ "DevCongress",
+      which_dev_community_33 == "DevCongress - Slack" ~ "DevCongress",
+      which_dev_community_33 == "DevCongress on Slack" ~ "DevCongress",
+      which_dev_community_33 == "devcongress-community.slack.com" ~ "DevCongress",
+      which_dev_community_33 == "Devcongresss" ~ "DevCongress",
       
       which_dev_community_33 == "Github" ~ "GitHub",
-      
+      which_dev_community_33 == "github" ~ "GitHub",
+
       which_dev_community_33 == "Pyladies" ~ "PyLadies Ghana",
       which_dev_community_33 == "PyLadies" ~ "PyLadies Ghana",
-      which_dev_community_33 == "Pyladies Ghana" ~ "Pyladies Ghana",
+      which_dev_community_33 == "Pyladies Ghana" ~ "PyLadies Ghana",
+      which_dev_community_33 == "PyladiyGhana" ~ "PyLadies Ghana",
       
       which_dev_community_33 == "Stackoverflow" ~ "Stack Overflow",
       which_dev_community_33 == "StackOverflow" ~ "Stack Overflow",
@@ -122,30 +135,68 @@ cleaned_q33 <- cleaning_q33 %>%
       which_dev_community_33 == "Facebook Developer Circles" ~ "Facebook Developer Circle",
       which_dev_community_33 == "Facebook developer community" ~ "Facebook Developer Circle", # appears to be the same
       which_dev_community_33 == "Facebook Developer Community" ~ "Facebook Developer Circle", # appears to be the same
+      which_dev_community_33 == "Facebook Developer circles" ~ "Facebook Developer Circle",
+      which_dev_community_33 == "Developer circle" ~ "Facebook Developer Circle",
+      which_dev_community_33 == "Developer Circle  from Facebook" ~ "Facebook Developer Circle",
+      which_dev_community_33 == "Face Developer Circles" ~ "Facebook Developer Circle",
+      which_dev_community_33 == "Facebok Devs Accra" ~ "Facebook Developer Circle",
+      which_dev_community_33 == "Facebook Accra" ~ "Facebook Developer Circle",
+      which_dev_community_33 == "Facebook Circles" ~ "Facebook Developer Circle",
+      which_dev_community_33 == "Facebook Developer Circle accra" ~ "Facebook Developer Circle",
+      which_dev_community_33 == "Facebook developer circles" ~ "Facebook Developer Circle",
+      which_dev_community_33 == "Facebook Developers" ~ "Facebook Developer Circle",
+      which_dev_community_33 == "Facebook developers circle" ~ "Facebook Developer Circle",
+      which_dev_community_33 == "Facebook Developers Circle" ~ "Facebook Developer Circle",
+      which_dev_community_33 == "Facebook Developers Circle Accra" ~ "Facebook Developer Circle",
+      which_dev_community_33 == "FB Community Circles" ~ "Facebook Developer Circle",
+      which_dev_community_33 == "FB developer circles" ~ "Facebook Developer Circle",
+      which_dev_community_33 == "Developer Circles from Facebook" ~ "Facebook Developer Circle",
       
-      which_dev_community_33 = "GDG Accra" ~ "Google Developer Group", # i think it is safe to group them all, the one in Accra seems to be the only one and most of the respondent live near Accra anyway.
-      which_dev_community_33 = "GDG" ~ "Google Developer Group",
-      which_dev_community_33 = "Google Developers Group" ~ "Google Developer Group", 
+      which_dev_community_33 == "GDG Accra" ~ "Google Developer Group", # i think it is safe to group them all, the one in Accra seems to be the only one and most of the respondent live near Accra anyway.
+      which_dev_community_33 == "GDG" ~ "Google Developer Group",
+      which_dev_community_33 == "Google Developers Group" ~ "Google Developer Group", 
       
-      which_dev_community_33 = "Developers in vogue" ~ "Developers in Vogue",
-      which_dev_community_33 = "DIV" ~ "Developers in Vogue",
-
-      which_dev_community_33 = ".NET User Group Accra" ~ "Accra .NET User Group",
-      which_dev_community_33 = "Accra .net" ~ "Accra .NET User Group",
+      which_dev_community_33 == "Developers in vogue" ~ "Developers in Vogue",
+      which_dev_community_33 == "DIV" ~ "Developers in Vogue",
+      which_dev_community_33 == "Developer in Vogue" ~ "Developers in Vogue",
+      which_dev_community_33 == "Developers on Vogue" ~ "Developers in Vogue",
       
+      which_dev_community_33 == ".NET User Group Accra" ~ "Accra .NET User Group",
+      which_dev_community_33 == "Accra .net" ~ "Accra .NET User Group",
       
+      which_dev_community_33 == "ALC" ~ "Andela Learning Community",
+      which_dev_community_33 == "Andela Learning community" ~ "Andela Learning Community",
+      which_dev_community_33 == "Andela" ~ "Andela Learning Community",
+      
+      which_dev_community_33 == "Developer Student Club - KNUST Chapter" ~ "Developer Student Club - KNUST",
+      which_dev_community_33 == "Developer Student Clubs - KNUST" ~ "Developer Student Club - KNUST",
+      which_dev_community_33 == "DSC Knust" ~ "Developer Student Club - KNUST",
+      which_dev_community_33 == "DSC KNUST" ~ "Developer Student Club - KNUST",
+      
+      which_dev_community_33 == "DSC University of Ghana" ~ "Developer Student Club - University of Ghana",
+      
+      which_dev_community_33 == "Django girls" ~ "Django Girls",
+      which_dev_community_33 == "Django girls." ~ "Django Girls",
+      which_dev_community_33 == "Django" ~ "Django Girls", # assumption, could not find other django meetups
+      
+      which_dev_community_33 == "Flutter" ~ "Flutter Ghana",
+      which_dev_community_33 == "Flutter discord" ~ "Flutter Ghana",
+      which_dev_community_33 == "FLUTTER GHANA" ~ "Flutter Ghana",
+      
+      which_dev_community_33 == "Freecodecamp" ~ "freeCodeCamp",
+      which_dev_community_33 == "FreeCodeCamp" ~ "freeCodeCamp",
       
       which_dev_community_33 == "None" ~ NA_character_,
+      which_dev_community_33 == "etc" ~ NA_character_,
+      which_dev_community_33 == "etc." ~ NA_character_,
       which_dev_community_33 == "4" ~ NA_character_,
       TRUE ~ which_dev_community_33
     )
   )
 
+cleaned_q33 %>% count(which_dev_community_33) %>% arrange(-n) %>% View()
 
-
-
-
-
+# ==> cleaning is not finished yet ! 
 
 
 
