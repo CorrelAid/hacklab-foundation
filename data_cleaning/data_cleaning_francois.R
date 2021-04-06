@@ -104,7 +104,7 @@ cleaning_q33 <- cleaning_data %>%
 #   ALC = The Andela Learning Community (ALC) is a network of technologists and tech enthusiasts across Africa dedicated to learning how to use technology to solve humanity’s problems. 
 #   KNUST = Kwame Nkrumah University of Science and Technology (KNUST) is a university in Kumasi, Ashanti, Ghana
 
-cleaned_q33 <- cleaning_q33 %>%
+cleaning_q33 <- cleaning_q33 %>%
   mutate(
     which_dev_community_33 = case_when(
       which_dev_community_33 == "Devcongress" ~ "DevCongress",
@@ -268,7 +268,7 @@ cleaned_q33 <- cleaning_q33 %>%
 # to check:
 # cleaned_q33 %>% count(which_dev_community_33) %>% arrange(-n) %>% View()
 
-cleaned_q33 <- cleaned_q33 %>% drop_na() %>% group_by(ID) %>% 
+cleaned_q33 <- cleaning_q33 %>% drop_na() %>% group_by(ID) %>% 
   summarise(which_dev_community_33 = paste0(which_dev_community_33, collapse =";"))
 
 # join the cleaned_q33 back to the main tibble:
@@ -282,7 +282,7 @@ rio::export(cleaned_data, "../data/clean/clean_Q24-Q33.rds")
 
 # just for the fun, trying a wordcloud:
 library(wordcloud) 
-data_for_wordcloud <- cleaned_q33 %>% count(which_dev_community_33)
+data_for_wordcloud <- cleaning_q33 %>% count(which_dev_community_33)
 wordcloud(words = data_for_wordcloud$which_dev_community_33, freq = data_for_wordcloud$n, min.freq = 1,
           max.words=100, random.order=TRUE, rot.per=0, scale=c(3,0.2),
           colors=c("#610b70","#88b101","#eb1c96","#e98403","#454545"))
