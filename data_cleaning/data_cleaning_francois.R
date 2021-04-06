@@ -123,7 +123,7 @@ cleaned_q33 <- cleaning_q33 %>%
       which_dev_community_33 == "Github" ~ "GitHub",
       which_dev_community_33 == "github" ~ "GitHub",
 
-      which_dev_community_33 == "Pyladies" ~ "PyLadies Ghana",
+      which_dev_community_33 == "Pyladies" ~ "PyLadies Ghana", # actually part of Python Ghana, but left separate because large group
       which_dev_community_33 == "PyLadies" ~ "PyLadies Ghana",
       which_dev_community_33 == "Pyladies Ghana" ~ "PyLadies Ghana",
       which_dev_community_33 == "PyladiyGhana" ~ "PyLadies Ghana",
@@ -239,6 +239,13 @@ cleaned_q33 <- cleaning_q33 %>%
       
       which_dev_community_33 == "Python cape coast" ~ "Python Cape Coast",
       which_dev_community_33 == "Python Cape coast." ~ "Python Cape Coast",
+      
+      which_dev_community_33 == "Python ghana" ~ "Python Ghana",
+      which_dev_community_33 == "Python Developers Ghana" ~ "Python Ghana",
+      which_dev_community_33 == "python" ~ "Python Ghana",
+      which_dev_community_33 == "Ghana Python Developer’s Community" ~ "Python Ghana",
+      which_dev_community_33 == "PyGhana" ~ "Python Ghana",
+      which_dev_community_33 == "PyData" ~ "Python Ghana", # this is part of Python Ghana https://www.pythonghana.org/home
 
       which_dev_community_33 == "reddit" ~ "Reddit",
       
@@ -248,8 +255,8 @@ cleaned_q33 <- cleaning_q33 %>%
       which_dev_community_33 == "Stack Exchange platforms including Stack Overflow" ~ "Stack Exchange",
       which_dev_community_33 == "Solo learn Ghana" ~ "SoloLearn",
       
-      which_dev_community_33 == "Women Techmakers" ~ "Women Techmakers",
-      
+      which_dev_community_33 == "Women Techmakers" ~ "Women TechMakers",
+
       which_dev_community_33 == "None" ~ NA_character_, # else, throw an error. all the values need to be of the same type: char (and not logical)
       which_dev_community_33 == "etc" ~ NA_character_,
       which_dev_community_33 == "etc." ~ NA_character_,
@@ -258,17 +265,26 @@ cleaned_q33 <- cleaning_q33 %>%
     )
   )
 
-cleaned_q33 %>% count(which_dev_community_33) %>% arrange(-n) %>% View()
+# to check:
+# cleaned_q33 %>% count(which_dev_community_33) %>% arrange(-n) %>% View()
 
-# ==> cleaning is almost finished... need to check once more
+cleaned_q33 <- cleaned_q33 %>% drop_na() %>% group_by(ID) %>% 
+  summarise(which_dev_community_33 = paste0(which_dev_community_33, collapse =";"))
 
-#TODO: check Q33, unite and save data.
+# join the cleaned_q33 back to the main tibble:
+cleaned_data <- cleaning_data %>%
+  select(-which_dev_community_33) %>% # I decide to not keep the original data, as I did not do radical transformative grouping.
+  left_join(cleaned_q33, by = "ID")
+
+# export the cleaned data;
+rio::export(cleaned_data, "../data/clean/clean_Q24-Q33.csv")
+rio::export(cleaned_data, "../data/clean/clean_Q24-Q33.rds")
 
 # just for the fun, trying a wordcloud:
 library(wordcloud) 
 data_for_wordcloud <- cleaned_q33 %>% count(which_dev_community_33)
 wordcloud(words = data_for_wordcloud$which_dev_community_33, freq = data_for_wordcloud$n, min.freq = 1,
-          max.words=100, random.order=TRUE, rot.per=0.35,
+          max.words=100, random.order=TRUE, rot.per=0, scale=c(3,0.2),
           colors=c("#610b70","#88b101","#eb1c96","#e98403","#454545"))
 
 
