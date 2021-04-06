@@ -186,7 +186,7 @@ cleaned_q33 <- cleaning_q33 %>%
       which_dev_community_33 == "Freecodecamp" ~ "freeCodeCamp",
       which_dev_community_33 == "FreeCodeCamp" ~ "freeCodeCamp",
       
-      which_dev_community_33 == "None" ~ NA_character_,
+      which_dev_community_33 == "None" ~ NA_character_, # else, throw an error. all the values need to be of the same type: char (and not logical)
       which_dev_community_33 == "etc" ~ NA_character_,
       which_dev_community_33 == "etc." ~ NA_character_,
       which_dev_community_33 == "4" ~ NA_character_,
