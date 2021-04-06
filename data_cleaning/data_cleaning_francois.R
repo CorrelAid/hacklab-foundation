@@ -96,7 +96,7 @@ cleaning_q33 <- cleaning_data %>%
 
 
 # OK, ready to group the organizations!
-cleaning_q33 %>% count(which_dev_community_33) %>% arrange(-n) %>% View()
+# cleaning_q33 %>% count(which_dev_community_33) %>% arrange(-n) %>% View()
 
 # Notes:
 #   GDG = Google Developer Groups GDG Accra
@@ -131,6 +131,8 @@ cleaned_q33 <- cleaning_q33 %>%
       which_dev_community_33 == "Stackoverflow" ~ "Stack Overflow",
       which_dev_community_33 == "StackOverflow" ~ "Stack Overflow",
       which_dev_community_33 == "Stack overflow" ~ "Stack Overflow",
+      which_dev_community_33 == "stack overflow" ~ "Stack Overflow",
+      which_dev_community_33 == "stackoverflow" ~ "Stack Overflow",
       
       which_dev_community_33 == "Facebook Developer Circles" ~ "Facebook Developer Circle",
       which_dev_community_33 == "Facebook developer community" ~ "Facebook Developer Circle", # appears to be the same
@@ -154,8 +156,21 @@ cleaned_q33 <- cleaning_q33 %>%
       
       which_dev_community_33 == "GDG Accra" ~ "Google Developer Group", # i think it is safe to group them all, the one in Accra seems to be the only one and most of the respondent live near Accra anyway.
       which_dev_community_33 == "GDG" ~ "Google Developer Group",
-      which_dev_community_33 == "Google Developers Group" ~ "Google Developer Group", 
+      which_dev_community_33 == "GDG-Kumasi" ~ "Google Developer Group", 
+      which_dev_community_33 == "GDG Legon" ~ "Google Developer Group", 
+      which_dev_community_33 == "gdgKumasi" ~ "Google Developer Group", 
+      which_dev_community_33 == "Google developer groups" ~ "Google Developer Group", 
+      which_dev_community_33 == "Google Developers" ~ "Google Developer Group", 
+      which_dev_community_33 == "Google Developers Accra" ~ "Google Developer Group", 
+      which_dev_community_33 == "Google Developers Ghana" ~ "Google Developer Group", 
+      which_dev_community_33 == "Google Developers Group Accra" ~ "Google Developer Group", 
+      which_dev_community_33 == "Google Developers Groups" ~ "Google Developer Group", 
+      # --- !!! NOT SURE IF GROUPING ALL GDGs IS GOOD IDEA, CHECK WITH HAMZAH !!!
       
+      which_dev_community_33 == "GOOGLE DEVELOPERS KNUST" ~ "Google Developer Student Club", 
+      which_dev_community_33 == "Google developers student club" ~ "Google Developer Student Club", 
+      which_dev_community_33 == "Google students developers" ~ "Google Developer Student Club", 
+
       which_dev_community_33 == "Developers in vogue" ~ "Developers in Vogue",
       which_dev_community_33 == "DIV" ~ "Developers in Vogue",
       which_dev_community_33 == "Developer in Vogue" ~ "Developers in Vogue",
@@ -172,8 +187,13 @@ cleaned_q33 <- cleaning_q33 %>%
       which_dev_community_33 == "Developer Student Clubs - KNUST" ~ "Developer Student Club - KNUST",
       which_dev_community_33 == "DSC Knust" ~ "Developer Student Club - KNUST",
       which_dev_community_33 == "DSC KNUST" ~ "Developer Student Club - KNUST",
-      
+      which_dev_community_33 == "KNUST developer students club" ~ "Developer Student Club - KNUST",
+      which_dev_community_33 == "KNUST" ~ "Developer Student Club - KNUST",
+
       which_dev_community_33 == "DSC University of Ghana" ~ "Developer Student Club - University of Ghana",
+      which_dev_community_33 == "DSC University of Ghana." ~ "Developer Student Club - University of Ghana",
+      which_dev_community_33 == "DSC" ~ "Developer Student Club",
+      which_dev_community_33 == "Developer Students Clubs" ~ "Developer Student Club",
       
       which_dev_community_33 == "Django girls" ~ "Django Girls",
       which_dev_community_33 == "Django girls." ~ "Django Girls",
@@ -186,6 +206,50 @@ cleaned_q33 <- cleaning_q33 %>%
       which_dev_community_33 == "Freecodecamp" ~ "freeCodeCamp",
       which_dev_community_33 == "FreeCodeCamp" ~ "freeCodeCamp",
       
+      which_dev_community_33 == "Ghana Game Developers" ~ "Ghana Game Developers",
+      which_dev_community_33 == "Game Developers of Ghana" ~ "freeCodeCamp",
+      
+      which_dev_community_33 == "GhanaTechLab" ~ "Ghana Tech Lab",
+      which_dev_community_33 == "GhanatTechLab" ~ "Ghana Tech Lab",
+      
+      which_dev_community_33 == "hacker rank" ~ "HackerRank",
+      
+      which_dev_community_33 == "HackLab" ~ "Hacklab Foundation",
+      which_dev_community_33 == "Hacklab Ghana" ~ "Hacklab Foundation",
+      which_dev_community_33 == "Hacklab" ~ "Hacklab Foundation",
+      
+      which_dev_community_33 == "Ho node developers" ~ "Ho Node Hub",
+      which_dev_community_33 == "Ho node hub" ~ "Ho Node Hub",
+      which_dev_community_33 == "Ho Node Hub" ~ "Ho Node Hub",
+      
+      which_dev_community_33 == "Iot" ~ "IoT Network Hub",
+      which_dev_community_33 == "IOT HUB" ~ "IoT Network Hub",
+      which_dev_community_33 == "IoT Network Hub" ~ "IoT Network Hub",
+      which_dev_community_33 == "IOT Network hub" ~ "IoT Network Hub",
+      which_dev_community_33 == "IOT Network Hub Ghana" ~ "IoT Network Hub",
+      which_dev_community_33 == "IoTNetwork Hub" ~ "IoT Network Hub",
+      
+      which_dev_community_33 == "Js space" ~ "js space",
+      
+      which_dev_community_33 == "Laravel" ~ "Laravel Developers Ghana",
+      which_dev_community_33 == "Laravel Gh" ~ "Laravel Developers Ghana",
+      which_dev_community_33 == "Laravel Ghana" ~ "Laravel Developers Ghana",
+      
+      which_dev_community_33 == "Node Js gh" ~ "Node.js",
+      
+      which_dev_community_33 == "Python cape coast" ~ "Python Cape Coast",
+      which_dev_community_33 == "Python Cape coast." ~ "Python Cape Coast",
+
+      which_dev_community_33 == "reddit" ~ "Reddit",
+      
+      which_dev_community_33 == "Solo learn Ghana" ~ "SoloLearn",
+      
+      which_dev_community_33 == "Stack exchange" ~ "Stack Exchange",
+      which_dev_community_33 == "Stack Exchange platforms including Stack Overflow" ~ "Stack Exchange",
+      which_dev_community_33 == "Solo learn Ghana" ~ "SoloLearn",
+      
+      which_dev_community_33 == "Women Techmakers" ~ "Women Techmakers",
+      
       which_dev_community_33 == "None" ~ NA_character_, # else, throw an error. all the values need to be of the same type: char (and not logical)
       which_dev_community_33 == "etc" ~ NA_character_,
       which_dev_community_33 == "etc." ~ NA_character_,
@@ -196,8 +260,15 @@ cleaned_q33 <- cleaning_q33 %>%
 
 cleaned_q33 %>% count(which_dev_community_33) %>% arrange(-n) %>% View()
 
-# ==> cleaning is not finished yet ! 
+# ==> cleaning is almost finished... need to check once more
 
+#TODO: check Q33, unite and save data.
 
+# just for the fun, trying a wordcloud:
+library(wordcloud) 
+data_for_wordcloud <- cleaned_q33 %>% count(which_dev_community_33)
+wordcloud(words = data_for_wordcloud$which_dev_community_33, freq = data_for_wordcloud$n, min.freq = 1,
+          max.words=100, random.order=TRUE, rot.per=0.35,
+          colors=c("#610b70","#88b101","#eb1c96","#e98403","#454545"))
 
 
