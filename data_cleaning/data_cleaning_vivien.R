@@ -8,6 +8,8 @@ library(tmaptools)
 library(tmap)
 
 raw_data <- import("~/CorrelAid/hacklab-foundation/data/raw/census-base-anonymized-2020.xlsx")
+
+####General preprocessing ----
 raw_data <- clean_names(raw_data)
 
 #Removing names and mails
@@ -30,100 +32,141 @@ head(skills)
 #Creating a dataframe without the skills 
 data_questions <- cbind(raw_data[1:10], raw_data[65:96])
 colnames(data_questions)
-#Changing the column names
-##Adapt to Francois 
-colnames(data_questions)[4:42] <- c("developer", "hobby", "employment", "region", "city", "age_range", 
-                          "learning", "new_tools", "operating_system", "operating_system_2", 
-                          "influence", "discovery", "education", "study", "importance_ed", 
-                          "change_ed", "job_sat", "orga_size", "work_hours", "overtime", 
-                          "on-boarding", "improve_on-boarding", "salary", "job_seeking", "jobsearch", 
-                          "info_sources", "communities_1", "communities_2", "age", "gender", 
-                          "trans", "sexuality", "ethnicity", "disability", "psychiatric_disorder", 
-                          "care", "length", "difficulty", "comments")
-colnames(data_questions)
 
 #Extracting the columns I will clean
 cleaned_data <- data_questions[1:9]
 
-#Times
-#Creating a column including the completion time
-cleaned_data$time_s <- cleaned_data$completion_time - cleaned_data$start_time
-cleaned_data$time_m <- cleaned_data$time_s/60
+#Changing the column names
+colnames(cleaned_data) <- c("ID", "start_time", "completion_time", 
+                            "profession_1", 
+                            "hobby_coding_2", 
+                            "employment_3", 
+                            "region_4", 
+                            "city_5", 
+                            "age_range_6")
+#Transforming into factors
+cleaned_data$profession_1 <- as.factor(cleaned_data$profession_1)
+cleaned_data$hobby_coding_2 <- as.factor(cleaned_data$hobby_coding_2)
+cleaned_data$employment_3 <- as.factor(cleaned_data$employment_3)
+cleaned_data$region_4 <- as.factor(cleaned_data$region_4)
+cleaned_data$age_range_6 <- as.factor(cleaned_data$age_range_6)
+
+
+#Times ----
+#Creating a column including the time needed for survey completion
+cleaned_data$survey_duration <- cleaned_data$completion_time - cleaned_data$start_time
 
 head(cleaned_data)
 
-#Developer
+#Developer ----
 cleaned_data %>% 
-  group_by(developer) %>%
+  group_by(profession_1) %>%
   tally() 
 
-#some cleaning needed (forming clear categories)
+#Recoding factor levels
+cleaned_data$profession_1 <- recode(cleaned_data$profession_1, 
+                                    "A Developer" = "I am a developer by profession", 
+                                    "Currently in Transition to Dveloper" = "None of these", 
+                                    "I am a business admin student learning how to code both as a hobby and towards a career." = 
+                                      "I am a student who is learning to code", 
+                                    "I am a developer and a student" = "I am a student who is learning to code", 
+                                    "I am studying to occupy a data scientist role" = "I am a student who is learning to code", 
+                                    "I want to keanr how to cods" = "I am a student who is learning to code", 
+                                    "I work closely with Developers" = "None of these" )
+#reordering factor levels
+cleaned_data$profession_1 <- factor(cleaned_data$profession_1, 
+                                    levels(cleaned_data$profession_1)[c(1,4,3,5,6,2)])
 
-#Employment
-cleaned_data$employment <- tolower(cleaned_data$employment)
-
+#Hobby ----
 cleaned_data %>% 
-  group_by(employment) %>%
+  group_by(hobby_coding_2) %>%
   tally() 
 
-#Some cleaning in a new row 
-cleaned_data$employment_cleaned <- cleaned_data$employment
+#reordering
+cleaned_data$hobby_coding_2 <- factor(cleaned_data$hobby_coding_2, 
+                                    levels(cleaned_data$hobby_coding_2)[c(2,1)])
 
-cleaned_data$employment_cleaned[grep("student", cleaned_data$employment_cleaned)] <- "student"
-cleaned_data$employment_cleaned[startsWith(cleaned_data$employment_cleaned, "national")] <- "national service"
-cleaned_data$employment_cleaned[startsWith(cleaned_data$employment_cleaned, "i run")] <- "independent contractor, freelancer, or self-employed"
 
+#Employment ----
 cleaned_data %>% 
-  group_by(employment_cleaned) %>%
+  group_by(employment_3) %>%
   tally() 
 
-#Question: Transferring "I prefer not to say" to n/a?
+#Some cleaning 
+cleaned_data$employment_3 <- recode(cleaned_data$employment_3, 
+                                    "I run my own business" = "Independent contractor, freelancer, or self-employed", 
+                                    "National Service" = "National service", 
+                                    "National Service Personnel" = "National service", 
+                                    "Student and working" = "Student", 
+                                    "Both student and a part time worker" = "Student")
 
-#City
+cleaned_data$employment_3 <- factor(cleaned_data$employment_3, 
+                                    levels(cleaned_data$employment_3)[c(2,3,5,6,1,7,4)])
+
+#Region ----
 cleaned_data %>% 
-  group_by(tolower(city)) %>%
+  group_by(region_4) %>%
   tally() 
 
-cleaned_data$city[grep("accra", tolower(cleaned_data$city))] <- "accra"
-cleaned_data$city[grep("ablekuma", tolower(cleaned_data$city))] <- "ablekuma"
-cleaned_data$city[startsWith(tolower(cleaned_data$city), "adenta")] <- "adenta"
-cleaned_data$city[startsWith(tolower(cleaned_data$city), "awoshie")] <- "awoshie"
-cleaned_data$city[startsWith(tolower(cleaned_data$city), "kasoa")] <- "kasoa"
-cleaned_data$city[grep("tema", tolower(cleaned_data$city))] <- "tema"
-cleaned_data$city[startsWith(tolower(cleaned_data$city), "teshie")] <- "teshie"
+cleaned_data$region_4 <- recode(cleaned_data$region_4, 
+                                "From Ghana but live outside Ghana" = "Not in Ghana", 
+                                "India" = "Not in Ghana", 
+                                "Outside Ghana" = "Not in Ghana", 
+                                "USA" = "Not in Ghana", 
+                                "Central Region" = "Central Region, Ghana", 
+                                "Western Region" = "Western Region, Ghana", 
+                                "Eastern Region" = "Eastern Region, Ghana", 
+                                "Northern Region" = "Northern Region, Ghana")
 
+#Geocoding the regions?
+geocode_OSM("Ghana")
+
+cleaned_data$region_4 <- as.character(cleaned_data$region_4)
+region_geo <- geocode_OSM(cleaned_data$region_4, as.sf = TRUE, keep.unfound = FALSE)
+
+current.mode <- tmap_mode("view")
+
+tm_shape(region_geo) +
+  tm_dots(col = "red")
+tmap_mode(current.mode)
+
+
+#City ----
 cleaned_data %>% 
-  group_by(tolower(city)) %>%
+  group_by(city_5) %>%
   tally() %>%
   kable()
 
-#Geocoding the cities
-geocode_OSM("Ghana")
+cleaned_data$city_5[grep("accra", tolower(cleaned_data$city_5))] <- "accra"
+cleaned_data$city_5[grep("ablekuma", tolower(cleaned_data$city_5))] <- "ablekuma"
+cleaned_data$city_5[startsWith(tolower(cleaned_data$city_5), "adenta")] <- "adenta"
+cleaned_data$city_5[startsWith(tolower(cleaned_data$city_5), "awoshie")] <- "awoshie"
+cleaned_data$city_5[startsWith(tolower(cleaned_data$city_5), "kasoa")] <- "kasoa"
+cleaned_data$city_5[grep("tema", tolower(cleaned_data$city_5))] <- "tema"
+cleaned_data$city_5[startsWith(tolower(cleaned_data$city_5), "teshie")] <- "teshie"
+cleaned_data$city_5[cleaned_data$city_5 == "Adenta municipality"] <- "accra"
+cleaned_data$city_5[cleaned_data$city_5 == "Larterbiokorshie"] <- "accra"
+cleaned_data$city_5[cleaned_data$city_5 == "Kasoa - Peace town"] <- "kasoa"
+cleaned_data$city_5[cleaned_data$city_5 == "Mamprobi - Banana Inn"] <- "mamprobi"
+cleaned_data$city_5[cleaned_data$city_5 == "Ajiringanor"] <- "Madina"
+cleaned_data$city_5[cleaned_data$city_5 == "Mampong Akuapem"] <- "Mampong"
 
-city_geo <- geocode_OSM(cleaned_data$city, as.sf = TRUE, keep.unfound = TRUE)
-#No results: 
-#Kutunse = kuntunse? 
-#Awomaso 
-#Tema-Afariwaa
-#Outside Ghana = exclude
-#Adenta municipality = District of Accra
-#Pigfarm = exclude
-#Kasoa - Peace town = Kasoa?
-#Mamprobi - Banana Inn = mamprobi? 
-#La = Los Angeles
-#Ajiringanor = district of Madina
-#Tema, Prampram = seem to be two cities
-#Mampong Akuapem = Maybe Mampong is the city? 
-#Larterbiokorshie = District of Accra? 
+#Appending ", Ghana" to all cities so we will have only locations in Ghana if there are cities with the same names
+cleaned_data$city_5 <- paste0(cleaned_data$city_5, ", Ghana")
 
-cleaned_data$city[cleaned_data$city == "kutunse"] <- "kuntunse"
-cleaned_data$city[cleaned_data$city == "Adenta municipality"] <- "accra"
-cleaned_data$city[cleaned_data$city == "Larterbiokorshie"] <- "accra"
-cleaned_data$city[cleaned_data$city == "Kasoa - Peace town"] <- "kasoa"
-cleaned_data$city[cleaned_data$city == "Mamprobi - Banana Inn"] <- "mamprobi"
-cleaned_data$city[cleaned_data$city == "Ajiringanor"] <- "Madina"
+#Changing the names of the locations that are not in Ghana
+cleaned_data$city_5 <- recode(cleaned_data$city_5, 
+                              "Outside Ghana, Ghana" = "0", 
+                              "Pigfarm, Ghana" = "0", 
+                              "Pune, Ghana" = "Pune, India", 
+                              "Cincinnati, OH, Ghana" = "Cincinnati, OH")
 
-city_geo <- geocode_OSM(cleaned_data$city, as.sf = TRUE, keep.unfound = FALSE)
+#Geocoding
+cleaned_data$city_5 <- as.character(cleaned_data$city_5)
+city_geo <- geocode_OSM(cleaned_data$city_5, as.sf = TRUE, keep.unfound = FALSE)
+
+#No results for: 
+#Kutunse & Awomaso (both seem to be cities in Ghana, maybe ask Hamzah)
 
 #Showing the geocoded cities on a map
 current.mode <- tmap_mode("view")
@@ -131,8 +174,7 @@ current.mode <- tmap_mode("view")
 tm_shape(city_geo) +
   tm_dots(col = "red")
 
-#According to tmap, we have a lot of developers outside of Ghana. Maybe excluding all of them is not appropriate. 
-
 # restore current mode
 tmap_mode(current.mode)
 
+#We have two respondents outside of Ghana 
