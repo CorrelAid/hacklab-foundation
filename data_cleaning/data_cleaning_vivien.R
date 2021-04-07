@@ -31,6 +31,7 @@ head(skills)
 data_questions <- cbind(raw_data[1:10], raw_data[65:96])
 colnames(data_questions)
 #Changing the column names
+##Adapt to Francois 
 colnames(data_questions)[4:42] <- c("developer", "hobby", "employment", "region", "city", "age_range", 
                           "learning", "new_tools", "operating_system", "operating_system_2", 
                           "influence", "discovery", "education", "study", "importance_ed", 
@@ -54,8 +55,7 @@ head(cleaned_data)
 #Developer
 cleaned_data %>% 
   group_by(developer) %>%
-  tally() %>%
-  kable()
+  tally() 
 
 #some cleaning needed (forming clear categories)
 
@@ -64,8 +64,7 @@ cleaned_data$employment <- tolower(cleaned_data$employment)
 
 cleaned_data %>% 
   group_by(employment) %>%
-  tally() %>%
-  kable()
+  tally() 
 
 #Some cleaning in a new row 
 cleaned_data$employment_cleaned <- cleaned_data$employment
@@ -76,17 +75,14 @@ cleaned_data$employment_cleaned[startsWith(cleaned_data$employment_cleaned, "i r
 
 cleaned_data %>% 
   group_by(employment_cleaned) %>%
-  tally() %>%
-  kable()
+  tally() 
 
 #Question: Transferring "I prefer not to say" to n/a?
 
 #City
 cleaned_data %>% 
   group_by(tolower(city)) %>%
-  tally() %>%
-  kable()
-
+  tally() 
 
 cleaned_data$city[grep("accra", tolower(cleaned_data$city))] <- "accra"
 cleaned_data$city[grep("ablekuma", tolower(cleaned_data$city))] <- "ablekuma"
@@ -114,7 +110,7 @@ city_geo <- geocode_OSM(cleaned_data$city, as.sf = TRUE, keep.unfound = TRUE)
 #Pigfarm = exclude
 #Kasoa - Peace town = Kasoa?
 #Mamprobi - Banana Inn = mamprobi? 
-#La = exclude
+#La = Los Angeles
 #Ajiringanor = district of Madina
 #Tema, Prampram = seem to be two cities
 #Mampong Akuapem = Maybe Mampong is the city? 
