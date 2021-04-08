@@ -119,8 +119,6 @@ cleaned_data$region_4 <- recode(cleaned_data$region_4,
                                 "Northern Region" = "Northern Region, Ghana")
 
 #Geocoding the regions?
-geocode_OSM("Ghana")
-
 cleaned_data$region_4 <- as.character(cleaned_data$region_4)
 region_geo <- geocode_OSM(cleaned_data$region_4, as.sf = TRUE, keep.unfound = FALSE)
 
@@ -178,3 +176,10 @@ tm_shape(city_geo) +
 tmap_mode(current.mode)
 
 #We have two respondents outside of Ghana 
+
+
+##Age Range ---- 
+levels(cleaned_data$age_range_6)
+#ordering the levels
+cleaned_data$age_range_6 <- factor(cleaned_data$age_range_6, 
+                                    levels(cleaned_data$age_range_6)[c(6,1,2,3,4,5)])
