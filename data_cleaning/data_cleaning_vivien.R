@@ -34,7 +34,7 @@ data_questions <- cbind(raw_data[1:10], raw_data[65:96])
 colnames(data_questions)
 
 #Extracting the columns I will clean
-cleaned_data <- data_questions[1:9]
+cleaned_data <- data_questions[1:10]
 
 #Changing the column names
 colnames(cleaned_data) <- c("ID", "start_time", "completion_time", 
@@ -43,13 +43,16 @@ colnames(cleaned_data) <- c("ID", "start_time", "completion_time",
                             "employment_3", 
                             "region_4", 
                             "city_5", 
-                            "age_range_6")
+                            "age_range_6", 
+                            "new_tool_7")
 #Transforming into factors
 cleaned_data$profession_1 <- as.factor(cleaned_data$profession_1)
 cleaned_data$hobby_coding_2 <- as.factor(cleaned_data$hobby_coding_2)
 cleaned_data$employment_3 <- as.factor(cleaned_data$employment_3)
 cleaned_data$region_4 <- as.factor(cleaned_data$region_4)
 cleaned_data$age_range_6 <- as.factor(cleaned_data$age_range_6)
+cleaned_data$new_tool_7 <- as.factor(cleaned_data$new_tool_7)
+
 
 
 #Times ----
@@ -183,3 +186,32 @@ levels(cleaned_data$age_range_6)
 #ordering the levels
 cleaned_data$age_range_6 <- factor(cleaned_data$age_range_6, 
                                     levels(cleaned_data$age_range_6)[c(6,1,2,3,4,5)])
+
+
+#New tools
+cleaned_data %>% 
+  group_by(new_tool_7) %>%
+  tally() 
+
+cleaned_data$new_tool_7 <- recode(cleaned_data$new_tool_7, 
+                                  "As and when it's necessary for a project" = 
+                                    "This varies depending on work and projects", 
+                                  "As needed for work and research" = 
+                                    "This varies depending on work and projects", 
+                                  "I don’t remember the last time" = "Never", 
+                                  "I started learning not long ago and so far I've learnt only one language." = 
+                                    "Other", 
+                                  "i stick to a selected few." = "Never", 
+                                  "Project dependent" = 
+                                    "This varies depending on work and projects", 
+                                  "Usually not...stuck with python for a long time now" = "Never", 
+                                  "When I feel the need to" = "This varies depending on work and projects", 
+                                  "When i have someone to help me learn it" ="Other", 
+                                  "When Neccessary" = "This varies depending on work and projects", 
+                                  "When the need arises" = "This varies depending on work and projects", 
+                                  "When there is a need to"= "This varies depending on work and projects", 
+                                  "When work requires it" = "This varies depending on work and projects")
+
+#ordering the levels
+cleaned_data$new_tool_7 <- factor(cleaned_data$new_tool_7, 
+                                   levels(cleaned_data$new_tool_7)[c(2,6,7,5,1,4,8)])
