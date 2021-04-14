@@ -1,0 +1,273 @@
+ID,start_time,completion_time,profession_1,hobby_coding_2,employment_3,region_4,city_5,age_range_6,new_tool_7,survey_duration
+6,2020-10-15T09:13:45Z,2020-10-15T09:24:31Z,I am a developer by profession,Yes,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"accra, Ghana",20 - 25,Once a year,646
+7,2020-10-15T09:16:07Z,2020-10-15T09:25:39Z,"I used to be a developer by profession, but no longer am",No,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"accra, Ghana",26 - 30,Every few months,572
+8,2020-10-15T09:20:53Z,2020-10-15T09:29:42Z,I am a developer by profession,Yes,Employed part-time,Greater Accra Region,"kutunse, Ghana",20 - 25,,529
+9,2020-10-15T09:12:06Z,2020-10-15T09:30:56Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"tema, Ghana",20 - 25,Once a year,1130
+10,2020-10-15T09:23:29Z,2020-10-15T09:33:27Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"accra, Ghana",20 - 25,Every few months,598
+11,2020-10-15T09:24:23Z,2020-10-15T09:39:03Z,I am a developer by profession,Yes,"Not employed, but looking for work",Greater Accra Region,"Dansoman, Ghana",20 - 25,Once every few years,880
+12,2020-10-15T09:36:07Z,2020-10-15T09:53:37Z,I code primarily as a hobby,Yes,Employed full-time,Ashanti Region,"Kumasi, Ghana",31 - 35,Once every few years,1050
+13,2020-10-15T09:40:11Z,2020-10-15T10:06:09Z,None of these,Yes,"Not employed, but looking for work","Central Region, Ghana","Twifo praso, Ghana",26 - 30,,1558
+14,2020-10-15T10:48:55Z,2020-10-15T10:56:47Z,I code primarily as a hobby,Yes,"Not employed, but looking for work",Greater Accra Region,"accra, Ghana",20 - 25,Once a year,472
+15,2020-10-15T10:33:42Z,2020-10-15T11:09:07Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"Madina, Ghana",31 - 35,,2125
+16,2020-10-15T11:30:53Z,2020-10-15T11:34:58Z,I am a developer by profession,Yes,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"Weija, Oblogo, Ghana",26 - 30,,245
+17,2020-10-15T11:48:00Z,2020-10-15T12:02:49Z,I am a student who is learning to code,Yes,Student,Volta Region,"Ho, Ghana",20 - 25,Every few months,889
+18,2020-10-15T13:18:52Z,2020-10-15T13:19:28Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",26 - 30,Once a year,36
+19,2020-10-15T13:34:39Z,2020-10-15T13:50:27Z,I am a developer by profession,No,"Not employed, but looking for work",Greater Accra Region,"adenta, Ghana",20 - 25,Once a year,948
+20,2020-10-15T14:13:36Z,2020-10-15T14:16:58Z,I code primarily as a hobby,Yes,Student,Greater Accra Region,"Dzorwulu, Ghana",20 - 25,,202
+21,2020-10-15T14:22:48Z,2020-10-15T14:47:38Z,I am a student who is learning to code,Yes,Student,Ashanti Region,"Tafo, Kumasi, Ghana",20 - 25,Once every few years,1490
+22,2020-10-15T14:43:00Z,2020-10-15T14:58:20Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"North Legon ( Haatso ), Ghana",20 - 25,This varies depending on work and projects,920
+23,2020-10-15T14:50:49Z,2020-10-15T15:03:48Z,None of these,No,Employed full-time,"Central Region, Ghana","kasoa, Ghana",20 - 25,Other,779
+24,2020-10-15T15:14:38Z,2020-10-15T15:31:24Z,I am a student who is learning to code,Yes,Student,"Western Region, Ghana","fijai, Ghana",20 - 25,Once a year,1006
+25,2020-10-15T14:57:21Z,2020-10-15T15:32:41Z,I am a student who is learning to code,No,Student,"Eastern Region, Ghana","Odumase Krobo, Ghana",20 - 25,Every few months,2120
+26,2020-10-15T16:21:04Z,2020-10-15T17:03:37Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"ablekuma, Ghana",20 - 25,Every few months,2553
+27,2020-10-15T17:27:06Z,2020-10-15T17:36:28Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,Employed full-time,Greater Accra Region,"accra, Ghana",20 - 25,,562
+28,2020-10-15T17:40:52Z,2020-10-15T17:55:18Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"accra, Ghana",26 - 30,Once a year,866
+29,2020-10-15T17:44:12Z,2020-10-15T17:57:40Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",20 - 25,Every few months,808
+30,2020-10-15T17:52:24Z,2020-10-15T18:05:42Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"Kaneshie, Ghana",26 - 30,Every few months,798
+31,2020-10-15T17:48:40Z,2020-10-15T18:21:49Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"kasoa, Ghana",36 - 40,,1989
+32,2020-10-15T18:11:08Z,2020-10-15T18:37:44Z,I am a student who is learning to code,Yes,"Not employed, but looking for work",Upper West Region,"Wa, Ghana",26 - 30,Once a year,1596
+33,2020-10-15T18:27:37Z,2020-10-15T18:40:01Z,I am a student who is learning to code,Yes,Employed part-time,Ashanti Region,"Kumasi, Ghana",20 - 25,Every few months,744
+34,2020-10-15T18:44:51Z,2020-10-15T18:48:05Z,None of these,No,Employed full-time,Greater Accra Region,"accra, Ghana",31 - 35,,194
+35,2020-10-15T20:10:09Z,2020-10-15T20:20:16Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"Ashaiman, Ghana",20 - 25,Once a year,607
+36,2020-10-15T20:20:19Z,2020-10-15T20:33:20Z,I am a developer by profession,Yes,"Independent contractor, freelancer, or self-employed",Volta Region,"Ho, Ghana",20 - 25,Once a year,781
+37,2020-10-15T21:21:51Z,2020-10-15T22:26:43Z,I am a developer by profession,Yes,Employed full-time,Ashanti Region,"Kumasi, Ghana",20 - 25,Every few months,3892
+38,2020-10-15T23:41:55Z,2020-10-15T23:57:48Z,I am a student who is learning to code,Yes,"Not employed, but looking for work",Greater Accra Region,"ablekuma, Ghana",26 - 30,,953
+39,2020-10-15T23:38:50Z,2020-10-16T04:53:16Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",20 - 25,,18866
+40,2020-10-16T07:27:42Z,2020-10-16T07:45:21Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,Student,Upper West Region,"Wa, Ghana",20 - 25,Every few months,1059
+41,2020-10-16T10:36:41Z,2020-10-16T10:50:26Z,I am a developer by profession,No,"Independent contractor, freelancer, or self-employed",Ashanti Region,"Awomaso, Ghana",20 - 25,Once a year,825
+42,2020-10-16T10:51:40Z,2020-10-16T11:07:04Z,I am a developer by profession,Yes,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"kasoa, Ghana",20 - 25,Once a year,924
+43,2020-10-16T11:07:11Z,2020-10-16T11:14:52Z,"I used to be a developer by profession, but no longer am",Yes,Employed full-time,Ashanti Region,"kumasi, Ghana",31 - 35,Once every few years,461
+44,2020-10-16T11:21:02Z,2020-10-16T11:56:54Z,None of these,No,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"tema, Ghana",Above 45,,2152
+45,2020-10-16T12:17:53Z,2020-10-16T12:28:22Z,I am a student who is learning to code,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",20 - 25,Every few months,629
+46,2020-10-16T12:40:01Z,2020-10-16T12:51:05Z,I am a developer by profession,No,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"accra, Ghana",20 - 25,Every few months,664
+47,2020-10-16T10:04:20Z,2020-10-16T14:15:39Z,I am a developer by profession,Yes,Student,Ashanti Region,"Kumasi, Ghana",26 - 30,Once every few years,15079
+48,2020-10-16T14:59:22Z,2020-10-16T15:08:18Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"Ashiyie, Ghana",20 - 25,Every few months,536
+49,2020-10-16T15:35:51Z,2020-10-16T15:38:27Z,I am a student who is learning to code,Yes,"Not employed, but looking for work","Eastern Region, Ghana","Koforidua, Ghana",20 - 25,,156
+50,2020-10-16T17:29:06Z,2020-10-16T17:40:01Z,I am a student who is learning to code,Yes,Student,Ashanti Region,"Kumasi, Ghana",20 - 25,Every few months,655
+51,2020-10-16T18:35:49Z,2020-10-16T18:55:08Z,I am a developer by profession,No,National service,Greater Accra Region,"teshie, Ghana",20 - 25,Every few months,1159
+52,2020-10-16T18:19:02Z,2020-10-16T19:10:10Z,I am a developer by profession,Yes,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"Spintex, Ghana",20 - 25,Every few months,3068
+53,2020-10-16T19:44:43Z,2020-10-16T20:01:48Z,I am a developer by profession,No,Employed part-time,Ashanti Region,"Kumasi, Ghana",31 - 35,Every few months,1025
+54,2020-10-16T19:50:05Z,2020-10-16T20:03:57Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"East Legon, Ghana",20 - 25,Every few months,832
+55,2020-10-16T19:56:48Z,2020-10-16T20:06:14Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"ablekuma, Ghana",26 - 30,This varies depending on work and projects,566
+56,2020-10-16T20:07:43Z,2020-10-16T20:12:07Z,I am a developer by profession,Yes,Employed full-time,Not in Ghana,0,20 - 25,Every few months,264
+57,2020-10-16T19:57:48Z,2020-10-16T20:14:42Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"adenta, Ghana",31 - 35,Every few months,1014
+58,2020-10-16T20:12:30Z,2020-10-16T20:31:02Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"tema, Ghana",31 - 35,This varies depending on work and projects,1112
+59,2020-10-16T20:27:43Z,2020-10-16T20:46:48Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",26 - 30,Once a year,1145
+60,2020-10-16T20:42:56Z,2020-10-16T20:55:55Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"Ghana, Ghana",31 - 35,Every few months,779
+61,2020-10-16T20:46:34Z,2020-10-16T20:57:48Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",20 - 25,Once every few years,674
+62,2020-10-16T11:28:15Z,2020-10-16T21:03:01Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"New Weija, Ghana",20 - 25,Once a year,34486
+63,2020-10-16T19:30:53Z,2020-10-16T21:05:43Z,I am a developer by profession,No,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"Spintex, Ghana",20 - 25,Once a year,5690
+64,2020-10-16T21:07:05Z,2020-10-16T21:25:49Z,I am a student who is learning to code,No,"Not employed, but looking for work",Greater Accra Region,"Sowutuom, Ghana",31 - 35,,1124
+65,2020-10-16T21:42:36Z,2020-10-16T21:49:46Z,I code primarily as a hobby,Yes,Employed full-time,"Northern Region, Ghana","Tamale, Ghana",20 - 25,,430
+66,2020-10-16T19:58:06Z,2020-10-16T22:00:19Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"tema, Ghana",26 - 30,Every few months,7333
+67,2020-10-16T21:58:58Z,2020-10-16T22:08:44Z,"I am not primarily a developer, but I write code sometimes as part of my work",No,Employed full-time,"Central Region, Ghana","kasoa, Ghana",26 - 30,Once a year,586
+68,2020-10-16T22:51:28Z,2020-10-16T23:17:19Z,I am a developer by profession,Yes,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"adenta, Ghana",26 - 30,,1551
+69,2020-10-17T00:00:26Z,2020-10-17T00:22:25Z,"I am not primarily a developer, but I write code sometimes as part of my work",No,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"tema, Ghana",20 - 25,Once a year,1319
+70,2020-10-17T01:07:00Z,2020-10-17T01:21:36Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,Employed full-time,Greater Accra Region,"Cantonment, Ghana",36 - 40,Once a year,876
+71,2020-10-17T06:50:31Z,2020-10-17T07:12:47Z,I am a student who is learning to code,Yes,"Not employed, but looking for work",Volta Region,"Ho, Ghana",20 - 25,Once every few years,1336
+72,2020-10-17T08:32:57Z,2020-10-17T08:47:35Z,I am a student who is learning to code,Yes,Student,Bono East Region,"Kintampo, Ghana",20 - 25,Every few months,878
+73,2020-10-17T09:50:22Z,2020-10-17T09:52:02Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"accra, Ghana",26 - 30,,100
+74,2020-10-17T09:52:53Z,2020-10-17T10:09:12Z,I am a developer by profession,Yes,"Not employed, but looking for work","Northern Region, Ghana","Tamale, Ghana",26 - 30,Every few months,979
+75,2020-10-17T16:57:33Z,2020-10-17T17:06:50Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",26 - 30,Once a year,557
+76,2020-10-17T19:38:14Z,2020-10-17T19:57:32Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"New Aplaku, Ghana",20 - 25,Once every few years,1158
+77,2020-10-18T15:04:30Z,2020-10-18T15:11:12Z,I code primarily as a hobby,Yes,Employed full-time,Greater Accra Region,"tema, Ghana",20 - 25,,402
+78,2020-10-18T16:28:20Z,2020-10-18T16:43:30Z,I code primarily as a hobby,Yes,Employed full-time,"Central Region, Ghana","Winneba, Ghana",26 - 30,Once every few years,910
+79,2020-10-18T21:53:30Z,2020-10-18T22:03:37Z,I am a developer by profession,Yes,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"adenta, Ghana",20 - 25,,607
+80,2020-10-19T02:27:38Z,2020-10-19T02:49:56Z,I am a developer by profession,Yes,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"Gbawe, Ghana",20 - 25,Every few months,1338
+81,2020-10-19T07:08:38Z,2020-10-19T07:19:44Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",26 - 30,Once a year,666
+82,2020-10-19T08:30:43Z,2020-10-19T08:42:14Z,I am a developer by profession,No,Employed full-time,"Northern Region, Ghana","Tamale, Ghana",26 - 30,Every few months,691
+83,2020-10-19T08:54:53Z,2020-10-19T09:11:54Z,I am a student who is learning to code,No,Student,Greater Accra Region,"accra, Ghana",Below 20,Other,1021
+84,2020-10-19T19:46:10Z,2020-10-19T20:07:35Z,I am a developer by profession,No,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"accra, Ghana",20 - 25,This varies depending on work and projects,1285
+85,2020-10-19T18:09:32Z,2020-10-19T22:53:37Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"Spintex, Ghana",20 - 25,Every few months,17045
+86,2020-10-20T05:31:53Z,2020-10-20T05:44:41Z,I am a developer by profession,No,Employed part-time,Greater Accra Region,"accra, Ghana",26 - 30,Once every few years,768
+87,2020-10-20T07:41:15Z,2020-10-20T08:01:32Z,I am a developer by profession,No,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"accra, Ghana",26 - 30,,1217
+88,2020-10-20T08:38:36Z,2020-10-20T08:49:24Z,I am a student who is learning to code,Yes,Employed full-time,Ashanti Region,"Kumasi, Ghana",20 - 25,Once a year,648
+89,2020-10-20T11:39:36Z,2020-10-20T11:47:56Z,I am a developer by profession,No,Employed part-time,Greater Accra Region,"accra, Ghana",20 - 25,Once a year,500
+90,2020-10-20T11:45:38Z,2020-10-20T12:00:55Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",26 - 30,Once a year,917
+91,2020-10-20T11:46:02Z,2020-10-20T12:04:51Z,I am a student who is learning to code,Yes,"Not employed, but looking for work",Ashanti Region,"Kumasi, Ghana",20 - 25,Every few months,1129
+92,2020-10-20T12:05:04Z,2020-10-20T12:13:46Z,I am a student who is learning to code,Yes,"Not employed, but looking for work",Greater Accra Region,"Adabraka, Ghana",20 - 25,Every few months,522
+93,2020-10-20T12:06:48Z,2020-10-20T12:35:16Z,I code primarily as a hobby,Yes,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"tema, Ghana",20 - 25,Every few months,1708
+94,2020-10-20T12:24:16Z,2020-10-20T12:38:54Z,I am a student who is learning to code,Yes,Student,Volta Region,"Ho, Ghana",20 - 25,Every few months,878
+95,2020-10-20T12:46:54Z,2020-10-20T12:59:53Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"Oyibi, Ghana",20 - 25,Every few months,779
+96,2020-10-20T14:38:12Z,2020-10-20T14:46:36Z,I am a developer by profession,Yes,Employed part-time,Greater Accra Region,"accra, Ghana",20 - 25,Every few months,504
+97,2020-10-20T15:19:59Z,2020-10-20T15:35:52Z,I am a student who is learning to code,Yes,Student,"Eastern Region, Ghana","Koforidua, Ghana",20 - 25,,953
+98,2020-10-20T16:06:34Z,2020-10-20T16:21:30Z,I am a student who is learning to code,Yes,Student,"Northern Region, Ghana","Tamale, Ghana",20 - 25,Every few months,896
+99,2020-10-20T16:35:04Z,2020-10-20T16:52:43Z,I am a developer by profession,Yes,"Independent contractor, freelancer, or self-employed",Volta Region,"HO, Ghana",20 - 25,Every few months,1059
+100,2020-10-20T17:17:32Z,2020-10-20T17:38:10Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"accra, Ghana",20 - 25,Every few months,1238
+101,2020-10-21T04:26:29Z,2020-10-21T04:37:30Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,"Not employed, but looking for work",Greater Accra Region,"accra, Ghana",20 - 25,Once a year,661
+102,2020-10-21T06:47:46Z,2020-10-21T06:59:40Z,I am a student who is learning to code,No,Student,Ashanti Region,"Kumasi, Ghana",26 - 30,Once a decade,714
+103,2020-10-21T10:29:28Z,2020-10-21T10:37:03Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",26 - 30,Every few months,455
+104,2020-10-21T17:39:44Z,2020-10-21T17:48:50Z,I code primarily as a hobby,Yes,"Not employed, but looking for work","Eastern Region, Ghana","Koforidua, Ghana",20 - 25,Every few months,546
+105,2020-10-21T20:17:54Z,2020-10-21T20:30:01Z,"I am not primarily a developer, but I write code sometimes as part of my work",No,Employed full-time,Greater Accra Region,"accra, Ghana",26 - 30,Once a year,727
+106,2020-10-21T20:45:30Z,2020-10-21T21:02:17Z,"I am not primarily a developer, but I write code sometimes as part of my work",No,Employed full-time,"Northern Region, Ghana","Tamale, Ghana",26 - 30,,1007
+107,2020-10-22T08:06:14Z,2020-10-22T08:16:22Z,I am a student who is learning to code,No,"Not employed, but looking for work","Northern Region, Ghana","Tamale, Ghana",20 - 25,Every few months,608
+108,2020-10-22T09:02:04Z,2020-10-22T09:22:52Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,Employed full-time,Ashanti Region,"Oduom, Ghana",26 - 30,Every few months,1248
+109,2020-10-22T13:03:29Z,2020-10-22T13:10:50Z,I am a student who is learning to code,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",20 - 25,,441
+110,2020-10-22T13:44:01Z,2020-10-22T14:05:06Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",26 - 30,Every few months,1265
+111,2020-10-22T14:04:11Z,2020-10-22T14:24:05Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"tema, Ghana",20 - 25,Every few months,1194
+112,2020-10-22T15:29:01Z,2020-10-22T15:46:43Z,I am a student who is learning to code,Yes,Student,"Eastern Region, Ghana","Koforidua, Ghana",20 - 25,Every few months,1062
+113,2020-10-22T15:58:31Z,2020-10-22T16:09:52Z,I am a developer by profession,No,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"West Adenta, Ghana",20 - 25,Once every few years,681
+114,2020-10-22T16:08:24Z,2020-10-22T16:15:03Z,I am a student who is learning to code,No,Student,Bono East Region,"Techiman, Ghana",20 - 25,,399
+115,2020-10-22T16:06:35Z,2020-10-22T16:19:07Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"accra, Ghana",31 - 35,Every few months,752
+116,2020-10-22T16:54:49Z,2020-10-22T17:01:24Z,I code primarily as a hobby,Yes,"Not employed, but looking for work",Greater Accra Region,0,20 - 25,Once a year,395
+117,2020-10-22T16:58:57Z,2020-10-22T17:09:25Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"accra, Ghana",20 - 25,Every few months,628
+118,2020-10-22T18:31:27Z,2020-10-22T19:21:33Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",31 - 35,Every few months,3006
+119,2020-10-22T21:40:56Z,2020-10-22T21:54:29Z,I code primarily as a hobby,Yes,I prefer not to say,"Eastern Region, Ghana","Nsawam, Ghana",Below 20,,813
+120,2020-10-22T22:55:34Z,2020-10-22T23:11:01Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",20 - 25,Every few months,927
+121,2020-10-23T01:01:18Z,2020-10-23T01:19:20Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"Amasaman, Ghana",20 - 25,Every few months,1082
+122,2020-10-23T01:17:08Z,2020-10-23T03:29:33Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"accra, Ghana",26 - 30,Every few months,7945
+123,2020-10-23T07:37:04Z,2020-10-23T07:48:59Z,I code primarily as a hobby,Yes,Student,Greater Accra Region,"accra, Ghana",20 - 25,Every few months,715
+124,2020-10-23T08:17:17Z,2020-10-23T08:27:01Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",26 - 30,,584
+125,2020-10-23T09:28:47Z,2020-10-23T11:47:29Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"Spintex, Ghana",20 - 25,Every few months,8322
+126,2020-10-23T13:01:49Z,2020-10-23T13:16:32Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"Ashaiman, Ghana",26 - 30,Once a year,883
+127,2020-10-23T17:13:58Z,2020-10-23T20:13:19Z,I am a developer by profession,No,"Not employed, but looking for work",Greater Accra Region,"Oyibi, Ghana",20 - 25,Once a year,10761
+128,2020-10-23T20:39:35Z,2020-10-23T21:01:25Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"Oyibi, Ghana",20 - 25,,1310
+129,2020-10-23T22:28:02Z,2020-10-23T23:03:49Z,I am a developer by profession,No,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"Dansoman, Ghana",26 - 30,Once every few years,2147
+130,2020-10-24T00:29:13Z,2020-10-24T00:44:09Z,"I am not primarily a developer, but I write code sometimes as part of my work",No,Employed full-time,Not in Ghana,"Pune, India",20 - 25,Once every few years,896
+131,2020-10-24T00:37:38Z,2020-10-24T00:46:48Z,I am a student who is learning to code,No,Employed part-time,Greater Accra Region,"Achimota, Ghana",Below 20,Every few months,550
+132,2020-10-24T03:17:03Z,2020-10-24T03:17:58Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"Dansoman, Ghana",20 - 25,,55
+133,2020-10-24T03:46:34Z,2020-10-24T04:07:05Z,I am a student who is learning to code,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",20 - 25,,1231
+134,2020-10-24T07:45:23Z,2020-10-24T07:59:53Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,Employed full-time,Greater Accra Region,"accra, Ghana",20 - 25,Once every few years,870
+135,2020-10-24T07:28:31Z,2020-10-24T09:28:32Z,"I am not primarily a developer, but I write code sometimes as part of my work",No,Employed part-time,Greater Accra Region,"Spintex, Ghana",26 - 30,This varies depending on work and projects,7201
+136,2020-10-24T10:51:02Z,2020-10-24T11:03:24Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,Student,Not in Ghana,"Cincinnati, OH",26 - 30,Once every few years,742
+137,2020-10-24T14:01:37Z,2020-10-24T14:09:18Z,I am a student who is learning to code,Yes,Employed full-time,Greater Accra Region,"Amasaman, Ghana",20 - 25,Once a year,461
+138,2020-10-24T15:24:09Z,2020-10-24T15:42:37Z,I am a developer by profession,No,"Not employed, but looking for work",Greater Accra Region,"Madina, Ghana",26 - 30,Every few months,1108
+139,2020-10-24T17:41:19Z,2020-10-24T18:09:03Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,Employed full-time,Greater Accra Region,"accra, Ghana",31 - 35,Every few months,1664
+140,2020-10-24T18:58:52Z,2020-10-24T19:12:25Z,I am a student who is learning to code,No,Student,"Central Region, Ghana","kasoa, Ghana",20 - 25,Once a year,813
+141,2020-10-25T06:28:04Z,2020-10-25T06:46:44Z,I am a developer by profession,Yes,Employed full-time,"Northern Region, Ghana","Tamale, Ghana",26 - 30,Once a year,1120
+142,2020-10-26T14:04:11Z,2020-10-26T14:12:58Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"accra, Ghana",20 - 25,Once a year,527
+143,2020-10-26T18:28:48Z,2020-10-26T18:37:42Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,Employed full-time,"Northern Region, Ghana","Tamale, Ghana",26 - 30,,534
+144,2020-10-27T13:30:13Z,2020-10-27T13:35:06Z,I am a student who is learning to code,No,Student,Greater Accra Region,"accra, Ghana",Below 20,Every few months,293
+145,2020-10-27T13:59:21Z,2020-10-27T14:13:06Z,I am a developer by profession,Yes,"Independent contractor, freelancer, or self-employed",Ashanti Region,"Kumasi, Ghana",31 - 35,,825
+146,2020-10-27T16:05:28Z,2020-10-27T16:21:38Z,I am a developer by profession,Yes,Employed full-time,Volta Region,"Sogakope, Ghana",31 - 35,Once every few years,970
+147,2020-10-28T02:32:31Z,2020-10-28T02:48:49Z,I code primarily as a hobby,Yes,Student,Ashanti Region,"Kumasi, Ghana",20 - 25,Every few months,978
+148,2020-10-28T14:34:36Z,2020-10-28T15:06:09Z,I am a student who is learning to code,Yes,Student,"Northern Region, Ghana","Saboba, Ghana",20 - 25,Every few months,1893
+149,2020-11-02T07:19:49Z,2020-11-02T07:40:33Z,I am a developer by profession,No,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"accra, Ghana",31 - 35,Once a year,1244
+150,2020-11-03T09:41:26Z,2020-11-03T09:57:17Z,I am a student who is learning to code,No,Student,Greater Accra Region,"kasoa, Ghana",Below 20,Once a year,951
+151,2020-11-03T11:46:54Z,2020-11-03T11:56:53Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"accra, Ghana",20 - 25,Every few months,599
+152,2020-11-04T10:23:37Z,2020-11-04T10:40:06Z,I am a student who is learning to code,Yes,"Not employed, but looking for work",Greater Accra Region,"accra, Ghana",26 - 30,,989
+153,2020-11-04T11:17:34Z,2020-11-04T11:37:44Z,None of these,Yes,"Not employed, but looking for work",Greater Accra Region,"Old Ashongman, Ghana",26 - 30,Once a year,1210
+154,2020-11-05T10:48:03Z,2020-11-05T10:59:58Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"Haatso, Ghana",20 - 25,Once a year,715
+155,2020-11-10T18:46:02Z,2020-11-10T18:51:51Z,I code primarily as a hobby,Yes,Employed part-time,Greater Accra Region,"Dansoman, Ghana",20 - 25,Every few months,349
+156,2020-11-10T19:41:07Z,2020-11-10T19:54:22Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,Employed full-time,Greater Accra Region,"East Legon, Ghana",20 - 25,Once a year,795
+157,2020-11-10T19:18:41Z,2020-11-11T09:48:45Z,"I used to be a developer by profession, but no longer am",Yes,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"Adabraka, Ghana",20 - 25,Every few months,52204
+158,2020-11-11T10:43:04Z,2020-11-11T11:54:05Z,I am a student who is learning to code,No,National service,"Eastern Region, Ghana","Akuse, Ghana",20 - 25,,4261
+159,2020-11-11T15:49:41Z,2020-11-11T16:04:29Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",36 - 40,Every few months,888
+160,2020-11-11T19:37:11Z,2020-11-11T19:42:22Z,I am a developer by profession,Yes,Employed part-time,Volta Region,"Aflao, Ghana",Below 20,Once every few years,311
+161,2020-11-11T22:14:19Z,2020-11-11T22:23:15Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"mamprobi, Ghana",26 - 30,Every few months,536
+162,2020-11-11T22:28:33Z,2020-11-11T22:42:24Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"accra, Ghana",20 - 25,Every few months,831
+163,2020-11-12T00:18:43Z,2020-11-12T00:24:55Z,I am a developer by profession,Yes,"Not employed, but looking for work",Greater Accra Region,"accra, Ghana",20 - 25,Once every few years,372
+164,2020-11-12T06:55:29Z,2020-11-12T07:26:11Z,I am a developer by profession,Yes,"Not employed, but looking for work",Greater Accra Region,"tema, Ghana",26 - 30,Once a year,1842
+165,2020-11-12T07:24:27Z,2020-11-12T07:41:49Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"awoshie, Ghana",20 - 25,Every few months,1042
+166,2020-11-12T08:06:28Z,2020-11-12T08:17:23Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",26 - 30,Once a year,655
+167,2020-11-12T19:47:26Z,2020-11-12T19:59:23Z,I am a student who is learning to code,Yes,Student,"Central Region, Ghana","Cape coast, Ghana",Below 20,,717
+168,2020-11-13T12:34:00Z,2020-11-13T13:35:53Z,I am a student who is learning to code,No,Student,Greater Accra Region,"accra, Ghana",20 - 25,,3713
+169,2020-11-13T13:30:51Z,2020-11-13T15:11:31Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",31 - 35,Every few months,6040
+170,2020-11-14T11:41:06Z,2020-11-14T12:13:48Z,I am a developer by profession,Yes,"Not employed, but looking for work",Greater Accra Region,"accra, Ghana",31 - 35,Every few months,1962
+171,2020-11-15T08:59:51Z,2020-11-15T09:17:41Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,Employed full-time,"Northern Region, Ghana","Tamale, Ghana",26 - 30,Every few months,1070
+172,2020-11-16T04:45:01Z,2020-11-16T04:55:42Z,I am a developer by profession,No,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"accra, Ghana",36 - 40,Once every few years,641
+173,2020-11-17T09:48:58Z,2020-11-17T10:12:33Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",31 - 35,,1415
+174,2020-11-17T10:07:19Z,2020-11-17T10:18:40Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"Ashaley Botwe, Ghana",26 - 30,Once a year,681
+175,2020-11-18T06:23:48Z,2020-11-18T06:43:48Z,I am a student who is learning to code,No,Student,Ahafo Region,"Kukuom, Ghana",36 - 40,,1200
+176,2020-11-18T09:01:55Z,2020-11-18T09:07:16Z,I am a developer by profession,Yes,"Not employed, but looking for work",Greater Accra Region,"Ashiaman, Ghana",20 - 25,Once a year,321
+177,2020-11-19T15:47:32Z,2020-11-19T16:09:29Z,I am a student who is learning to code,No,Student,"Central Region, Ghana","Winneba, Ghana",20 - 25,Every few months,1317
+178,2020-11-20T10:40:18Z,2020-11-20T11:01:51Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"accra, Ghana",Below 20,Every few months,1293
+179,2020-11-20T12:19:51Z,2020-11-20T12:31:45Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"mamprobi, Ghana",26 - 30,Every few months,714
+180,2020-11-20T17:49:28Z,2020-11-20T18:07:35Z,I code primarily as a hobby,Yes,"Not employed, but looking for work",Ashanti Region,"Kumasi, Ghana",20 - 25,Every few months,1087
+181,2020-11-20T17:59:55Z,2020-11-20T18:20:07Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"tema, Ghana",20 - 25,Every few months,1212
+182,2020-11-20T18:35:18Z,2020-11-20T18:43:42Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"accra, Ghana",20 - 25,Every few months,504
+183,2020-11-20T18:51:41Z,2020-11-20T19:22:31Z,I am a student who is learning to code,Yes,"Not employed, but looking for work",Greater Accra Region,"accra, Ghana",26 - 30,Every few months,1850
+184,2020-11-20T19:53:33Z,2020-11-20T20:16:21Z,I am a developer by profession,Yes,Employed full-time,Ashanti Region,"Bomso, Ghana",20 - 25,Every few months,1368
+185,2020-11-21T04:50:05Z,2020-11-21T04:53:05Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"La, Ghana",20 - 25,Every few months,180
+186,2020-11-21T09:12:14Z,2020-11-21T09:20:20Z,I code primarily as a hobby,Yes,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"New Gbawe, Ghana",26 - 30,Every few months,486
+187,2020-11-22T09:43:00Z,2020-11-22T09:52:47Z,I am a developer by profession,Yes,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"accra, Ghana",26 - 30,Every few months,587
+188,2020-11-30T15:09:30Z,2020-11-30T15:26:27Z,I am a developer by profession,Yes,Employed part-time,Ashanti Region,"Kumasi, Ghana",20 - 25,Every few months,1017
+189,2020-11-30T15:55:42Z,2020-11-30T16:04:29Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,"Not employed, but looking for work",Ashanti Region,"Kumasi, Ghana",20 - 25,Once every few years,527
+190,2020-11-30T15:56:01Z,2020-11-30T16:09:33Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"teshie, Ghana",20 - 25,This varies depending on work and projects,812
+191,2020-11-30T16:16:31Z,2020-11-30T16:30:22Z,I am a developer by profession,No,"Independent contractor, freelancer, or self-employed",Ashanti Region,"Kumasi, Ghana",20 - 25,Every few months,831
+192,2020-11-30T16:27:11Z,2020-11-30T16:32:08Z,I am a student who is learning to code,Yes,Student,Upper West Region,"Wa, Ghana",20 - 25,This varies depending on work and projects,297
+193,2020-11-30T16:57:35Z,2020-11-30T17:05:54Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"tema, Ghana",20 - 25,Once every few years,499
+194,2020-11-30T17:32:33Z,2020-11-30T17:47:51Z,I am a developer by profession,Yes,"Independent contractor, freelancer, or self-employed",Ashanti Region,"Dichemso, Ghana",20 - 25,Every few months,918
+195,2020-11-30T17:22:42Z,2020-11-30T17:56:59Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"Achimota, Ghana",26 - 30,Once a year,2057
+196,2020-11-30T17:10:31Z,2020-11-30T18:07:44Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"Legon, Ghana",20 - 25,Every few months,3433
+197,2020-11-30T18:40:59Z,2020-11-30T18:56:04Z,None of these,No,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"accra, Ghana",Above 45,,905
+198,2020-11-30T19:31:54Z,2020-11-30T19:40:24Z,I am a developer by profession,Yes,Student,Greater Accra Region,"accra, Ghana",20 - 25,Once a year,510
+199,2020-11-30T20:21:43Z,2020-11-30T20:35:08Z,I code primarily as a hobby,Yes,Employed full-time,Upper West Region,"Wa, Ghana",26 - 30,Once a year,805
+200,2020-11-30T20:28:48Z,2020-11-30T20:50:33Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"Dansoman, Ghana",26 - 30,Once a year,1305
+201,2020-11-30T19:38:12Z,2020-11-30T20:55:24Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"Legon, Ghana",20 - 25,Every few months,4632
+202,2020-11-30T21:48:48Z,2020-11-30T22:05:09Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"Mallam, Ghana",20 - 25,Once a year,981
+203,2020-12-01T04:12:41Z,2020-12-01T04:29:46Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"Madina, Ghana",Below 20,Every few months,1025
+204,2020-12-01T08:36:05Z,2020-12-01T08:51:11Z,I am a developer by profession,Yes,"Not employed, but looking for work",Ashanti Region,"Kumasi, Ghana",20 - 25,Every few months,906
+205,2020-12-01T09:10:53Z,2020-12-01T09:18:11Z,I am a developer by profession,No,Employed full-time,Ashanti Region,"Kumasi, Ghana",26 - 30,Once every few years,438
+206,2020-12-01T08:58:25Z,2020-12-01T09:39:56Z,"I used to be a developer by profession, but no longer am",Yes,Employed full-time,Greater Accra Region,"tema, Ghana",26 - 30,Once every few years,2491
+207,2020-12-01T12:08:28Z,2020-12-01T12:17:58Z,I am a student who is learning to code,No,Student,Greater Accra Region,"adenta, Ghana",20 - 25,Once every few years,570
+208,2020-12-01T15:29:07Z,2020-12-01T15:42:51Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"tema, Ghana",20 - 25,Once every few years,824
+209,2020-12-01T23:41:42Z,2020-12-01T23:59:17Z,I am a developer by profession,No,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"accra, Ghana",26 - 30,Once every few years,1055
+210,2020-12-02T12:33:56Z,2020-12-02T12:38:55Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"Ashiyie, Ghana",20 - 25,Every few months,299
+211,2020-12-02T13:11:05Z,2020-12-02T13:27:03Z,I am a student who is learning to code,Yes,Student,Not in Ghana,"Rabat, Ghana",26 - 30,Every few months,958
+212,2020-12-02T13:42:42Z,2020-12-02T13:58:10Z,I am a student who is learning to code,Yes,"Not employed, but looking for work",Ashanti Region,"Obuasi, Ghana",20 - 25,Every few months,928
+213,2020-12-02T14:21:42Z,2020-12-02T14:33:22Z,I code primarily as a hobby,Yes,"Not employed, but looking for work",Greater Accra Region,"Dansoman, Ghana",26 - 30,Once a year,700
+214,2020-12-02T20:58:02Z,2020-12-02T21:28:00Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,Employed full-time,Ashanti Region,"Kumasi, Ghana",36 - 40,Once every few years,1798
+215,2020-12-03T07:14:54Z,2020-12-03T07:35:30Z,I am a student who is learning to code,No,Student,"Central Region, Ghana","kasoa, Ghana",20 - 25,Every few months,1236
+216,2020-12-03T12:11:13Z,2020-12-03T12:22:11Z,I code primarily as a hobby,Yes,"Not employed, but looking for work",Greater Accra Region,"ablekuma, Ghana",20 - 25,,658
+217,2020-12-03T12:16:17Z,2020-12-03T12:33:54Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,"Not employed, but looking for work",Greater Accra Region,"Ashaley Botwe, Ghana",26 - 30,Once a year,1057
+218,2020-12-03T12:30:01Z,2020-12-03T12:38:22Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"Old Weija, Ghana",20 - 25,Every few months,501
+219,2020-12-03T12:27:04Z,2020-12-03T12:44:57Z,I am a developer by profession,Yes,Employed part-time,"Eastern Region, Ghana","Nkawkaw, Ghana",20 - 25,Once a year,1073
+220,2020-12-03T12:50:18Z,2020-12-03T13:10:39Z,I am a developer by profession,No,National service,Greater Accra Region,"accra, Ghana",20 - 25,Every few months,1221
+221,2020-12-03T13:14:33Z,2020-12-03T14:03:20Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",20 - 25,Every few months,2927
+222,2020-12-03T14:54:33Z,2020-12-03T15:09:44Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"Old Ningo, Ghana",20 - 25,Once a year,911
+223,2020-12-03T12:25:09Z,2020-12-03T15:52:06Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"Ada-Foah, Ghana",31 - 35,Every few months,12417
+224,2020-12-03T21:22:42Z,2020-12-03T21:33:48Z,I am a developer by profession,No,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"Amasaman, Ghana",20 - 25,Every few months,666
+225,2020-12-03T21:40:04Z,2020-12-03T21:49:42Z,I am a student who is learning to code,Yes,Student,Ashanti Region,"Kumasi, Ghana",Below 20,Every few months,578
+226,2020-12-04T13:36:33Z,2020-12-04T13:50:15Z,I am a student who is learning to code,Yes,Employed part-time,Ashanti Region,"Kumasi, Ghana",20 - 25,Every few months,822
+227,2020-12-05T17:28:59Z,2020-12-05T17:36:11Z,I am a student who is learning to code,Yes,"Not employed, but looking for work",Greater Accra Region,"adenta, Ghana",20 - 25,Every few months,432
+228,2020-12-05T18:19:09Z,2020-12-05T18:34:22Z,I am a student who is learning to code,No,Student,"Eastern Region, Ghana","Somanya, Ghana",20 - 25,Every few months,913
+229,2020-12-05T18:31:41Z,2020-12-05T18:41:39Z,I am a developer by profession,Yes,Employed part-time,Greater Accra Region,"accra, Ghana",20 - 25,This varies depending on work and projects,598
+230,2020-12-05T18:11:46Z,2020-12-05T18:47:00Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"Labadi, Ghana",26 - 30,Every few months,2114
+231,2020-12-05T19:00:03Z,2020-12-05T19:15:29Z,I am a student who is learning to code,Yes,Student,Volta Region,"Akatsi, Ghana",20 - 25,Every few months,926
+232,2020-12-05T19:33:57Z,2020-12-05T19:41:06Z,I am a developer by profession,Yes,Employed part-time,Greater Accra Region,"teshie, Ghana",20 - 25,Every few months,429
+233,2020-12-05T19:13:01Z,2020-12-05T20:03:18Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"Madina, Ghana",20 - 25,,3017
+234,2020-12-05T20:08:00Z,2020-12-05T20:18:10Z,I am a student who is learning to code,Yes,Student,Ashanti Region,"Kumasi, Ghana",Below 20,Once a year,610
+235,2020-12-05T22:47:34Z,2020-12-05T22:55:25Z,I am a student who is learning to code,No,Student,Greater Accra Region,"accra, Ghana",20 - 25,Every few months,471
+236,2020-12-05T22:52:11Z,2020-12-05T23:07:43Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,Student,"Eastern Region, Ghana","Mampong, Ghana",20 - 25,Every few months,932
+237,2020-12-06T04:56:56Z,2020-12-06T05:13:06Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"New Ningo, Ghana",Below 20,Every few months,970
+238,2020-12-06T16:23:14Z,2020-12-06T16:36:57Z,I am a student who is learning to code,Yes,"Not employed, but looking for work",Greater Accra Region,"tema, Ghana",20 - 25,Every few months,823
+239,2020-12-06T18:16:03Z,2020-12-06T18:29:53Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"adenta, Ghana",31 - 35,Every few months,830
+240,2020-12-06T18:50:16Z,2020-12-06T19:04:24Z,I am a student who is learning to code,No,Student,Greater Accra Region,"awoshie, Ghana",20 - 25,,848
+241,2020-12-06T23:45:11Z,2020-12-06T23:54:06Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"Gbawe, Ghana",Below 20,Every few months,535
+242,2020-12-07T14:57:03Z,2020-12-07T15:06:24Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"accra, Ghana",Below 20,Every few months,561
+243,2020-12-07T18:47:21Z,2020-12-07T18:58:43Z,I code primarily as a hobby,Yes,National service,Greater Accra Region,"kasoa, Ghana",20 - 25,Every few months,682
+244,2020-12-07T20:18:28Z,2020-12-07T21:05:32Z,I am a developer by profession,Yes,"Independent contractor, freelancer, or self-employed","Eastern Region, Ghana","Koforidua, Ghana",20 - 25,Every few months,2824
+245,2020-12-08T01:34:19Z,2020-12-08T01:46:00Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"Amanfrom, Ghana",Below 20,Every few months,701
+246,2020-12-08T02:58:17Z,2020-12-08T03:16:41Z,I am a developer by profession,No,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"accra, Ghana",20 - 25,Every few months,1104
+247,2020-12-08T07:37:32Z,2020-12-08T07:49:55Z,I am a student who is learning to code,Yes,"Independent contractor, freelancer, or self-employed",Greater Accra Region,"accra, Ghana",26 - 30,Every few months,743
+248,2020-12-08T18:23:55Z,2020-12-08T18:31:41Z,I am a developer by profession,Yes,"Not employed, but looking for work","Western Region, Ghana","Tarkwa, Ghana",Below 20,Every few months,466
+249,2020-12-08T19:11:06Z,2020-12-08T19:23:07Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"adenta, Ghana",20 - 25,Every few months,721
+250,2020-12-08T20:38:07Z,2020-12-08T20:53:03Z,I am a developer by profession,Yes,Employed part-time,Greater Accra Region,"Kwabenya, Ghana",20 - 25,Every few months,896
+251,2020-12-08T21:06:17Z,2020-12-08T21:33:50Z,I am a developer by profession,No,"Not employed, but looking for work","Eastern Region, Ghana","Koforidua, Ghana",20 - 25,Every few months,1653
+252,2020-12-08T13:39:16Z,2020-12-08T22:27:46Z,I am a student who is learning to code,Yes,Employed part-time,Greater Accra Region,"tema, Ghana",20 - 25,Every few months,31710
+253,2020-12-08T22:52:28Z,2020-12-08T23:27:25Z,"I used to be a developer by profession, but no longer am",Yes,Employed full-time,Greater Accra Region,"Legon, Ghana",26 - 30,Once a year,2097
+254,2020-12-09T01:36:24Z,2020-12-09T01:55:20Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"Aplaku New weija, Ghana",20 - 25,Every few months,1136
+255,2020-12-09T10:02:52Z,2020-12-09T10:10:26Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"accra, Ghana",20 - 25,Once a year,454
+256,2020-12-09T10:12:10Z,2020-12-09T10:20:06Z,I am a student who is learning to code,Yes,"Not employed, but looking for work",Greater Accra Region,"adenta, Ghana",20 - 25,,476
+257,2020-12-09T11:46:21Z,2020-12-09T12:10:11Z,"I am not primarily a developer, but I write code sometimes as part of my work",Yes,Employed part-time,Greater Accra Region,"Mallam, Ghana",20 - 25,Every few months,1430
+258,2020-12-09T13:29:59Z,2020-12-09T13:59:22Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"accra, Ghana",20 - 25,Every few months,1763
+259,2020-12-09T19:06:40Z,2020-12-09T19:41:33Z,"I am not primarily a developer, but I write code sometimes as part of my work",No,"Not employed, but looking for work",Greater Accra Region,"Kwabenya, Ghana",26 - 30,Once a year,2093
+260,2020-12-10T01:47:32Z,2020-12-10T02:04:14Z,I am a student who is learning to code,No,Student,Upper East Region,"Bolgatanga, Ghana",20 - 25,Once a year,1002
+261,2020-12-10T05:21:08Z,2020-12-10T05:44:43Z,I am a developer by profession,Yes,Student,Greater Accra Region,"adenta, Ghana",20 - 25,,1415
+262,2020-12-10T13:07:11Z,2020-12-10T13:15:18Z,I am a student who is learning to code,Yes,"Not employed, but looking for work",Greater Accra Region,"ablekuma, Ghana",20 - 25,Once a year,487
+263,2020-12-10T20:39:05Z,2020-12-10T20:52:54Z,I am a developer by profession,No,"Not employed, but looking for work",Greater Accra Region,"Sowutuom, Ghana",20 - 25,Every few months,829
+264,2020-12-11T12:10:45Z,2020-12-11T12:27:52Z,None of these,No,Student,Greater Accra Region,"accra, Ghana",20 - 25,Once every few years,1027
+265,2020-12-11T16:35:47Z,2020-12-11T16:40:45Z,I code primarily as a hobby,Yes,Employed part-time,Greater Accra Region,"accra, Ghana",26 - 30,Every few months,298
+266,2020-12-11T17:09:09Z,2020-12-11T17:39:21Z,I am a student who is learning to code,No,"Not employed, but looking for work",Greater Accra Region,"accra, Ghana",20 - 25,Every few months,1812
+267,2020-12-12T12:51:00Z,2020-12-12T13:02:25Z,I am a student who is learning to code,No,"Independent contractor, freelancer, or self-employed",Ashanti Region,"Kumasi, Ghana",31 - 35,Every few months,685
+268,2020-12-12T10:55:28Z,2020-12-12T15:59:17Z,"I am not primarily a developer, but I write code sometimes as part of my work",No,Employed full-time,Greater Accra Region,"accra, Ghana",26 - 30,Once a year,18229
+269,2020-12-12T19:52:50Z,2020-12-12T20:07:02Z,I am a student who is learning to code,Yes,Student,Ashanti Region,"Kumasi, Ghana",20 - 25,Once every few years,852
+270,2020-12-12T22:38:52Z,2020-12-12T22:49:09Z,I am a developer by profession,Yes,Employed part-time,Volta Region,"Ho, Ghana",20 - 25,Once a year,617
+271,2020-12-12T23:10:28Z,2020-12-12T23:33:02Z,I am a developer by profession,No,Employed full-time,Ashanti Region,"Kumasi, Ghana",26 - 30,Every few months,1354
+272,2020-12-13T00:04:21Z,2020-12-13T00:08:41Z,I am a developer by profession,No,Employed full-time,Greater Accra Region,"accra, Ghana",26 - 30,Once a year,260
+273,2020-12-13T09:29:11Z,2020-12-13T09:45:01Z,I am a student who is learning to code,Yes,"Independent contractor, freelancer, or self-employed",Ashanti Region,"Kumasi, Ghana",20 - 25,Every few months,950
+274,2020-12-13T12:38:39Z,2020-12-13T12:54:47Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"ablekuma, Ghana",20 - 25,Once every few years,968
+275,2020-12-13T12:55:44Z,2020-12-13T13:18:15Z,I am a student who is learning to code,Yes,Student,Greater Accra Region,"ablekuma, Ghana",20 - 25,Once every few years,1351
+276,2020-12-13T17:18:20Z,2020-12-13T17:29:23Z,I am a student who is learning to code,Yes,Student,"Eastern Region, Ghana","Akosombo, Ghana",20 - 25,Once a year,663
+277,2020-12-13T21:22:06Z,2020-12-13T21:35:58Z,I am a developer by profession,Yes,Employed full-time,Greater Accra Region,"Madina, Ghana",20 - 25,Every few months,832

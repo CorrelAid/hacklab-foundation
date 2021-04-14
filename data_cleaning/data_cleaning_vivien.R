@@ -25,8 +25,10 @@ colnames(skills)
 
 #transforming into long format
 skills <- pivot_longer(skills, cols = 2:55, names_to = "tool", values_to = "level")
-head(skills)
-#maybe we should replace n/a by 0?
+
+#Exporting the seperate dataframe for the skills
+export(skills, "~/CorrelAid/hacklab-foundation/data/clean/skills.csv")
+export(skills, "~/CorrelAid/hacklab-foundation/data/clean/skills.rds")
 
 
 #Creating a dataframe without the skills 
@@ -215,3 +217,7 @@ cleaned_data$new_tool_7 <- recode(cleaned_data$new_tool_7,
 #ordering the levels
 cleaned_data$new_tool_7 <- factor(cleaned_data$new_tool_7, 
                                    levels(cleaned_data$new_tool_7)[c(2,6,7,5,1,4,8)])
+#exporting the cleaned data
+export(cleaned_data, "~/CorrelAid/hacklab-foundation/data/clean/clean_Q1-Q7.csv")
+export(cleaned_data, "~/CorrelAid/hacklab-foundation/data/clean/clean_Q1-Q7.rds")
+
