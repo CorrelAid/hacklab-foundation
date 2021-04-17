@@ -1,6 +1,6 @@
 # Data Cleaning Sofia
 
-raw_data <- rio::import("../data/raw/census-base-anonymized-2020_without_parsing_errors.xlsx")
+raw_data <- rio::import("C:/Users/sofia/Desktop/Hacklab Foundation/hacklab-foundation/data/raw/census-base-anonymized-2020_without_parsing_errors.xlsx")
 
 library(tidyverse)
 library(dplyr)
@@ -8,32 +8,36 @@ library(plyr)
 
 
 ####### Renaming variables #############
-raw_data <-raw_data %>% rename(company_size_23 = 'Approximately how many people are employed by the company or organization you currently work for?',
-                               prim_opsyst_14 = 'What is the primary operating system in which you work?',
-                               rather_opsyst_15 = 'In which operating system would you rather work?',
-                               purch_influence_16 = 'What level of influence do you, personally, have over new technology purchases at your organization?',
-                               solution_research_17 = 'When buying a new tool or software, how do you discover and research available solutions? Select all that apply.',
-                               highest_edu_18 = 'Which of the following best describes the highest level of formal education that you have completed?',
-                               prim_study_19 = 'What was your primary field of study?',
-                               edu_importance_20 = 'How important is a formal education, such as a university degree in computer science, to your career?',
-                               change_edu_21 = 'From Q18, if you could go back and change your educational path (but end up in the same career), what would you change?',
-                               job_satisfaction_22 = 'How satisfied are you with your current job? (If you work multiple jobs, answer for one you spend the most hours on.)')
+raw_data <-raw_data %>% select (company_size_23 = `Approximately how many people are employed by the company or organization you currently work for?`,
+                               prim_opsyst_14 = `What is the primary operating system in which you work?`,
+                               rather_opsyst_15 = `In which operating system would you rather work?`,
+                               purch_influence_16 = `What level of influence do you, personally, have over new technology purchases at your organization?`,
+                               solution_research_17 = `When buying a new tool or software, how do you discover and research available solutions? Select all that apply.`,
+                               highest_edu_18 = `Which of the following best describes the highest level of formal education that you have completed?`,
+                               prim_study_19 = `What was your primary field of study?`,
+                               edu_importance_20 = `How important is a formal education, such as a university degree in computer science, to your career?`,
+                               change_edu_21 = `From Q18, if you could go back and change your educational path (but end up in the same career), what would you change?`,
+                               job_satisfaction_22 = `How satisfied are you with your current job? (If you work multiple jobs, answer for one you spend the most hours on.)`,
+                               other_technology_13 = `If there are any other technologies you've worked with this year or plan to work with next year that were not listed, please list them as follows, separated by commas. \r\n\r\neg. JavaScript - this year...`,
+                               ID = ID)
 
+raw_data$other_technology_13<-stringr::str_replace_all(raw_data$other_technology_13, "[\r\n]" , "")
 
+View(raw_data$other_technology_13)
 
 #### Converting variables into factors #######
-raw_data$prim_study<-as.factor(raw_data$prim_study)
-raw_data$highest_edu<-as.factor(raw_data$highest_edu)
-raw_data$company_size<-as.factor(raw_data$company_size)
-raw_data$change_edu<-as.factor(raw_data$change_edu)
-
+raw_data$prim_study_19<-as.factor(raw_data$prim_study_19)
+raw_data$highest_edu_18<-as.factor(raw_data$highest_edu_18)
+raw_data$company_size_23<-as.factor(raw_data$company_size_23)
+raw_data$change_edu_21<-as.factor(raw_data$change_edu_21)
+raw_data$other_technology_13<-as.factor(raw_data$other_technology_13)
 
 ############# Recoding factor levels of variables ############
 
 
 ### Primary Study
 
-raw_data$prim_study <- recode(raw_data$prim_study, 
+raw_data$prim_study_19 <- recode(raw_data$prim_study_19, 
                               "Agricultural science" = "Agricultural_Science", 
                               "Agricultural Science" ="Agricultural_Science" ,
                               "Agricultural Engineering" ="Agricultural_Science" ,
@@ -71,13 +75,13 @@ raw_data$prim_study <- recode(raw_data$prim_study,
                               "Web development or web design" = "Web_Development_Web_Design",
                               "Mathematics or statistics" = "Mathematics_Statistics"
 )
-table(raw_data$prim_study)
+table(raw_data$prim_study_19)
 
 
 
 ### Highest Education
 
-raw_data$highest_edu <- recode(raw_data$highest_edu, 
+raw_data$highest_edu_18 <- recode(raw_data$highest_edu_18, 
                                "Bachelor's degree" = "Bachelor", 
                                "Master's degree" = "Master",
                                "Higher National Diploma" = "Higher_National_Diploma",
@@ -93,11 +97,11 @@ raw_data$highest_edu <- recode(raw_data$highest_edu,
                                "Professional degree" = "Professional_Diploma"
 )
 
-table(raw_data$highest_edu)
+table(raw_data$highest_edu_18)
 
 ### Company Size
 
-raw_data$company_size <- recode(raw_data$company_size, 
+raw_data$company_size_23 <- recode(raw_data$company_size_23, 
                                 "Can't really tell" = "NA", 
                                 "Just me - I am a freelancer, sole proprietor, etc." = "1",
                                 "Not employed" = "NA",
@@ -137,7 +141,7 @@ raw_data$company_size <- recode(raw_data$company_size,
 #   Below 20   Over 100  Over 1000   Below 10  Below 100 Over 20000   Over 500    NA          1 
 #   28         11          4         52         60          1          6          8         49
 
-table(raw_data$company_size)                               
+table(raw_data$company_size_23)                               
 ######
 
 
@@ -145,7 +149,7 @@ table(raw_data$company_size)
 
 #### Changing Education in hindsight
 
-raw_data$change_edu <- recode(raw_data$change_edu, 
+raw_data$change_edu_21 <- recode(raw_data$change_edu_21, 
                               "I won't change" = "Nothing",
                               "I won't change a thing" = "Nothing",
                               "I'm good" = "Nothing", 
@@ -225,21 +229,75 @@ raw_data$change_edu <- recode(raw_data$change_edu,
                               "I wouldn't do university, but training in web development" = "I woud not go to university"
 )
 
+################ Other technologies ###########
+
+### Clean the comments with -both, -next year etc
+raw_data$other_technology_13 <- recode(raw_data$other_technology_13,
+                                 "Elixir - this both, Golang- both" = "Elixir - both, Golang - both",
+                                 "Python-both" = "Python - both",
+                                 "Flask-both" = "Flask - both",
+                                 "Golang - next year , AWS - next year , Google Cloud Platform - next year , Android - next year , IOS - next year" = "Golang - next year, AWS - next year, Google Cloud Platform - next year, Android - next year",
+                                 "Golang - next year, python - next year" = "Golang - next year, Python - next year",
+                                 "Python - next year 1" = "Python - next year",
+                                 "Javascript -both, java/kotlin -both, python -both," = "JavaScript - both, Java - both, Kotlin - both, Python - both",
+                                 "Python- this year , Ruby- next year" = "Python - this year",
+                                 "Python-this year" = "Python - this year",
+                                 "python - this year" = "Python - this year",
+                                 "Python and Solidity - this yearJavaScript-next year" = "Python - this year, Solidity - this year, JavaScript - next year",
+                                 "Python Flask- Both" = "Flask - both",
+                                 "Python, Angular, Vue - Next YearAI, Intelligent Apps - Some Few Years To Come" = "Python - next year, Angular - next year",
+                                 "Rust - This year" = "Rust - this year",
+                                 "Bash shell script - both, rust - next year" = "Bash shell script - both, Rust - next year",
+                                 "MATLAB - Both" = "MATLAB - both",
+                                 "Sails,js - both" = "Sails.js - both",
+                                 "Scala -both,  Golang-next year." = "Scala - both, Golang - next year",
+                                 "XD-this year" = "XD - this year",
+                                 "Golang - bothocaml - bothblockchain -both" = "Golang - both, Ocaml - both, Blockchain - both",
+                                 "Nodejs - next year" ="Node.js - next year",
+                                 "Python - bothJavaScript - next year" = "JavaScript - next year",
+                                 "Flask-Restful - both" = "Flask - both",
+                                 "JavaScript - both Python - next year" = "JavaScript - both, Python - next year")
+                                 
+### Clean the comments without -both, -next year etc                                
+raw_data$other_technology_13 <- recode(raw_data$other_technology_13,
+                                       "Javascript" = "JavaScript",
+                                       "JavaScript , python" = "JavaScript, Python",
+                                       "JavaScript, React Js, React native, HTML, CSS, Flask" = "JavaScript, HTML, CSS, Flask",
+                                       "Sckitlearn, R," = "Sckit-learn, R",
+                                       "Python, IoT,AI" = "Python, Internet-of-Things, AI",
+                                       "python, JavaScript" = "Python, JavaScript")
+raw_data$other_technology_13<-na_if(raw_data$other_technology_13, "None")
+raw_data$other_technology_13<-na_if(raw_data$other_technology_13, "Python -both")
+raw_data$other_technology_13<-na_if(raw_data$other_technology_13, "Javascript - next year, python - both, c++-both")
+                                 
+View(raw_data$other_technology_13)
+
+### Splitting strings of other technology 13
+other_technology_13_split<-raw_data%>% select(other_technology_13, ID) %>%
+  separate_rows(other_technology_13, sep = ", ")
+View(other_technology_13_split)
+
+raw_data$other_technology_13_char<-as.character(raw_data$other_technology_13)
+class(raw_data$other_technology_13_char)
+
+
+
 
 ############## Splitting Strings of Solution_Research ################## 
-s <- strsplit(raw_data$solution_research, split = ";")
-clean_long_data<-data.frame(ID = rep(c(raw_data$ID, sapply(s, length)), solution_research = unlist(s))
-                            View(clean_long_data)
+s <- strsplit(raw_data$solution_research_17, split = ";")
+clean_long_data<-data.frame(ID = rep(c(raw_data$ID, sapply(s, length)), solution_research_17 = unlist(s)))
+
+
                             
-                            clean_data <- raw_data %>% select(prim_study, highest_edu, company_size, change_edu, ID)
+clean_data <- raw_data %>% select(prim_study_19, highest_edu_18, company_size_23, change_edu_21, ID)
                             
+View(clean_long_data)                           
                             
-                            
-                            
-                            
-                            
-                            
-                            
+
+
+
+
+
                             
                             
                             
@@ -247,10 +305,11 @@ clean_long_data<-data.frame(ID = rep(c(raw_data$ID, sapply(s, length)), solution
 final2<-rbind.fill(long_dat, clean_data)
 final<-merge(long_dat, clean_data, by="ID", all.x=TRUE, all.y=FALSE)
 View(final)
-FINAL<-complete(clean_data, ID, highest_edu) %>%
+FINAL<-complete(clean_data, ID, highest_edu_18) %>%
                               inner_join(., long_dat)
 
 library(gtools)
 FINAL1<-smartbind(long_dat, clean_data)
 View(FINAL1)
+                            
                             
