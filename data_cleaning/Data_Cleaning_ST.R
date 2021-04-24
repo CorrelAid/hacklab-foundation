@@ -1,10 +1,10 @@
 # Data Cleaning Sofia
 
-raw_data <- rio::import("C:/Users/sofia/Desktop/Hacklab Foundation/hacklab-foundation/data/raw/census-base-anonymized-2020_without_parsing_errors.xlsx")
+raw_data <- rio::import("C:/Users/Shai Lavi/Desktop/Sofia Correlaid/hacklab-foundation/data/raw/census-base-anonymized-2020_without_parsing_errors.xlsx")
 
 library(tidyverse)
 library(dplyr)
-library(plyr)
+
 
 
 ####### Renaming variables #############
@@ -273,12 +273,32 @@ raw_data$other_technology_13<-na_if(raw_data$other_technology_13, "Javascript - 
 View(raw_data$other_technology_13)
 
 ### Splitting strings of other technology 13
-other_technology_13_split<-raw_data%>% select(other_technology_13, ID) %>%
+other_technology_13_split1<-raw_data%>% select(other_technology_13, ID) %>%
   separate_rows(other_technology_13, sep = ", ")
-View(other_technology_13_split)
+View(other_technology_13_split1)
 
-raw_data$other_technology_13_char<-as.character(raw_data$other_technology_13)
-class(raw_data$other_technology_13_char)
+
+
+library(stringr)
+other_technology_13_split2<-str_split_fixed(other_technology_13_split1$other_technology_13, " - ", 2)
+
+
+other_technology_13_split3<-cbind(other_technology_13_split1, other_technology_13_split2)
+View(other_technology_13_split3)
+other_technology_13_final<-other_technology_13_split3 %>%  select("1", "2", ID) %>%
+  rename(tool = "1",
+         level = "2")
+View(other_technology_13_final)
+other_technology_13_final <- other_technology_13_final$level[other_technology_13_final$level == ""] <- NA
+other_technology_13_final <- other_technology_13_final$tool[other_technology_13_final$tool == ""] <- NA
+  
+other_technology_13_final %>%
+  mutate(level2 = if_else(is.na(level) == TRUE & 
+                            tool == "Golang", 
+                          "both", "no"))
+View(other_technology_final)
+
+is.na(other_technology_final$level)
 
 
 
