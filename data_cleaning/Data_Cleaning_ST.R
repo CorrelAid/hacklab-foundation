@@ -308,6 +308,14 @@ other_technology_13_def <- other_technology_13_final_final %>% select(level, ID,
 View(other_technology_13_def)
 
 
+# recode
+other_technology_13_def$level <- recode(other_technology_13_def$level,
+                     "next year" = "Want to work with NEXT year",
+                     "both" = "Both"
+                     "Python-"
+
+table(other_technology_13_def$level)
+
 ############## Splitting Strings of Solution_Research ################## 
 s <- strsplit(raw_data$solution_research_17, split = ";")
 clean_long_data<-data.frame(ID = rep(c(raw_data$ID, sapply(s, length)), solution_research_17 = unlist(s)))
