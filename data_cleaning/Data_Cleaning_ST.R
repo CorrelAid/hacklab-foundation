@@ -287,20 +287,25 @@ other_technology_13_split3<-cbind(other_technology_13_split1, other_technology_1
 View(other_technology_13_split3)
 other_technology_13_final<-other_technology_13_split3 %>%  select("1", "2", ID) %>%
   rename(tool = "1",
-         level = "2")
+         level = "2") %>%
+  mutate(tool = na_if(tool, "")) %>%
+  mutate(level = na_if(level, ""))
+
 View(other_technology_13_final)
-other_technology_13_final <- other_technology_13_final$level[other_technology_13_final$level == ""] <- NA
-other_technology_13_final <- other_technology_13_final$tool[other_technology_13_final$tool == ""] <- NA
-  
-other_technology_13_final %>%
-  mutate(level2 = if_else(is.na(level) == TRUE & 
-                            tool == "Golang", 
-                          "both", "no"))
-View(other_technology_final)
 
-is.na(other_technology_final$level)
+other_technology_13_final_final<-other_technology_13_final %>%
+  mutate(level2 = if_else(is.na(level) == TRUE & is.na(tool) == FALSE, 
+                          "both", "")) %>%
+  mutate(level2 = na_if(level2, ""))
+View(other_technology_13_final_final)
 
+#coalesce 
+other_technology_13_final_final$level <- with(other_technology_13_final_final, coalesce(level,level2))
 
+View(other_technology_13_final_final)
+
+other_technology_13_def <- other_technology_13_final_final %>% select(level, ID, tool)
+View(other_technology_13_def)
 
 
 ############## Splitting Strings of Solution_Research ################## 
