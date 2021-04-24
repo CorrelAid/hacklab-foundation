@@ -1,0 +1,131 @@
+---
+title: "Hacklab Report"
+output: 
+  html_document:
+    theme: darkly # select theme, I like darkly
+    toc: true     # adding table of contents
+    toc_float: true # floating table of contents
+---
+```{css, echo=FALSE}
+p {                 
+  font-size: 1vw;
+  font-family: "Gotham", Gotham, sans-serif;
+}
+
+body {               
+  background-color: #610b70;
+}
+
+h1 {             
+  font-size: 2vw;
+  color: #88b101;
+  font-weight: bold;
+}
+
+h2 {            
+  color: #eb1c96;
+}
+```
+<!-- 
+highest header (h1) styling (Header indicated by #)
+subheader (h2) styling (Header indicated by ##)
+body = background
+vw is for responsive font size
+-->
+
+
+```{table of contents, echo=FALSE}
+toc_container {
+    background: #f9f9f9 none repeat scroll 0 0;
+    border: 1px solid #aaa;
+    display: table;
+    font-size: 100px;
+    margin-bottom: 1em;
+    padding: 20px;
+    width: auto;
+}
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(bslib)
+```
+
+# Themes
+Themes to choosefrom: <br>
+flatly, darkly, readable, spacelab, united, cosmo, lumen, paper, sandstone, simplex, and yeti.
+
+```{r cars}
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# Another header 1
+Text text <br>
+Text text <br>
+Text text <br>
+Text text <br>
+Text text <br>
+Text text <br>
+Text text <br>
+Text text <br>
+
+## Data Overview {.tabset .tabset-fade  .tabset-pills .pad}
+```{css tab colors, echo=FALSE}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    color: #eb1c96;
+}
+```
+
+<!-- tabset-pills is the background color of the button
+.tabset-fade indicates whether the button should fade when clicking on the button
+.tabset is the command to create a button/tab
+-->
+
+Glimpse and Summary give us a quick overview. Helpers are functions we'll use later on. 
+
+<br><br>
+
+### Button1
+
+Although the number of unique job ads is fairly modest, there is some very rich data to explore. We have over a year's worth of data, ranging between
+
+```{r}
+
+```
+
+
+### Button2
+
+Summary for each variable (only included R and Python here, as other languages (along with R and Python) are explored more deeply later.
+
+```{r}
+
+```
+
+
+### Button3
+
+Some functions are defined here for later use.
+
+### Button4 with subtabs {.tabset}
+#### Tab Nr 1{.tabset}
+(tab1 content)
+
+##### Subtab
+(subtab content)
+
+#### Tab Nr 2
+(tab2 content)
+<!-- Important to note: Buttons need to be one level below the title
+-->
+
