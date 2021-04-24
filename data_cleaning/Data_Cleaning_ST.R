@@ -1,10 +1,10 @@
 # Data Cleaning Sofia
 
-raw_data <- rio::import("C:/Users/Shai Lavi/Desktop/Sofia Correlaid/hacklab-foundation/data/raw/census-base-anonymized-2020_without_parsing_errors.xlsx")
+raw_data <- rio::import("~/hacklab-foundation/data/raw/census-base-anonymized-2020_without_parsing_errors.xlsx")
 
 library(tidyverse)
 library(dplyr)
-
+library(stringr)
 
 
 ####### Renaming variables #############
@@ -272,49 +272,58 @@ raw_data$other_technology_13<-na_if(raw_data$other_technology_13, "Javascript - 
                                  
 View(raw_data$other_technology_13)
 
-### Splitting strings of other technology 13
+### Splitting strings of other technology 13 with mutliple technologies listed into multiple rows
 other_technology_13_split1<-raw_data%>% select(other_technology_13, ID) %>%
   separate_rows(other_technology_13, sep = ", ")
-View(other_technology_13_split1)
 
-
-
-library(stringr)
+# split the tool from the level by -
 other_technology_13_split2<-str_split_fixed(other_technology_13_split1$other_technology_13, " - ", 2)
 
-
+# merge with tool, level and ID together into one data frame
 other_technology_13_split3<-cbind(other_technology_13_split1, other_technology_13_split2)
-View(other_technology_13_split3)
+
+# rename 1 and 2 to tool and level, mutate "" to NA
 other_technology_13_final<-other_technology_13_split3 %>%  select("1", "2", ID) %>%
   rename(tool = "1",
          level = "2") %>%
   mutate(tool = na_if(tool, "")) %>%
   mutate(level = na_if(level, ""))
 
-View(other_technology_13_final)
-
+# assign level as "both" if participants didn't specify when they used the tool
 other_technology_13_final_final<-other_technology_13_final %>%
   mutate(level2 = if_else(is.na(level) == TRUE & is.na(tool) == FALSE, 
                           "both", "")) %>%
-  mutate(level2 = na_if(level2, ""))
-View(other_technology_13_final_final)
+  mutate(level2 = na_if(level2, "")) 
 
-#coalesce 
-other_technology_13_final_final$level <- with(other_technology_13_final_final, coalesce(level,level2))
+# merge the newly generated "both" from column "level2" with column "level"
+other_technology_13_final_final$level3<- with(other_technology_13_final_final, paste0(level, level2))
 
-View(other_technology_13_final_final)
+# remove all NA strings that were created by the assignment
+other_technology_13_FINAL<-other_technology_13_final_final %>%
+  mutate(level3 = str_remove_all(level3, "NA")) %>%
+  mutate(level = level3) %>%
+  mutate(id = ID) %>%
+  select(id, tool, level)
+   
 
-other_technology_13_def <- other_technology_13_final_final %>% select(level, ID, tool)
-View(other_technology_13_def)
-
-
-# recode
-other_technology_13_def$level <- recode(other_technology_13_def$level,
+View(other_technology_13_FINAL)
+# recode cell values
+other_technology_13_FINAL$level <- recode(other_technology_13_FINAL$level,
                      "next year" = "Want to work with NEXT year",
-                     "both" = "Both"
-                     "Python-"
+                     "both" = "Both",
+                     "this year" = "Worked with it THIS year")
 
-table(other_technology_13_def$level)
+
+
+
+
+# merge with skills data set
+skills<- rio::import("data/clean/skills.csv")
+skills_final <- rbind(other_technology_13_FINAL, skills) 
+write.csv(skills_final,'skills_final.csv')
+
+
+
 
 ############## Splitting Strings of Solution_Research ################## 
 s <- strsplit(raw_data$solution_research_17, split = ";")
@@ -330,19 +339,8 @@ View(clean_long_data)
 
 
 
-
                             
                             
                             
-############### Failed attempts to merge both data sets (clean_data and clean_long_data) ######################
-final2<-rbind.fill(long_dat, clean_data)
-final<-merge(long_dat, clean_data, by="ID", all.x=TRUE, all.y=FALSE)
-View(final)
-FINAL<-complete(clean_data, ID, highest_edu_18) %>%
-                              inner_join(., long_dat)
-
-library(gtools)
-FINAL1<-smartbind(long_dat, clean_data)
-View(FINAL1)
-                            
+      
                             
