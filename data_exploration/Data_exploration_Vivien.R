@@ -2,6 +2,7 @@ library(rio)
 library(tidyverse)
 library(tmaptools)
 library(leaflet)
+library(scales)
 
 
 clean_data <- import("~/CorrelAid/hacklab-foundation/data/clean/clean_all_Qs.rds")
@@ -14,6 +15,17 @@ clean_data %>%
   ggplot(aes(x = reorder(profession_1, n), y = n)) + 
   geom_col() + 
   coord_flip()
+
+#Only for developers in Ghana
+data_ghana <- clean_data %>%
+  filter(region_4 != "Not in Ghana")
+
+data_ghana %>% 
+  count(profession_1) %>%
+  ggplot(aes(x = reorder(profession_1, n), y = n)) + 
+  geom_col() + 
+  coord_flip()
+#Filtering for country does not really make sense, because there are only 4 respondents outside of Ghana
 
 #Hobby----
 clean_data %>% 
@@ -71,19 +83,87 @@ clean_data %>%
   geom_col() +
   coord_flip()
 
+#Most developers are between 20 and 25
+
 #profession grouped by age range
 clean_data %>% 
   group_by(profession_1, age_range_6) %>%
   summarise(n = n()) %>%
-  ggplot(aes(x = reorder(profession_1, n), y = n, fill = age_range_6)) + 
+  ggplot(aes(x = age_range_6, y = n, fill = profession_1)) + 
   geom_bar(stat = "identity") + 
   coord_flip()
 
+#Most of the younger respondents were students, but there are also a lot of developers at ages 20 to 25
+
 ###Gender ----
+clean_data %>%
+  ggplot(aes(x = gender_35)) + 
+  geom_bar(aes(y = (..count..)/sum(..count..))) + 
+  coord_flip()
+
 #Employment grouped by gender
-clean_data %>% 
+gender_data %>% 
   group_by(gender_35, employment_3) %>%
   summarise(n = n()) %>%
   ggplot(aes(x = reorder(employment_3, n), y = n, fill = gender_35)) + 
   geom_bar(stat = "identity") + 
   coord_flip() 
+#less women responded the survey, women seem to be self-employed less often
+
+#Only developers 
+clean_data %>%
+  filter(profession_1 == "I am a developer by profession" & gender_35 != "NA") %>%
+  ggplot(aes(x = gender_35)) + 
+  geom_bar(aes(y = (..count..)/sum(..count..)))+ 
+  coord_flip()
+
+#Only students
+levels(clean_data$profession_1)
+clean_data %>%
+  filter(profession_1 == "I am a student who is learning to code") %>%
+  ggplot(aes(x = gender_35)) + 
+  geom_bar(aes(y = (..count..)/sum(..count..))) + 
+  coord_flip()
+
+#There is a greater share of women in students 
+#May indicate that Ghana's developer community is becoming more representative
+
+#Transgender
+clean_data %>%
+  count(transgender_36) %>%
+  ggplot(aes(x = transgender_36, y = n)) + 
+  geom_col() + 
+  coord_flip()
+
+#Sexual orientation ----
+clean_data %>%
+  filter(sexual_orientation_37 != "NA" & sexual_orientation_37 != "Prefer not to say") %>%
+  count(sexual_orientation_37) %>%
+  ggplot(aes(x = reorder(sexual_orientation_37, n), y = n)) + 
+  geom_col() + 
+  coord_flip()
+
+#Ethnicity --- 
+clean_data %>% 
+  filter(ethnicity_38 != "NA" & ethnicity_38 != "I prefer not to answer") %>%
+  count(ethnicity_38) %>%
+  ggplot(aes(x = reorder(ethnicity_38, n), y = n)) + 
+  geom_col()+ 
+  coord_flip()
+
+#Disabilities ---- 
+clean_data %>%
+  count(disabilitys_39) %>%
+  ggplot(aes(x = disabilitys_39, y = n))+ 
+  geom_col() + 
+  coord_flip()
+
+clean_data %>%
+  count(mental_illness_40) %>%
+  ggplot(aes(x = mental_illness_40, y = n))+ 
+  geom_col() + 
+  coord_flip()
+
+#Unsure what to do with these variables
+#maybe have a graph with one bar for disabilities and one for psychiatric disorders? 
+#Cleaning needed 
