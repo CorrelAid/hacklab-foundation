@@ -1,0 +1,35 @@
+---
+title: "Technology and Tech Culture"
+description: |
+  Exploring and trying to find insights for questions 7 to 17
+# author:
+#   - name: Nora Jones 
+#     url: https://example.com/norajones
+#     affiliation: Spacely Sprockets
+#     affiliation_url: https://example.com/spacelysprokets
+
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(tidyverse)
+library(ggiraph)
+
+Qs <- rio::import("../../data/clean/clean_all_Qs.rds")
+skills <- rio::import("../../data/clean/skills_final.csv") %>% select(-V1)
+
+
+
+```
+
+Distill is a publication format for scientific and technical writing, native to the web. 
+
+Learn more about using Distill for R Markdown at <https://rstudio.github.io/distill>.
+
+
+
+
+
