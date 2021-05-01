@@ -64,17 +64,38 @@ clean_data %>%
 ##Cities ----
 
 data_city <- cleaned_data %>%
-  select(ID, city_5) %>%
-  filter(!city_5 %in% c("0", "Cincinnati, OH", "Pune, India"))
+  select(ID, city_5, profession_1) %>%
+  filter(!city_5 %in% c("0", "Cincinnati, OH", "Pune, India", "kutunse, Ghana", "Awomaso, Ghana")) 
 
-city_geo <- geocode_OSM(data_city$city_5, as.sf = TRUE, keep.unfound = FALSE)
-map_cities <- leaflet(data = city_geo) %>%
+data_city_geo <- data_city %>%
+  mutate(
+    geocode = geocode_OSM(data_city$city_5, as.sf = TRUE, keep.unfound = TRUE)
+  )
+
+map_cities <- leaflet(data = data_city_geo) %>%
   addTiles() %>% 
-  addMarkers(~ lon, ~ lat, 
-             clusterOptions = markerClusterOptions())
+  addMarkers(~ geocode$lon, ~ geocode$lat, 
+             clusterOptions = markerClusterOptions()) 
 map_cities
 
-colnames(clean_data)
+#Maps grouped for profession 
+city_geo_prof <- data_city_geo %>%
+  filter(profession_1 == "I am a developer by profession")
+
+map_professional <- leaflet(data = city_geo_prof) %>%
+  addTiles() %>% 
+  addMarkers(~ geocode$lon, ~ geocode$lat, 
+             clusterOptions = markerClusterOptions())
+map_professional
+
+city_geo_students <- data_city_geo %>%
+  filter(profession_1 == "I am a student who is learning to code")
+
+map_students <- leaflet(data = city_geo_students) %>%
+  addTiles() %>%
+  addMarkers(~geocode$lon, ~geocode$lat, 
+            clusterOptions = markerClusterOptions())
+map_students
 
 ###age ---
 clean_data %>% 
@@ -164,6 +185,13 @@ clean_data %>%
   geom_col() + 
   coord_flip()
 
+clean_data %>% 
+  group_by(mental_illness_40) %>%
+  tally() 
+
+clean_data %>% 
+  group_by(disabilitys_39) %>%
+  tally() 
 #Unsure what to do with these variables
 #maybe have a graph with one bar for disabilities and one for psychiatric disorders? 
 #Cleaning needed 
