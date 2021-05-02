@@ -46,12 +46,21 @@ colnames(clean_data)
 
 ###Region ----
 #Map for regions
-cleaned_data$region_4 <- as.character(cleaned_data$region_4)
-region_geo <- geocode_OSM(cleaned_data$region_4, as.sf = TRUE, keep.unfound = FALSE)
-region_geo
-m_regions <- leaflet(data = region_geo) %>%
-  addTiles() %>%  # Add default OpenStreetMap map tiles
-  addMarkers(~ lon, ~ lat)
+clean_data$region_4 <- as.character(clean_data$region_4)
+region_geo <- geocode_OSM(clean_data$region_4, as.sf = TRUE, keep.unfound = FALSE)
+
+#Including number of occurences for every region
+region_geo_test <- region_geo %>%
+  group_by(query) %>%
+  summarize(n = n(), lat = mean(lat), lon = mean(lon))
+
+#map for regions (very unbalanced)
+m_regions <- leaflet(data = region_geo_test) %>%
+  addTiles() %>%
+  addCircles(~ lon, ~ lat, 
+             weight= 1, 
+             radius = ~n*500, 
+             label = ~query)
 m_regions
 
 #Barplot
@@ -63,22 +72,60 @@ clean_data %>%
 
 ##Cities ----
 
-data_city <- cleaned_data %>%
+#Selecting relevant variables and respondents from Ghana
+data_city <- clean_data %>%
   select(ID, city_5, profession_1) %>%
   filter(!city_5 %in% c("0", "Cincinnati, OH", "Pune, India", "kutunse, Ghana", "Awomaso, Ghana")) 
 
+#Geocoding
 data_city_geo <- data_city %>%
   mutate(
     geocode = geocode_OSM(data_city$city_5, as.sf = TRUE, keep.unfound = TRUE)
   )
 
+#Overall map with clusters (individual icons in violet)
+#maybe we should change the color of the clusters (depends of overall design)
+violet_icon <- makeIcon(
+  iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png", 
+  iconWidth = 24,
+  iconHeight = 32) 
+
 map_cities <- leaflet(data = data_city_geo) %>%
   addTiles() %>% 
   addMarkers(~ geocode$lon, ~ geocode$lat, 
-             clusterOptions = markerClusterOptions()) 
+             clusterOptions = markerClusterOptions(), 
+             icon = violet_icon)
 map_cities
 
-#Maps grouped for profession 
+#Map grouped for profession 
+data_geo_prof <- data_city_geo %>%
+  filter(profession_1 != "None of these")
+  
+data_geo_prof$profession_1 <- recode(data_geo_prof$profession_1, 
+                        "I am a developer by profession" = "Professional Developers", 
+                        "I am not primarily a developer, but I write code sometimes as part of my work" = "Coding at Work",
+                        "I am a student who is learning to code" = "Students", 
+                        "I code primarily as a hobby" = "Hobby", 
+                        "I used to be a developer by profession, but no longer am" = "Retired")
+
+
+Icons_prof <- icons(
+  iconUrl = ifelse(data_geo_prof$profession_1 == "Professional Developers", 
+                   "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png", 
+                   "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png"),
+  iconWidth = 16, iconHeight = 20
+)
+
+#Creating a map with different icons for professionals and non-professionals
+prof_map <- leaflet(data = data_geo_prof) %>%
+  addTiles() %>%
+  addMarkers(~geocode$lon, ~geocode$lat, 
+             icon = ~Icons_prof, 
+             label = ~profession_1)
+prof_map
+
+
+##Map only for professional developers
 city_geo_prof <- data_city_geo %>%
   filter(profession_1 == "I am a developer by profession")
 
@@ -88,6 +135,7 @@ map_professional <- leaflet(data = city_geo_prof) %>%
              clusterOptions = markerClusterOptions())
 map_professional
 
+#Map only for students
 city_geo_students <- data_city_geo %>%
   filter(profession_1 == "I am a student who is learning to code")
 
