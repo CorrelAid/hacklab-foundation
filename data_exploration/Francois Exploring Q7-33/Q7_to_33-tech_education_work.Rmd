@@ -1,0 +1,352 @@
+---
+title: "Technology and Tech Culture + Education, Work, Career"
+description: "Exploring and finding insights for questions 7 to 17 + 18 to 33"
+# author:
+#   - name: Nora Jones 
+#     url: https://example.com/norajones
+#     affiliation: Spacely Sprockets
+#     affiliation_url: https://example.com/spacelysprokets
+
+date: "`r Sys.Date()`"
+output: 
+  distill::distill_article:
+    theme: test_custom_theme.css # loading a custom css (saved in same folder)
+    toc: true # table of contents
+    toc_depth: 2 # only include titles level # and ## in toc
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(tidyverse)
+library(ggiraph)
+
+Qs <- rio::import("../../data/clean/clean_all_Qs.rds")
+skills <- rio::import("../../data/clean/skills_final.csv") %>% select(-V1)
+
+# a theme for the plot
+HL_colors = c("#610b70","#88b101","#eb1c96","#e98403","#454545")
+HL_font = "Open Sans" # !!! Should change and use Gotham !!!
+main_fontsize = 7 
+
+barplot_theme <- function(){
+  # the definition of a custom ggplot theme for our barplots.
+  theme_minimal() + 
+    theme(
+      plot.title = element_text(family = HL_font, size = main_fontsize + 2, color = "black"),
+      # plot.subtitle = element_text(family = HL_font, size = main_fontsize),
+      axis.title = element_text(family = HL_font, size = main_fontsize, color = "black"),
+      axis.text = element_text(family = HL_font, size = main_fontsize, color = "black"),
+      # plot.caption = element_text(hjust = 0, family = my_font, 
+      #                             size = main_fontsize, face= "italic"), #Default is hjust=1 / 0
+      plot.title.position = "plot",  # left-align title
+      # plot.caption.position =  "plot", 
+      panel.grid.minor.x = element_blank(),  # remove useless minor grid
+      panel.grid.major.y = element_blank(),  # remove useless major grid in bar charts
+      panel.grid.major.x = element_blank(),  # remove useless major grid in bar charts
+      axis.title.x = element_blank(), # we do not want an y axis for the barplot, we have labels already
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank()
+      # plot.margin = margin(0.1, 0.1, 0.1, 0.1, unit = "cm")
+    )
+}
+
+basic_barplot <- function(my_df, a_factor, its_values, labels, title){
+  # a function to plot a standard barplot
+  # uses the barplot_theme defined above
+  # needs an (ordered) factor as input, and its values
+  # returns a ggplot
+  current_plot <- ggplot(data = my_df, 
+                         aes(x = fct_reorder({{a_factor}}, {{its_values}}), 
+                             y = {{its_values}})) + 
+    geom_col(fill = HL_colors[1]) + 
+    geom_text(
+      aes(label = {{labels}}, y = {{its_values}} + (0.06*max({{its_values}}))),
+      size = 2
+    ) +
+    scale_y_continuous(labels = scales::percent) +
+    barplot_theme() + 
+    coord_flip() +
+    labs(title = stringr::str_wrap(title,100)) + # automated text wrap in title
+    xlab("") +
+    ylab("")
+  return(current_plot)
+}
+
+compute_perc <- function(my_df, a_factor){
+  # a small function to count a factor and compute the percentages
+  # also return the percentages as char for labelling.
+  my_df %>%
+    count({{a_factor}}) %>%
+    mutate(
+      perc = n/sum(n),
+      perc_label = paste0(as.character(round(perc*100,1)), "%")
+    ) %>% return()
+  
+}
+
+```
+
+
+# TODO
+* add tabs detailing dev and students for "each" plot
+* skills (Q8-13)
+* clean and group Q17, Q21, Q27, Q30, Q31, Q33 (wordcloud again?)
+* histogram for Q24
+* the barplot function should have an option to reorder the factors or not (e.g. Q22, Q23)
+* change font to Gotham
+* try andd make ggiraph work
+* check what StackOverflow did
+* idea: 2D plot with Salary VS Education, Salary VS Field of study, etc.  
+
+
+# Open Questions
+
+* Should we try to compare the respondents to StackOverflow respondents? In other words, highlight the particularities of the Ghanaian tech community?
+
+# Solved Questions
+* Detail results for "All respondents", "Professional Developers", and eventually "Students"? ==> YES
+* Always plot in percentage and do not care about NAs? ==> YES
+
+
+# Some Key Observations
+
+* Q1 - respondents are mostly developers or students. Some also code as a hobby, or part-time in their job. (Nevertheless, most indicate coding as a hobby too in Q.2)
+
+
+# A more detailed look
+
+There are enough professional developers and students so that we could contrast them.  
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, profession_1), 
+              a_factor = profession_1, its_values = perc, labels = perc_label, 
+              title = "Q.1 Which of the following options best describes you today?")
+
+```
+
+## Technology and Tech Culture
+
+### Q7. How frequently do you learn a new language or framework?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, new_tool_7), 
+              a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+              title = "Q7. How frequently do you learn a new language or framework?")
+
+```
+
+### Q14. What is the primary operating system in which you work?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, prim_opsyst_14), 
+              a_factor = prim_opsyst_14, its_values = perc, labels = perc_label, 
+              title = "Q14. What is the primary operating system in which you work?")
+
+```
+
+
+### Q15. In which operating system would you rather work?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, rather_opsyst_15), 
+              a_factor = rather_opsyst_15, its_values = perc, labels = perc_label, 
+              title = "Q15. In which operating system would you rather work?")
+
+```
+
+### Q16. What level of influence do you, personally, have over new technology purchases at your organization?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, purch_influence_16), 
+              a_factor = purch_influence_16, its_values = perc, labels = perc_label, 
+              title = "Q16. What level of influence do you, personally, have over new technology purchases at your organization?")
+
+```
+
+### Q17. When buying a new tool or software, how do you discover and research available solutions? Select all that apply.
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, solution_research_17), 
+              a_factor = solution_research_17, its_values = perc, labels = perc_label, 
+              title = "Q17. When buying a new tool or software, how do you discover and research available solutions?")
+
+```
+
+
+## Education, Work and Career
+
+### Q18. Which of the following best describes the highest level of formal education that you have completed?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, highest_edu_18), 
+              a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
+              title = "Q18. Which of the following best describes the highest level of formal education that you have completed?")
+
+```
+
+### Q19. What was your primary field of study?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, prim_study_19), 
+              a_factor = prim_study_19, its_values = perc, labels = perc_label, 
+              title = "Q19. What was your primary field of study?")
+
+```
+
+### Q20. How important is a formal education, such as a university degree in computer science, to your career?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, edu_importance_20 ), 
+              a_factor = edu_importance_20 , its_values = perc, labels = perc_label, 
+              title = "Q20. How important is a formal education, such as a university degree in computer science, to your career?")
+
+```
+
+### Q21. From Q18, if you could go back and change your educational path (but end up in the same career), what would you change?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+compute_perc(Qs, change_edu_21 )
+
+```
+
+### Q22. How satisfied are you with your current job? (If you work multiple jobs, answer for one you spend the most hours on.)
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, job_satisfaction_22 ), 
+              a_factor = job_satisfaction_22 , its_values = perc, labels = perc_label, 
+              title = "Q22. How satisfied are you with your current job?")
+
+```
+
+### Q23. Approximately how many people are employed by the company or organization you currently work for?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, company_size_23 ), 
+              a_factor = company_size_23 , its_values = perc, labels = perc_label, 
+              title = "Q23. Approximately how many people are employed by the company or organization you currently work for?")
+
+```
+
+### Q24. On average, how many hours per week do you work? Please enter a whole number in the box.
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+compute_perc(Qs, weekly_work_hours_24)
+
+```
+
+### Q25. How often do you work overtime or beyond the formal time expectation of your job?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, overtime_work_25 ), 
+              a_factor = overtime_work_25 , its_values = perc, labels = perc_label, 
+              title = "Q25. How often do you work overtime or beyond the formal time expectation of your job?")
+
+```
+
+### Q26. Do you think your company has a good on-boarding process? (By on-boarding, we mean the structured process of getting you settled in to your new role at a company)
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, company_onboarding_process_26 ), 
+              a_factor = company_onboarding_process_26 , its_values = perc, labels = perc_label, 
+              title = "26. Do you think your company has a good on-boarding process?")
+
+```
+
+### Q27. How could on-boarding at your company be improved?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+compute_perc(Qs, improve_onboarding_27 )
+
+```
+
+### Q28. How much is your monthly salary in Ghana Cedis?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, monthly_salary_28 ), 
+              a_factor = monthly_salary_28 , its_values = perc, labels = perc_label, 
+              title = "Q28. How much is your monthly salary in Ghana Cedis?")
+
+```
+
+### Q29. Which of the following best describes your current job-seeking status?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, job_status_29 ), 
+              a_factor = job_status_29 , its_values = perc, labels = perc_label, 
+              title = "Q29. Which of the following best describes your current job-seeking status?")
+
+```
+
+### Q30. In general, what drives you to look for a new job? Select all that apply.
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, drivers_for_new_jobs_30 ), 
+              a_factor = drivers_for_new_jobs_30 , its_values = perc, labels = perc_label, 
+              title = "Q30. In general, what drives you to look for a new job?")
+
+```
+
+### Q31. When job searching, how do you learn more about a company? Select all that apply.
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, how_learn_about_company_31 ), 
+              a_factor = how_learn_about_company_31 , its_values = perc, labels = perc_label, 
+              title = "Q31. When job searching, how do you learn more about a company?")
+
+```
+
+### Q32. Are you a member of any other online/offline developer communities?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, dev_community_member_32 ), 
+              a_factor = dev_community_member_32 , its_values = perc, labels = perc_label, 
+              title = "Q32. Are you a member of any other online/offline developer communities?")
+
+```
+
+### Q33. Developer communities you are a member of
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+compute_perc(Qs, which_dev_community_33 )
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
