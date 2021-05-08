@@ -145,6 +145,7 @@ map_students <- leaflet(data = city_geo_students) %>%
             clusterOptions = markerClusterOptions())
 map_students
 
+
 ###age ---
 clean_data %>% 
   count(age_range_6) %>%
@@ -165,6 +166,7 @@ clean_data %>%
 #Most of the younger respondents were students, but there are also a lot of developers at ages 20 to 25
 
 ###Gender ----
+
 clean_data %>%
   ggplot(aes(x = gender_35)) + 
   geom_bar(aes(y = (..count..)/sum(..count..))) + 
@@ -243,3 +245,36 @@ clean_data %>%
 #Unsure what to do with these variables
 #maybe have a graph with one bar for disabilities and one for psychiatric disorders? 
 #Cleaning needed 
+
+##Dependents ----
+levels(clean_data$dependents_41)
+basic_barplot(my_df = compute_perc(clean_data, dependents_41),
+               a_factor = dependents_41, its_values = perc, labels = perc_label, 
+               title = "Q41: Do you have any dependents (e.g. children, elders, or others) that you care for?")
+
+#Grouping by gender
+clean_data %>% 
+  filter(dependents_41 != "NA" & dependents_41 != "I prefer not to say") %>%
+  group_by(gender_35, dependents_41) %>%
+  summarise(n= n()) %>%
+  ggplot(aes(x = reorder(dependents_41, n), y = n, fill = gender_35)) + 
+  geom_bar(stat = "identity") + 
+  coord_flip()
+
+
+###Survey length ----
+colnames(clean_data)
+basic_barplot(my_df = compute_perc(clean_data, survey_length_42),
+              a_factor = survey_length_42, 
+              its_values = perc,
+              labels = perc_label, 
+              title = "How long was the survey?")
+
+basic_barplot(my_df = compute_perc(clean_data, survey_difficulty_43),
+              a_factor = survey_difficulty_43, 
+              its_values = perc,
+              labels = perc_label, 
+              title = "How difficult was the survey?")
+
+###Are we using the any final thoughts question? 
+
