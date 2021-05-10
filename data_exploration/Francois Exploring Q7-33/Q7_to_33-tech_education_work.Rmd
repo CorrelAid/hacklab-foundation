@@ -20,7 +20,13 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 
 library(tidyverse)
-library(ggiraph)
+library(ggiraph) # to try "interactive" plots
+
+# library(xaringanExtra)
+# xaringanExtra::use_panelset() # https://github.com/rstudio/distill/issues/11
+# ==> tabset is not working in Distill articles, see: https://github.com/rstudio/distill/issues/11
+# there would be a workaround with xaringanextra: https://pkg.garrickadenbuie.com/xaringanExtra/#/panelset?id=use-in-r-markdown
+# not working with my R version, but that might be a good argument to not use Distill!
 
 Qs <- rio::import("../../data/clean/clean_all_Qs.rds")
 skills <- rio::import("../../data/clean/skills_final.csv") %>% select(-V1)
@@ -90,13 +96,14 @@ compute_perc <- function(my_df, a_factor){
 
 
 # TODO
-* add tabs detailing dev and students for "each" plot
 * skills (Q8-13)
 * clean and group Q17, Q21, Q27, Q30, Q31, Q33 (wordcloud again?)
 * histogram for Q24
+* develop some questions by gender
 * the barplot function should have an option to reorder the factors or not (e.g. Q22, Q23)
+* the barplots should have the same y-axis, at least for the same tabs.
 * change font to Gotham
-* try andd make ggiraph work
+* try and make ggiraph work
 * check what StackOverflow did
 * idea: 2D plot with Salary VS Education, Salary VS Field of study, etc.  
 
@@ -107,7 +114,7 @@ compute_perc <- function(my_df, a_factor){
 
 # Solved Questions
 * Detail results for "All respondents", "Professional Developers", and eventually "Students"? ==> YES
-* Always plot in percentage and do not care about NAs? ==> YES
+* Always plot in percentage and do not care about NAs? ==> YES. __[NOTE]__: for now, the NA are still included in the plots to not lose this info when analyzing. For the final plots, they will have to be removed.  
 
 
 # Some Key Observations
@@ -131,34 +138,102 @@ basic_barplot(my_df = compute_perc(Qs, profession_1),
 
 ### Q7. How frequently do you learn a new language or framework?
 
+
+#### All Respondents
+
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs, new_tool_7), 
               a_factor = new_tool_7, its_values = perc, labels = perc_label, 
-              title = "Q7. How frequently do you learn a new language or framework?")
+              title = "")
 
 ```
 
+#### Professional Developers
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), new_tool_7), 
+              a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+#### Students
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), new_tool_7), 
+              a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+
 ### Q14. What is the primary operating system in which you work?
+
+#### All Respondents
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs, prim_opsyst_14), 
               a_factor = prim_opsyst_14, its_values = perc, labels = perc_label, 
-              title = "Q14. What is the primary operating system in which you work?")
+              title = "")
+
+```
+
+#### Professional Developers
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), prim_opsyst_14), 
+              a_factor = prim_opsyst_14, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+#### Students
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), prim_opsyst_14), 
+              a_factor = prim_opsyst_14, its_values = perc, labels = perc_label, 
+              title = "")
 
 ```
 
 
+
 ### Q15. In which operating system would you rather work?
+
+
+#### All Respondents
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs, rather_opsyst_15), 
               a_factor = rather_opsyst_15, its_values = perc, labels = perc_label, 
-              title = "Q15. In which operating system would you rather work?")
+              title = "")
 
 ```
+
+#### Professional Developers
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), rather_opsyst_15), 
+              a_factor = rather_opsyst_15, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+#### Students
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), rather_opsyst_15), 
+              a_factor = rather_opsyst_15, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
 
 ### Q16. What level of influence do you, personally, have over new technology purchases at your organization?
 
@@ -185,33 +260,102 @@ basic_barplot(my_df = compute_perc(Qs, solution_research_17),
 
 ### Q18. Which of the following best describes the highest level of formal education that you have completed?
 
+#### All Respondents
+
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs, highest_edu_18), 
               a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
-              title = "Q18. Which of the following best describes the highest level of formal education that you have completed?")
+              title = "")
 
 ```
 
+#### Professional Developers
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), highest_edu_18), 
+              a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+#### Students
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), highest_edu_18), 
+              a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+
+
 ### Q19. What was your primary field of study?
+
+#### All Respondents
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs, prim_study_19), 
               a_factor = prim_study_19, its_values = perc, labels = perc_label, 
-              title = "Q19. What was your primary field of study?")
+              title = "")
 
 ```
 
-### Q20. How important is a formal education, such as a university degree in computer science, to your career?
+#### Professional Developers
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), prim_study_19), 
+              a_factor = prim_study_19, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+#### Students
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs, edu_importance_20 ), 
-              a_factor = edu_importance_20 , its_values = perc, labels = perc_label, 
-              title = "Q20. How important is a formal education, such as a university degree in computer science, to your career?")
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), prim_study_19), 
+              a_factor = prim_study_19, its_values = perc, labels = perc_label, 
+              title = "")
 
 ```
+
+
+
+### Q20. How important is a formal education, such as a university degree in computer science, to your career?
+
+#### All Respondents
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, edu_importance_20), 
+              a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+#### Professional Developers
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), edu_importance_20), 
+              a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+#### Students
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), edu_importance_20), 
+              a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+
 
 ### Q21. From Q18, if you could go back and change your educational path (but end up in the same career), what would you change?
 
@@ -248,6 +392,7 @@ basic_barplot(my_df = compute_perc(Qs, company_size_23 ),
 compute_perc(Qs, weekly_work_hours_24)
 
 ```
+
 
 ### Q25. How often do you work overtime or beyond the formal time expectation of your job?
 
@@ -299,13 +444,36 @@ basic_barplot(my_df = compute_perc(Qs, job_status_29 ),
 
 ### Q30. In general, what drives you to look for a new job? Select all that apply.
 
+#### All Respondents
+
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs, drivers_for_new_jobs_30 ), 
-              a_factor = drivers_for_new_jobs_30 , its_values = perc, labels = perc_label, 
-              title = "Q30. In general, what drives you to look for a new job?")
+basic_barplot(my_df = compute_perc(Qs, drivers_for_new_jobs_30), 
+              a_factor = drivers_for_new_jobs_30, its_values = perc, labels = perc_label, 
+              title = "")
 
 ```
+
+#### Professional Developers
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), drivers_for_new_jobs_30), 
+              a_factor = drivers_for_new_jobs_30, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+#### Students
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), drivers_for_new_jobs_30), 
+              a_factor = drivers_for_new_jobs_30, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+
 
 ### Q31. When job searching, how do you learn more about a company? Select all that apply.
 
@@ -336,6 +504,49 @@ compute_perc(Qs, which_dev_community_33 )
 
 ```
 
+
+## Skills
+
+-> some cleaning needed.  
+
+* duplicate names -> clean
+* not same names as original -> revert to original name (no _, capitalized)
+* group as Hacklab did 
+* 
+
+```{r}
+skills %>% count(tool)
+```
+
+
+### Q.8 Which programming, scripting and markup languages have you done extensive development work in over the past year, and which do you want to work in over the next year? (If you both worked with the language and want to continue to do so, please check both)
+
+
+```{r, fig.align='center', out.width = '100%', fig.height=6}
+
+languages = c(
+  "C",			
+  "C#",			
+  "C++",		
+  "HTML/CSS",			
+  "Java",			
+  "JavaScript",			
+  'Kotlin',			
+  "PHP",			
+  "Python",			
+  "Ruby",			
+  "SQL",			
+  "Swift",			
+  "TypeScript"
+)
+
+skills  %>% filter(tool %in% languages) %>% 
+  group_by(tool, level) %>%
+  summarize(n = n()) %>% 
+  arrange(tool, level)
+
+
+```
 
 
 
