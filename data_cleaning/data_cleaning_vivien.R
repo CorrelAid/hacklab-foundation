@@ -10,7 +10,6 @@ library(tmap)
 raw_data <- import("~/CorrelAid/hacklab-foundation/data/raw/census-base-anonymized-2020.xlsx")
 
 ####General preprocessing ----
-raw_data <- clean_names(raw_data)
 
 #Removing names and mails
 head(raw_data)
@@ -18,9 +17,9 @@ raw_data <- raw_data[-c(4:5)]
 colnames(raw_data)
 
 #separate dataframe for tools 
-skills <- cbind(raw_data$id, raw_data[,11:64])
+skills <- cbind(raw_data$ID, raw_data[,11:64])
 head(skills)
-colnames(skills)[1] <- "id"
+colnames(skills)[1] <- "ID"
 colnames(skills)
 
 #transforming into long format
