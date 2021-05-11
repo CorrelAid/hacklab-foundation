@@ -33,7 +33,7 @@ skills <- rio::import("../../data/clean/skills_final.csv") %>% select(-V1)
 
 # a theme for the plot
 HL_colors = c("#610b70","#88b101","#eb1c96","#e98403","#454545")
-HL_font = "Open Sans" # !!! Should change and use Gotham !!!
+HL_font = "sans" # !!! Should change and use Gotham !!!
 main_fontsize = 7 
 
 barplot_theme <- function(){
