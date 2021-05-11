@@ -30,7 +30,13 @@ library(tidyverse) # includes dplyr, tidyr, ggplot2, rio, stringr, ...
 # Data:
 
 Qs <- rio::import("data/clean/clean_all_Qs.rds")
-skills <- rio::import("data/clean/skills_final.csv") %>% select(-V1)
+skills <- rio::import("data/clean/skills_final.csv") %>% 
+  select(-V1) %>%  # artifact due to a save as .csv to remove (at least on a Mac?)
+  mutate_all(na_if,"") # the column 'level' contains blanks ("") instead of NAs -> transform them to NAs.
+ 
+number_of_respondents = dim(Qs)[1] # number of respondents (272) used to compute percentages.
+number_of_prof_dev = dim(Qs %>% filter(profession_1 == "I am a developer by profession"))[1]
+number_of_students = dim(Qs %>% filter(profession_1 == "I am a student who is learning to code"))[1]
 
 
 ```
@@ -90,6 +96,7 @@ basic_barplot <- function(my_df, a_factor, its_values, labels, title){
 compute_perc <- function(my_df, a_factor){
   # a small function to count a factor and compute the percentages
   # also return the percentages as char for labelling.
+  # USE THIS FUNCTION IF THE SUM OF THE ANSWERS IS 272! (including NA) -> not working if several possible choices.
   my_df %>%
     count({{a_factor}}) %>%
     mutate(
@@ -98,6 +105,8 @@ compute_perc <- function(my_df, a_factor){
     ) %>% return()
   
 }
+
+
 
 ```
 
@@ -496,16 +505,13 @@ compute_perc(Qs, which_dev_community_33 )
 # Skills
 
 
+## Which programming, scripting and markup languages have you done extensive development work in over the past year? (Q.8)
+
+* _HTML/CSS_ is most popular, followed by _javascript_, _python_ and _SQL_.
+* not same for dev and student! -> interesting
+
 
 ```{r}
-skills %>% count(tool)
-```
-
-
-## Q.8 Which programming, scripting and markup languages have you done extensive development work in over the past year, and which do you want to work in over the next year? (If you both worked with the language and want to continue to do so, please check both)
-
-
-```{r, fig.align='center', out.width = '100%', fig.height=6}
 
 languages = c(
   "C",			
@@ -523,16 +529,81 @@ languages = c(
   "TypeScript"
 )
 
-skills  %>% filter(tool %in% languages) %>% 
-  group_by(tool, level) %>%
-  summarize(n = n()) %>% 
-  arrange(tool, level)
+# we add characteristics of the respondents to the skills, 
+# so that we can differentiate their poopularity by occupation or gender:
+skills_with_characteristics <- skills %>% left_join(select(Qs, ID, profession_1, gender_35), by = c("id" = "ID"))
+
+compute_perc_popular_skills <- function(the_skills, skillset, number_of_resp){
+  # USE THIS FUNCTION for the skills
+  the_skills %>%
+    filter(tool %in% skillset) %>% # select only the languages from all the tools
+    filter(level == "Worked with in PAST year" | level == "Both") %>%
+    count(tool) %>%
+    mutate(
+      perc = n/number_of_resp,
+      perc_label = paste0(as.character(round(perc*100,1)), "%")
+    ) %>% 
+    arrange(-perc) %>%  
+    return()
+}
 
 
 ```
 
 
+::::: {.panelset}
 
+::: {.panel}
+
+### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = languages,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+
+:::
+
+::: {.panel}
+
+### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = languages,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+### Students {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = languages,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+:::
+
+:::::
 
 
 
