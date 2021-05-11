@@ -1,6 +1,6 @@
 # Data Cleaning Sofia
 
-raw_data <- rio::import("~/hacklab-foundation/data/raw/census-base-anonymized-2020_without_parsing_errors.xlsx")
+raw_data <- rio::import("../../data/raw/census-base-anonymized-2020_without_parsing_errors.xlsx")
 
 library(tidyverse)
 library(dplyr)

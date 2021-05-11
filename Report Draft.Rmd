@@ -493,14 +493,9 @@ compute_perc(Qs, which_dev_community_33 )
 ```
 
 
-## Skills
+# Skills
 
--> some cleaning needed.  
 
-* duplicate names -> clean
-* not same names as original -> revert to original name (no _, capitalized)
-* group as Hacklab did 
-* 
 
 ```{r}
 skills %>% count(tool)
