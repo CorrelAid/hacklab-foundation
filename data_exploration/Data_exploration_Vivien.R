@@ -146,10 +146,10 @@ map_students <- leaflet(data = city_geo_students) %>%
 map_students
 
 
-###age ---
+###age ----
 clean_data %>% 
   count(age_range_6) %>%
-  ggplot(aes(x = reorder(age_range_6, n), y = n)) + 
+  ggplot(aes(x = age_range_6, y = n)) + 
   geom_col() +
   coord_flip()
 
@@ -172,7 +172,15 @@ clean_data %>%
   geom_bar(aes(y = (..count..)/sum(..count..))) + 
   coord_flip()
 
+clean_data %>%
+  count(gender_35) %>%
+  ggplot(aes(x = gender_35, y = n)) + 
+  geom_col()
+
 #Employment grouped by gender
+gender_data <- clean_data %>%
+  filter(gender_35 == "Woman" || gender_35 == "Man")
+
 gender_data %>% 
   group_by(gender_35, employment_3) %>%
   summarise(n = n()) %>%
@@ -181,6 +189,7 @@ gender_data %>%
   coord_flip() 
 #less women responded the survey, women seem to be self-employed less often
 
+levels(clean_data$gender_35)
 #Only developers 
 clean_data %>%
   filter(profession_1 == "I am a developer by profession" & gender_35 != "NA") %>%

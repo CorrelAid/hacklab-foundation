@@ -605,6 +605,60 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 
 :::::
 
+# Demographic Data: Who were the respondents? 
+
+## What describes you best?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, profession_1), 
+              a_factor = profession_1, its_values = perc, labels = perc_label, 
+              title = "")
+```
+
+## Do you code as a hobby? 
+
+::::: {.panelset}
+
+::: {.panel}
+
+### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, hobby_coding_2), 
+              a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+
+:::
+
+::: {.panel}
+
+### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), hobby_coding_2), 
+              a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+### Students {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), hobby_coding_2), 
+              a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
+              title = "")
+
+```
 
 
 
