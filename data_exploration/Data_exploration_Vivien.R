@@ -1,4 +1,3 @@
-library(rio)
 library(tidyverse)
 library(tmaptools)
 library(leaflet)
@@ -41,7 +40,7 @@ clean_data %>%
   ggplot(aes(x = reorder(employment_3, n), y = n)) + 
   geom_col() + 
   coord_flip()
-
+levels(clean_data$employment_3)
 colnames(clean_data)
 
 ###Region ----
