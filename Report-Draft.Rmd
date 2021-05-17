@@ -3,8 +3,9 @@ title: "Hacklab Developer Census 2020"
 output: 
   distill::distill_article:
     toc: true     # adding table of contents
-    toc_depth: 2
+    toc_depth: 1
     toc_float: true
+    toc_collapsed: true
     theme: theme.css
 ---
 
@@ -21,6 +22,9 @@ library(xaringanExtra) # to be able to have tabs. To install: install 'devtools'
 xaringanExtra::use_panelset() # allow the creation of tabs in Distill (see https://github.com/rstudio/distill/issues/11)
 
 library(tidyverse) # includes dplyr, tidyr, ggplot2, rio, stringr, ...
+
+library(leaflet) # for the interactive map
+library(tmaptools) # for geocoding
 
 
 ```
@@ -134,11 +138,215 @@ compute_perc <- function(my_df, a_factor){
 ```
 
 
+# Basic Information
+
+## What describes you best?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, profession_1), 
+              a_factor = profession_1, its_values = perc, labels = perc_label, 
+              title = "")
+```
+
+## Do you code as a hobby? 
+
+::::: {.panelset}
+
+::: {.panel}
+
+### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs, hobby_coding_2), 
+              a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+
+:::
+
+::: {.panel}
+
+### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), hobby_coding_2), 
+              a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+### Students {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), hobby_coding_2), 
+              a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::::
+
+## Employment
+
+```{r}
+
+employment_data <- Qs %>%
+  filter(employment_3 != "I prefer not to say") %>%
+  mutate(
+    employment_3 = factor(employment_3, 
+                          levels(employment_3)[c(4,2,3,6,5,1)])
+  )
+```
+
+
+::::: {.panelset}
+
+::: {.panel}
+
+### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(employment_data, employment_3), 
+              a_factor = employment_3, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+
+:::
+
+::: {.panel}
+
+### Men only {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Man"), employment_3), 
+              a_factor = employment_3, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+### Women only {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Woman"), employment_3), 
+              a_factor = employment_3, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::::
+
+
+
+## Where do the developers come from? 
+
+Zoom in to get a more detailed picture. 
+
+Hover over the individual markers to see the professional status of the respondents. 
+
+```{r, fig.align= 'center', out.width= '100%', fig.height=6}
+
+# the geocoding was done separately in data_cleaning/Geocoding.R
+# (to not lose time everyttime we knitr)
+# we load the result:
+data_city_geo <- rio::import("data/clean/data_city_geo.rds") 
+
+#Map for the cities
+violet_icon <- makeIcon(
+  iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png", 
+  iconWidth = 24,
+  iconHeight = 32) 
+
+leaflet(data = data_city_geo) %>%
+  addTiles() %>% 
+  addMarkers(~ geocode$lon, ~ geocode$lat, 
+             clusterOptions = markerClusterOptions(), 
+             icon = violet_icon, label = ~profession_1)
+```
+
+## How old are the respondents? 
+```{r}
+Qs$age_range_6 <- factor(Qs$age_range_6, levels(Qs$age_range_6)[c(6:1)])
+
+```
+
+::::: {.panelset}
+
+::: {.panel}
+
+### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+barplot_ordered(my_df = compute_perc(Qs, age_range_6), 
+              a_factor = age_range_6, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+
+:::
+
+::: {.panel}
+
+### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), age_range_6), 
+              a_factor = age_range_6, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+### Students {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), age_range_6), 
+              a_factor = age_range_6, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::::
+
+
+
+
+
 
 
 # Technology and Tech Culture
 
-## Q7. How frequently do you learn a new language or framework?
+## How frequently do you learn a new language or framework?
 
 ::::: {.panelset}
 
@@ -187,6 +395,109 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
 :::::
 
 
+
+## Which programming, scripting and markup languages have you done extensive development work in over the past year? (Q.8)
+
+* _HTML/CSS_ is most popular, followed by _javascript_, _python_ and _SQL_.
+* not same for dev and student! -> interesting
+
+
+```{r}
+
+languages = c(
+  "C",			
+  "C#",			
+  "C++",		
+  "HTML/CSS",			
+  "Java",			
+  "JavaScript",			
+  'Kotlin',			
+  "PHP",			
+  "Python",			
+  "Ruby",			
+  "SQL",			
+  "Swift",			
+  "TypeScript"
+)
+
+# we add characteristics of the respondents to the skills, 
+# so that we can differentiate their poopularity by occupation or gender:
+skills_with_characteristics <- skills %>% left_join(select(Qs, ID, profession_1, gender_35), by = c("id" = "ID"))
+
+compute_perc_popular_skills <- function(the_skills, skillset, number_of_resp){
+  # USE THIS FUNCTION for the skills
+  the_skills %>%
+    filter(tool %in% skillset) %>% # select only the languages from all the tools
+    filter(level == "Worked with in PAST year" | level == "Both") %>%
+    count(tool) %>%
+    mutate(
+      perc = n/number_of_resp,
+      perc_label = paste0(as.character(round(perc*100,1)), "%")
+    ) %>% 
+    arrange(-perc) %>%  
+    return()
+}
+
+
+```
+
+
+::::: {.panelset}
+
+::: {.panel}
+
+### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = languages,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+
+:::
+
+::: {.panel}
+
+### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = languages,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+### Students {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = languages,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+:::
+
+:::::
+
+
+=== Q 9 - 13 ===  
 
 
 ## Q14. What is the primary operating system in which you work?
@@ -274,6 +585,14 @@ basic_barplot(my_df = compute_perc(Qs, solution_research_17),
               title = "Q17. When buying a new tool or software, how do you discover and research available solutions?")
 
 ```
+
+
+
+
+
+
+
+
 
 
 # Education, Work and Career
@@ -525,328 +844,7 @@ compute_perc(Qs, which_dev_community_33 )
 ```
 
 
-# Skills
-
-
-## Which programming, scripting and markup languages have you done extensive development work in over the past year? (Q.8)
-
-* _HTML/CSS_ is most popular, followed by _javascript_, _python_ and _SQL_.
-* not same for dev and student! -> interesting
-
-
-```{r}
-
-languages = c(
-  "C",			
-  "C#",			
-  "C++",		
-  "HTML/CSS",			
-  "Java",			
-  "JavaScript",			
-  'Kotlin',			
-  "PHP",			
-  "Python",			
-  "Ruby",			
-  "SQL",			
-  "Swift",			
-  "TypeScript"
-)
-
-# we add characteristics of the respondents to the skills, 
-# so that we can differentiate their poopularity by occupation or gender:
-skills_with_characteristics <- skills %>% left_join(select(Qs, ID, profession_1, gender_35), by = c("id" = "ID"))
-
-compute_perc_popular_skills <- function(the_skills, skillset, number_of_resp){
-  # USE THIS FUNCTION for the skills
-  the_skills %>%
-    filter(tool %in% skillset) %>% # select only the languages from all the tools
-    filter(level == "Worked with in PAST year" | level == "Both") %>%
-    count(tool) %>%
-    mutate(
-      perc = n/number_of_resp,
-      perc_label = paste0(as.character(round(perc*100,1)), "%")
-    ) %>% 
-    arrange(-perc) %>%  
-    return()
-}
-
-
-```
-
-
-::::: {.panelset}
-
-::: {.panel}
-
-### All Respondents {.panel-name}
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
-                                                  skillset = languages,
-                                                  number_of_resp = number_of_respondents), 
-              a_factor = tool, its_values = perc, labels = perc_label, 
-              title = "")
-
-```
-
-
-:::
-
-::: {.panel}
-
-### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
-                                                    filter(profession_1 == "I am a developer by profession"), 
-                                                  skillset = languages,
-                                                  number_of_resp = number_of_prof_dev), 
-              a_factor = tool, its_values = perc, labels = perc_label, 
-              title = "")
-
-```
-
-:::
-
-::: {.panel}
-
-### Students {.panel-name}
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
-                                                    filter(profession_1 == "I am a student who is learning to code"), 
-                                                  skillset = languages,
-                                                  number_of_resp = number_of_prof_dev), 
-              a_factor = tool, its_values = perc, labels = perc_label, 
-              title = "")
-
-```
-
-:::
-
-:::::
-
-# Demographic Data: Who were the respondents? 
-
-## What describes you best?
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-basic_barplot(my_df = compute_perc(Qs, profession_1), 
-              a_factor = profession_1, its_values = perc, labels = perc_label, 
-              title = "")
-```
-
-## Do you code as a hobby? 
-
-::::: {.panelset}
-
-::: {.panel}
-
-### All Respondents {.panel-name}
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-basic_barplot(my_df = compute_perc(Qs, hobby_coding_2), 
-              a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
-              title = "")
-
-```
-
-
-:::
-
-::: {.panel}
-
-### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), hobby_coding_2), 
-              a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
-              title = "")
-
-```
-
-:::
-
-::: {.panel}
-
-### Students {.panel-name}
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), hobby_coding_2), 
-              a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
-              title = "")
-
-```
-
-:::
-
-::::
-
-## Employment
-
-```{r}
-
-employment_data <- Qs %>%
-  filter(employment_3 != "I prefer not to say") %>%
-  mutate(
-    employment_3 = factor(employment_3, 
-                          levels(employment_3)[c(4,2,3,6,5,1)])
-  )
-```
-
-
-::::: {.panelset}
-
-::: {.panel}
-
-### All Respondents {.panel-name}
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-basic_barplot(my_df = compute_perc(employment_data, employment_3), 
-              a_factor = employment_3, its_values = perc, labels = perc_label,
-              title = "")
-
-```
-
-
-:::
-
-::: {.panel}
-
-### Men only {.panel-name}
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Man"), employment_3), 
-              a_factor = employment_3, its_values = perc, labels = perc_label,
-              title = "")
-
-```
-
-:::
-
-::: {.panel}
-
-### Women only {.panel-name}
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Woman"), employment_3), 
-              a_factor = employment_3, its_values = perc, labels = perc_label,
-              title = "")
-
-```
-
-:::
-
-::::
-
-
-
-## Where do the developers come from? 
-
-Zoom in to get a more detailed picture. 
-
-Hover over the individual markers to see the professional status of the respondents. 
-
-```{r}
-library(leaflet)
-library(tmaptools)
-
-data_city <- Qs %>%
-  select(ID, city_5, profession_1) %>%
-  filter(!city_5 %in% c("0", "Cincinnati, OH", "Pune, India", "kutunse, Ghana", "Awomaso, Ghana")) 
-
-#Geocoding
-data_city_geo <- data_city %>%
-  mutate(
-    geocode = geocode_OSM(data_city$city_5, as.sf = TRUE, keep.unfound = TRUE)
-  )
-
-#Map for the cities
-violet_icon <- makeIcon(
-  iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png", 
-  iconWidth = 24,
-  iconHeight = 32) 
-
-data_city_geo$profession_1 <- recode(data_city_geo$profession_1, 
-                        "I am a developer by profession" = "Professional Developers", 
-                        "I am not primarily a developer, but I write code sometimes as part of my work" = "Coding at Work",
-                        "I am a student who is learning to code" = "Students", 
-                        "I code primarily as a hobby" = "Hobby", 
-                        "I used to be a developer by profession, but no longer am" = "Retired")
-
-
-
-```
-
-```{r, fig.align= 'center', out.width= '100%'}
-leaflet(data = data_city_geo) %>%
-  addTiles() %>% 
-  addMarkers(~ geocode$lon, ~ geocode$lat, 
-             clusterOptions = markerClusterOptions(), 
-             icon = violet_icon, label = ~profession_1)
-```
-
-## How old are the respondents? 
-```{r}
-Qs$age_range_6 <- factor(Qs$age_range_6, levels(Qs$age_range_6)[c(6:1)])
-
-```
-
-::::: {.panelset}
-
-::: {.panel}
-
-### All Respondents {.panel-name}
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-barplot_ordered(my_df = compute_perc(Qs, age_range_6), 
-              a_factor = age_range_6, its_values = perc, labels = perc_label, 
-              title = "")
-
-```
-
-
-:::
-
-::: {.panel}
-
-### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-
-barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), age_range_6), 
-              a_factor = age_range_6, its_values = perc, labels = perc_label,
-              title = "")
-
-```
-
-:::
-
-::: {.panel}
-
-### Students {.panel-name}
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), age_range_6), 
-              a_factor = age_range_6, its_values = perc, labels = perc_label,
-              title = "")
-
-```
-
-:::
-
-::::
-
+# Demographics  
 
 ## Gender 
 
