@@ -93,6 +93,29 @@ basic_barplot <- function(my_df, a_factor, its_values, labels, title){
   return(current_plot)
 }
 
+#Function for barplot that does not override order
+barplot_ordered <- function(my_df, a_factor, its_values, labels, title){
+  # a function to plot a standard barplot
+  # uses the barplot_theme defined above
+  # needs an (ordered) factor as input, and its values
+  # returns a ggplot
+  current_plot <- ggplot(data = my_df, 
+                         aes(x = {{a_factor}}, {{its_values}}, 
+                             y = {{its_values}})) + 
+    geom_col(fill = HL_colors[1]) + 
+    geom_text(
+      aes(label = {{labels}}, y = {{its_values}} + (0.06*max({{its_values}}))),
+      size = 2
+    ) +
+    scale_y_continuous(labels = scales::percent) +
+    barplot_theme() + 
+    coord_flip() +
+    labs(title = stringr::str_wrap(title,100)) + # automated text wrap in title
+    xlab("") +
+    ylab("")
+  return(current_plot)
+}
+
 compute_perc <- function(my_df, a_factor){
   # a small function to count a factor and compute the percentages
   # also return the percentages as char for labelling.
@@ -666,14 +689,71 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
 
 ## Employment
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r}
 
-basic_barplot(my_df = compute_perc(Qs, employment_3), 
-              a_factor = employment_3, its_values = perc, labels = perc_label, 
-              title = "")
+employment_data <- Qs %>%
+  filter(employment_3 != "I prefer not to say") %>%
+  mutate(
+    employment_3 = factor(employment_3, 
+                          levels(employment_3)[c(4,2,3,6,5,1)])
+  )
 ```
 
+
+::::: {.panelset}
+
+::: {.panel}
+
+### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(employment_data, employment_3), 
+              a_factor = employment_3, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+
+:::
+
+::: {.panel}
+
+### Men only {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Man"), employment_3), 
+              a_factor = employment_3, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+### Women only {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Woman"), employment_3), 
+              a_factor = employment_3, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::::
+
+
+
 ## Where do the developers come from? 
+
+Zoom in to get a more detailed picture. 
+
+Hover over the individual markers to see the professional status of the respondents. 
 
 ```{r}
 library(leaflet)
@@ -716,29 +796,6 @@ leaflet(data = data_city_geo) %>%
 
 ## How old are the respondents? 
 ```{r}
-#Function for barplots that does not reorder factor levels
-barplot_ordered <- function(my_df, a_factor, its_values, labels, title){
-  # a function to plot a standard barplot
-  # uses the barplot_theme defined above
-  # needs an (ordered) factor as input, and its values
-  # returns a ggplot
-  current_plot <- ggplot(data = my_df, 
-                         aes(x = {{a_factor}}, {{its_values}}, 
-                             y = {{its_values}})) + 
-    geom_col(fill = HL_colors[1]) + 
-    geom_text(
-      aes(label = {{labels}}, y = {{its_values}} + (0.06*max({{its_values}}))),
-      size = 2
-    ) +
-    scale_y_continuous(labels = scales::percent) +
-    barplot_theme() + 
-    coord_flip() +
-    labs(title = stringr::str_wrap(title,100)) + # automated text wrap in title
-    xlab("") +
-    ylab("")
-  return(current_plot)
-}
-
 Qs$age_range_6 <- factor(Qs$age_range_6, levels(Qs$age_range_6)[c(6:1)])
 
 ```
@@ -795,7 +852,8 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 
 ### What Gender do you identify as?
 
-Greater share of women among the students than the professional developers. 
+There is a  greater share of women among the students than among the professional developers. 
+
 Ghana's developer community may become more representative in the upcoming years. 
 
 ```{r}
@@ -803,7 +861,7 @@ Ghana's developer community may become more representative in the upcoming years
 #Removing NA
 
 gender_data <- Qs %>%
-  filter(gender_35 == "Woman" || gender_35 == "Man")
+  filter(gender_35 != "NA")
 ```
 
 
@@ -857,9 +915,15 @@ barplot_ordered(my_df = compute_perc(gender_data %>% filter(profession_1 == "I a
 
 ### Do you identify as transgender? 
 
+```{r}
+transgender_data <- Qs %>%
+  filter(transgender_36 != "NA")
+```
+
+
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-barplot_ordered(my_df = compute_perc(Qs, transgender_36), 
+basic_barplot(my_df = compute_perc(transgender_data, transgender_36), 
               a_factor = transgender_36, its_values = perc, labels = perc_label,
               title = "")
 
@@ -868,9 +932,15 @@ barplot_ordered(my_df = compute_perc(Qs, transgender_36),
 
 ## Sexual orientation
 
+```{r}
+sexual_orientation_data <- Qs %>%
+    filter(sexual_orientation_37 != "NA" & sexual_orientation_37 != "Prefer not to say")
+
+```
+
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-barplot_ordered(my_df = compute_perc(Qs, sexual_orientation_37), 
+basic_barplot(my_df = compute_perc(sexual_orientation_data, sexual_orientation_37), 
               a_factor = sexual_orientation_37, its_values = perc, labels = perc_label,
               title = "")
 
@@ -880,13 +950,18 @@ barplot_ordered(my_df = compute_perc(Qs, sexual_orientation_37),
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-barplot_ordered(my_df = compute_perc(Qs, ethnicity_38), 
+basic_barplot(my_df = compute_perc(Qs %>% filter(ethnicity_38 != "NA" & ethnicity_38 != "I prefer not to answer"), ethnicity_38), 
               a_factor = ethnicity_38, its_values = perc, labels = perc_label,
               title = "")
 
 ```
 
 ## Do you have any dependents you care for? 
+
+```{r}
+dependents_data <- Qs %>%
+  filter(dependents_41 != "I prefer not to say" & dependents_41 != "NA")
+```
 
 ::::: {.panelset}
 
@@ -896,8 +971,8 @@ barplot_ordered(my_df = compute_perc(Qs, ethnicity_38),
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-barplot_ordered(my_df = compute_perc(Qs, dependents_41), 
-              a_factor = dependents_41, its_values = perc, labels = perc_label, 
+basic_barplot(my_df = compute_perc(dependents_data, dependents_41), 
+              a_factor = dependents_41, its_values = perc, labels = perc_label,
               title = "")
 
 ```
@@ -910,8 +985,7 @@ barplot_ordered(my_df = compute_perc(Qs, dependents_41),
 ### Only Men {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-
-barplot_ordered(my_df = compute_perc(Qs %>% filter(gender_35 == "Man"), dependents_41), 
+basic_barplot(my_df = compute_perc(dependents_data %>% filter(gender_35 == "Man"), dependents_41), 
               a_factor = dependents_41, its_values = perc, labels = perc_label,
               title = "")
 
@@ -925,7 +999,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(gender_35 == "Man"), dependen
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-barplot_ordered(my_df = compute_perc(Qs %>% filter(gender_35 == "Woman"), dependents_41), 
+basic_barplot(my_df = compute_perc(dependents_data %>% filter(gender_35 == "Woman"), dependents_41), 
               a_factor = dependents_41, its_values = perc, labels = perc_label,
               title = "")
 
