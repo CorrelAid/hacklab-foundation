@@ -123,9 +123,10 @@ barplot_ordered <- function(my_df, a_factor, its_values, labels, title){
 compute_perc <- function(my_df, a_factor){
   # a small function to count a factor and compute the percentages
   # also return the percentages as char for labelling.
-  # USE THIS FUNCTION IF THE SUM OF THE ANSWERS IS 272! (including NA) -> not working if several possible choices.
+  # USE THIS FUNCTION IF THE SUM OF THE ANSWERS IS 272! (including NAs) -> not working if several possible choices.
   my_df %>%
     count({{a_factor}}) %>%
+    drop_na() %>% # always in percentage of the respondents to the question.
     mutate(
       perc = n/sum(n),
       perc_label = paste0(as.character(round(perc*100,1)), "%")
@@ -265,10 +266,10 @@ Zoom in to get a more detailed picture.
 
 Hover over the individual markers to see the professional status of the respondents. 
 
-```{r, fig.align= 'center', out.width= '100%', fig.height=6}
+```{r, fig.align= 'center', out.width= '100%', fig.height=6.5}
 
 # the geocoding was done separately in data_cleaning/Geocoding.R
-# (to not lose time everyttime we knitr)
+# (to not lose time everytime we knitr)
 # we load the result:
 data_city_geo <- rio::import("data/clean/data_city_geo.rds") 
 
