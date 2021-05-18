@@ -33,10 +33,22 @@ library(tmaptools) # for geocoding
 
 # Data:
 
-Qs <- rio::import("data/clean/clean_all_Qs.rds")
+Qs <- rio::import("data/clean/clean_all_Qs.rds") %>%
+  # reodering certain factors for the plots: (use barplot_ordered() for plotting)
+  mutate(
+    purch_influence_16 = fct_relevel(purch_influence_16,
+                                     "I have little or no influence",
+                                     "I have some influence",
+                                     "I have a great deal of influence"
+                                     )
+  )
+
 skills <- rio::import("data/clean/skills_final.csv") %>% 
   select(-V1) %>%  # artifact due to a save as .csv to remove (at least on a Mac?)
   mutate_all(na_if,"") # the column 'level' contains blanks ("") instead of NAs -> transform them to NAs.
+# we add characteristics of the respondents to the skills, 
+# so that we can differentiate their popularity by occupation or gender:
+skills_with_characteristics <- skills %>% left_join(select(Qs, ID, profession_1, gender_35), by = c("id" = "ID"))
  
 number_of_respondents = dim(Qs)[1] # number of respondents (272) used to compute percentages.
 number_of_prof_dev = dim(Qs %>% filter(profession_1 == "I am a developer by profession"))[1]
@@ -134,6 +146,20 @@ compute_perc <- function(my_df, a_factor){
   
 }
 
+compute_perc_popular_skills <- function(the_skills, skillset, number_of_resp){
+  # USE THIS FUNCTION for the popular skills (last year + both)
+  # NOTE: we use all respondents, not only those who responded. -> some respondents did not enter any skills. -> not optimal, but annoying to correct?
+  the_skills %>%
+    filter(tool %in% skillset) %>% # select only the languages from all the tools
+    filter(level == "Worked with in PAST year" | level == "Both") %>%
+    count(tool) %>%
+    mutate(
+      perc = n/number_of_resp, 
+      perc_label = paste0(as.character(round(perc*100,1)), "%")
+    ) %>% 
+    arrange(-perc) %>%  
+    return()
+}
 
 
 ```
@@ -357,9 +383,9 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs, new_tool_7), 
+barplot_ordered(my_df = compute_perc(Qs, new_tool_7), 
               a_factor = new_tool_7, its_values = perc, labels = perc_label, 
-              title = "")
+              title = "") + scale_x_discrete(limits=rev)
 
 ```
 
@@ -371,9 +397,9 @@ basic_barplot(my_df = compute_perc(Qs, new_tool_7),
 ### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), new_tool_7), 
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), new_tool_7), 
               a_factor = new_tool_7, its_values = perc, labels = perc_label, 
-              title = "")
+              title = "") + scale_x_discrete(limits=rev)
 
 ```
 
@@ -385,9 +411,9 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), new_tool_7), 
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), new_tool_7), 
               a_factor = new_tool_7, its_values = perc, labels = perc_label, 
-              title = "")
+              title = "") + scale_x_discrete(limits=rev)
 
 ```
 
@@ -397,11 +423,9 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
 
 
 
-## Which programming, scripting and markup languages have you done extensive development work in over the past year? (Q.8)
+## Which programming, scripting and markup languages have you done extensive development work in over the past year?
 
-* _HTML/CSS_ is most popular, followed by _javascript_, _python_ and _SQL_.
-* not same for dev and student! -> interesting
-
+_HTML/CSS_ is the most used language, followed by _JavaScript_, _Python_ and _SQL_. Professional developers are more likely to use _JavaScript_ and _SQL_. _C++_ and _C_ are still widely useds to teach coding to students.  
 
 ```{r}
 
@@ -421,34 +445,11 @@ languages = c(
   "TypeScript"
 )
 
-# we add characteristics of the respondents to the skills, 
-# so that we can differentiate their poopularity by occupation or gender:
-skills_with_characteristics <- skills %>% left_join(select(Qs, ID, profession_1, gender_35), by = c("id" = "ID"))
-
-compute_perc_popular_skills <- function(the_skills, skillset, number_of_resp){
-  # USE THIS FUNCTION for the skills
-  the_skills %>%
-    filter(tool %in% skillset) %>% # select only the languages from all the tools
-    filter(level == "Worked with in PAST year" | level == "Both") %>%
-    count(tool) %>%
-    mutate(
-      perc = n/number_of_resp,
-      perc_label = paste0(as.character(round(perc*100,1)), "%")
-    ) %>% 
-    arrange(-perc) %>%  
-    return()
-}
-
 
 ```
-
-
 ::::: {.panelset}
-
 ::: {.panel}
-
 ### All Respondents {.panel-name}
-
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
@@ -458,12 +459,8 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
               title = "")
 
 ```
-
-
 :::
-
 ::: {.panel}
-
 ### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
@@ -475,35 +472,291 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
               title = "")
 
 ```
-
 :::
-
 ::: {.panel}
-
 ### Students {.panel-name}
-
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
                                                     filter(profession_1 == "I am a student who is learning to code"), 
                                                   skillset = languages,
+                                                  number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+## Which platforms have you done extensive development work in over the past year?
+
+TBD...
+
+```{r}
+
+platforms = c(
+"Android",			
+"Arduino",			
+"AWS",			
+"Docker",		
+"Google Cloud Platform",			
+"Heroku",			
+"IBM Cloud or Watson",			
+"iOS",			
+"Linux",			
+"MacOS",		
+"Microsoft Azure",		
+"Raspberry Pi", 	
+"Windows",			
+"WordPress"
+)
+
+```
+::::: {.panelset}
+::: {.panel}
+### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = platforms,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = platforms,
                                                   number_of_resp = number_of_prof_dev), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
 ```
-
 :::
+::: {.panel}
+### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
 
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = platforms,
+                                                  number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
 :::::
 
 
-=== Q 9 - 13 ===  
+## Which web frameworks have you done extensive development work in over the past year?
+
+_React.js_ is the most popular web framework.  BUT see next question...
+
+```{r}
+
+web_frameworks = c(
+"Angular",			
+"ASP.NET",		
+"Django",			
+"Express",		
+"jQuery",			
+"Laravel",
+"React.js",
+"Ruby on Rails",
+"Vue.js",
+"Spring"
+)
+
+```
+::::: {.panelset}
+::: {.panel}
+### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = web_frameworks,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = web_frameworks,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = web_frameworks,
+                                                  number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
 
 
-## Q14. What is the primary operating system in which you work?
+## Which other frameworks, libraries and tools have you done extensive development work in over the past year?
 
-### All Respondents
+TBD. Most seems to be web frameworks? group with question above? -> It seems that Node.js is in reality more used thant Ract.js!
+
+
+```{r}
+
+other_frameworks = c(
+".NET",			
+".NET Core",			
+"Flutter",			
+"Node.js",			
+"Puppet",			
+"React Native",			
+"Deno.js"
+)
+
+```
+::::: {.panelset}
+::: {.panel}
+### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = other_frameworks,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = other_frameworks,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = other_frameworks,
+                                                  number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+## Which collaborative tools have you done extensive development work in over the past year?
+
+_GitHub_ is by far the most popular version control tool. _Slack_ is the most used business communication platform.  
+
+```{r}
+
+collaborative_tools = c(
+"GitHub",			
+"GitLab",			
+"Facebook Workplace",			
+"Slack",			
+"Microsoft Teams",			
+"Microsoft Azure",			
+"Trello",			
+"Google Suite (Docs, Meet, etc)",			
+"Stack Overflow for Teams",			
+"Jira"
+)
+
+```
+::::: {.panelset}
+::: {.panel}
+### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = collaborative_tools,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = collaborative_tools,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = collaborative_tools,
+                                                  number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+
+&nbsp;
+&nbsp;  
+** === add something about next year ===**
+&nbsp;
+&nbsp;
+
+
+
+
+
+## What is the primary operating system in which you work?
+
+Windows in the most used operating system. Professional developers use MacOS and Linux more often than other respondents. Students are overwhelmingly on Windows.  
+
+::::: {.panelset}
+::: {.panel}
+### All Respondents {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
@@ -512,8 +765,10 @@ basic_barplot(my_df = compute_perc(Qs, prim_opsyst_14),
               title = "")
 
 ```
+:::
+::: {.panel}
+### Professional Developers {.panel-name}
 
-### Professional Developers
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), prim_opsyst_14), 
@@ -521,8 +776,9 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
               title = "")
 
 ```
-
-### Students
+:::
+::: {.panel}
+### Students {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
@@ -531,14 +787,17 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
               title = "")
 
 ```
+:::
+:::::
 
 
+## In which operating system would you rather work?
 
-## Q15. In which operating system would you rather work?
+MacOS, Linux and Windows are practically tied as preferred systems. Professional developers have a preference for MacOS, then Linux. Students prefer Windows.  
 
-
-### All Respondents
-
+::::: {.panelset}
+::: {.panel}
+### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs, rather_opsyst_15), 
@@ -546,8 +805,9 @@ basic_barplot(my_df = compute_perc(Qs, rather_opsyst_15),
               title = "")
 
 ```
-
-### Professional Developers
+:::
+::: {.panel}
+### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), rather_opsyst_15), 
@@ -555,9 +815,9 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
               title = "")
 
 ```
-
-### Students
-
+:::
+::: {.panel}
+### Students {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), rather_opsyst_15), 
@@ -565,19 +825,43 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
               title = "")
 
 ```
+:::
+:::::
 
 
-## Q16. What level of influence do you, personally, have over new technology purchases at your organization?
 
+## What level of influence do you, personally, have over new technology purchases at your organization?
+
+Unsurprisingly, professional developers are more likely to have influence over new technology purchases.  
+
+::::: {.panelset}
+::: {.panel}
+### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs, purch_influence_16), 
+barplot_ordered(my_df = compute_perc(Qs, purch_influence_16), 
               a_factor = purch_influence_16, its_values = perc, labels = perc_label, 
-              title = "Q16. What level of influence do you, personally, have over new technology purchases at your organization?")
+              title = "")
 
 ```
+:::
+::: {.panel}
+### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+barplot_ordered(my_df = compute_perc(Qs %>% 
+                                     filter(profession_1 == "I am a developer by profession"),
+                                   purch_influence_16), 
+              a_factor = purch_influence_16, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
 
 ## Q17. When buying a new tool or software, how do you discover and research available solutions? Select all that apply.
+
+__TBD.__
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
