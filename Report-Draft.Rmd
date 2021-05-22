@@ -81,9 +81,60 @@ Qs <- rio::import("data/clean/clean_all_Qs.rds") %>%
                                       "GHS 2,500 - GHS 3,000",
                                       "GHS 2,000 - GHS 2,500",
                                       "GHS 1,500 - GHS 2,000",
-                                      "Less than GHS 1,500")
-    
-  )
+                                      "Less than GHS 1,500"),
+       prim_study_19 = recode(prim_study_19, 
+                           "Computer_Science_Engineering" = "Computer Science/Engineering",
+                           "Information_Technology" = "Information Technology",
+                           "Other_Engineering" = "Other Engineering",
+                           "Health_Science" = "Health Science",
+                           "Social_Science" = "Social Science",
+                           "Web_Development_Web_Design" = "Web-Development/Web-Design",
+                           "General_Science" = "General Science",
+                           "Electrical_Engineering" = "Electrical Engineering",
+                           "Visual_Arts" = "Visual Arts",
+                           "Agricultural_Science" = "Agricultural Science",
+                           "Graphic_Design" = "Graphic Design",
+                           "General_Arts" = "General Arts",
+                           "Mathematics_Statistics" = "Mathematics/Statistics"),
+    prim_study_19 = fct_relevel(prim_study_19,
+                                "Education",
+                                "Socia Science",
+                                "Graphic Design",
+                                "Architecture",
+                                "Visual Arts",
+                                "Business",
+                                "General Arts",
+                                "General Science",
+                                "Health Science",
+                                "Chemistry",
+                                "Other Engineering",
+                                "Physics",
+                                "Agricultural Science",
+                                "Web-Development/Web-Design",
+                                "Mathematics/Statistics",
+                                "Electrical Engineering",
+                                "Information Technology",
+                                "Computer Science/Engineering"),   
+    highest_edu_18 = recode(highest_edu_18, 
+                           "Secondary_High_School" = "Secondary High School",
+                           "Basic_Education" = "Basic Education",
+                           "Higher_National_Diploma" = "Higher National Diploma",
+                           "Professional_Diploma" = "Professional Diploma",
+                           "Teacher_Diploma" = "Teacher Diploma",
+                           "College" = "Bachelor"),
+    highest_edu_18 = fct_relevel(highest_edu_18,
+                                      "Basic Education",
+                                      "Secondary High School",
+                                      "Teacher Diploma",
+                                      "Professional Diploma",
+                                      "Higher National Diploma",
+                                      "Bachelor",
+                                      "Master")
+)
+
+                            
+
+                            
 
 skills <- rio::import("data/clean/skills_final.csv") %>% 
   select(-V1) %>%  # artifact due to a save as .csv to remove (at least on a Mac?)
@@ -202,7 +253,6 @@ compute_perc_popular_skills <- function(the_skills, skillset, number_of_resp){
     arrange(-perc) %>%  
     return()
 }
-
 
 ```
 
@@ -933,7 +983,7 @@ Most of the survey participants have at least a secondary high-school degree whe
 ### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs, highest_edu_18), 
+barplot_ordered(my_df = compute_perc(Qs, highest_edu_18), 
               a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -943,7 +993,7 @@ basic_barplot(my_df = compute_perc(Qs, highest_edu_18),
 ### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), highest_edu_18), 
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), highest_edu_18), 
               a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -953,7 +1003,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
 ### Students {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), highest_edu_18), 
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), highest_edu_18), 
               a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -964,12 +1014,14 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
 
 ## Q19. What was your primary field of study?
 
+Most participants study or studied Computer Science or Computer Engineering, followed by Information Technology and other Engineering fields as well as Mathematics/Statistics and Business.
+
 ::::: {.panelset}
 ::: {.panel}
 ### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs, prim_study_19), 
+barplot_ordered(my_df = compute_perc(Qs, prim_study_19), 
               a_factor = prim_study_19, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -979,7 +1031,7 @@ basic_barplot(my_df = compute_perc(Qs, prim_study_19),
 ### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), prim_study_19), 
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), prim_study_19), 
               a_factor = prim_study_19, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -989,7 +1041,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
 ### Students {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), prim_study_19), 
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), prim_study_19), 
               a_factor = prim_study_19, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1050,6 +1102,31 @@ barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ),
               a_factor = job_satisfaction_22 , its_values = perc, labels = perc_label, 
               title = "Q22. How satisfied are you with your current job?")
 
+# Heat Map: Relationship between job satisfaction and overtime work
+runningcounts.df <- as.data.frame(table(Qs$job_satisfaction_22, Qs$overtime_work_25))
+ggplot(runningcounts.df, aes(Var2, Var1)) +
+  geom_tile(aes(fill = Freq), colour = "black") +
+  scale_fill_gradient(low = "white", high = HL_colors[1])
+
+# Barplot: Relationship between job satisfaction and overtime work
+ggplot(runningcounts.df, aes(factor(Var1))) +
+  geom_bar(aes(y = Freq, alpha = rev(Var2)),
+           stat = "identity",
+           color = "#209f1b", fill = "#35665C") +
+  geom_text(aes(y = -5, label = Freq), color = "red") +
+  facet_grid(Var2 ~ Var1, switch = "both") +
+  labs(title = "frequency",
+       y = "Satsifaction",
+       x = "Overtime") +
+  theme_minimal() +
+  theme(strip.background = element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 12),
+        axis.ticks = element_blank(),
+        strip.text.y = element_text(angle = 0),
+        strip.text = element_text(size = 12),
+        legend.position = "none")
+
 ```
 
 ## Q23. Approximately how many people are employed by the company or organization you currently work for?
@@ -1068,10 +1145,32 @@ barplot_ordered(my_df = compute_perc(Qs, company_size_23 ),
 
 compute_perc(Qs, weekly_work_hours_24)
 
+ggplot(compute_perc(Qs,weekly_work_hours_24), aes(x=weekly_work_hours_24)) + geom_histogram(color = "black", fill= HL_colors[1]) + labs(x="Weekly working hours", y = "Number of Respondents") +
+    scale_x_continuous(breaks = seq(10, 120, by=10)) +
+  theme_minimal() +  
+    theme(
+      plot.title = element_text(family = HL_font, size = main_fontsize + 2, color = "black"),
+      # plot.subtitle = element_text(family = HL_font, size = main_fontsize),
+      axis.title = element_text(family = HL_font, size = main_fontsize, color = "black"),
+      axis.text = element_text(family = HL_font, size = main_fontsize, color = "black"),
+      # plot.caption = element_text(hjust = 0, family = my_font, 
+      #                             size = main_fontsize, face= "italic"), #Default is hjust=1 / 0
+      plot.title.position = "plot",  # left-align title
+      # plot.caption.position =  "plot", 
+      panel.grid.minor.x = element_blank(),  # remove useless minor grid
+      panel.grid.major.y = element_blank(),  # remove useless major grid in bar charts
+      panel.grid.major.x = element_blank(),  # remove useless major grid in bar charts
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank(),
+      # plot.margin = margin(0.1, 0.1, 0.1, 0.1, unit = "cm")
+    )
+
 ```
 
 
 ## Q25. How often do you work overtime or beyond the formal time expectation of your job?
+
+Around 50% of the respondents work overtime on 3 or more days in a week.
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
@@ -1104,6 +1203,7 @@ compute_perc(Qs, improve_onboarding_27 )
 ```{r}
 monthly_salary_data <- Qs %>%
   filter(monthly_salary_28 != "NA")
+
 ```
 
 ::::: {.panelset}
@@ -1128,7 +1228,7 @@ barplot_ordered(my_df = compute_perc(Qs, monthly_salary_28 ),
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 == "Woman"), monthly_salary_28), 
+barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 == "Woman"), monthly_salary_28), 
               a_factor = monthly_salary_28, its_values = perc, labels = perc_label,
               title = "")
 
@@ -1141,7 +1241,7 @@ basic_barplot(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 == "
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 == "Man"), monthly_salary_28), 
+barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 == "Man"), monthly_salary_28), 
               a_factor = monthly_salary_28, its_values = perc, labels = perc_label,
               title = "")
 
