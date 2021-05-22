@@ -211,6 +211,8 @@ compute_perc_popular_skills <- function(the_skills, skillset, number_of_resp){
 
 ## What describes you best?
 
+The two biggest subgroups among the respondents are professional developers as well as students. Additionally, there are respondents coding as a part of their work, coding as a hobby, as well as former developers. 
+
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs, profession_1), 
@@ -219,6 +221,8 @@ basic_barplot(my_df = compute_perc(Qs, profession_1),
 ```
 
 ## Do you code as a hobby? 
+
+Most of the respondents code as a hobby. Interestingly, professional developers seem to code for a hobby less often than students which may be related to their reduced time availability. 
 
 ::::: {.panelset}
 
@@ -278,6 +282,9 @@ employment_data <- Qs %>%
   )
 ```
 
+Most of the respondents are employed full-time. Furthermore, there is a great share of students. Sadly, there is also a significant share of unemployed developers looking for work. 
+
+When it comes to gender differences, there is a greater share of students among the female respondents. In addition, women seem to be self-employed less often when compared with men. 
 
 ::::: {.panelset}
 
@@ -330,6 +337,71 @@ barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Wo
 
 ## Where do the developers come from? 
 
+### Region
+
+Most respondents come from the greater Accra region. However, the extent of concentration in Accra seems to be larger for professional developers than for students. 
+
+::::: {.panelset}
+
+::: {.panel}
+
+### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+region_data <- Qs %>%
+  filter(region_4 != "Not in Ghana")
+
+region_data$region_4 <- recode(region_data$region_4,
+         "Eastern Region, Ghana" = "Eastern Region", 
+         "Northern Region, Ghana" = "Northern Region", 
+         "Central Region, Ghana" = "Central Region", 
+         "Western Region, Ghana"= "Western Region"
+  )
+
+basic_barplot(my_df = compute_perc(region_data, region_4), 
+              a_factor = region_4, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+
+:::
+
+::: {.panel}
+
+### Professional Developers {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(region_data %>% filter(profession_1 == "I am a developer by profession"), region_4), 
+              a_factor = region_4, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+### Students {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(region_data %>% filter(profession_1 == "I am a student who is learning to code"), region_4), 
+              a_factor = region_4, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::::
+
+
+
+
+### City
+
 Zoom in to get a more detailed picture. 
 
 Hover over the individual markers to see the professional status of the respondents. 
@@ -355,6 +427,11 @@ leaflet(data = data_city_geo) %>%
 ```
 
 ## How old are the respondents? 
+
+Most respondents are between 20 and 30. 
+
+While the students are very young in most cases, the professional developers display a little more variance in their ages. However, we have a very young sample at hand.
+
 ```{r}
 Qs$age_range_6 <- factor(Qs$age_range_6, levels(Qs$age_range_6)[c(6:1)])
 
@@ -1335,6 +1412,8 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(ethnicity_38 != "NA" & ethnicit
 ```
 
 ## Do you have any dependents you care for? 
+
+Among our respondents, women seem to have dependents they care for less often than men do. This may partly be due to the fact, that more women are still in their studies and that the women in our sample may be younger than the men. 
 
 ```{r}
 dependents_data <- Qs %>%
