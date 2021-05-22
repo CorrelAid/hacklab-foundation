@@ -40,7 +40,49 @@ Qs <- rio::import("data/clean/clean_all_Qs.rds") %>%
                                      "I have little or no influence",
                                      "I have some influence",
                                      "I have a great deal of influence"
-                                     )
+                                     ),    
+    job_satisfaction_22 = fct_relevel(job_satisfaction_22,
+                                      "Very dissatisfied",
+                                      "Slightly dissatisfied",
+                                      "Neither satisfied nor dissatisfied",
+                                      "Slightly satisfied",
+                                      "Very satisfied"),
+    edu_importance_20 = fct_relevel(edu_importance_20,
+                                      "Not at all important/not necessary",
+                                      "Somewhat important",
+                                      "Fairly important",
+                                      "Very important",
+                                      "Critically important"),
+    company_size_23 = fct_relevel(company_size_23,
+                                      "Over 500",
+                                      "Over 100",
+                                      "Below 100",
+                                      "Below 20",
+                                      "Below 10",
+                                      "1"),
+    overtime_work_25 = fct_relevel(overtime_work_25,
+                                      "Often: 1-2 days per week",
+                                      "Frequently: 3 or more days per week",
+                                      "Sometimes: 1-2 days per month but less than weekly",
+                                      "Occasionally: 1-2 days per quarter but less than monthly",
+                                      "Rarely: 1-2 days per year or less",
+                                      "Never"),
+    monthly_salary_28 = fct_relevel(monthly_salary_28,
+                                      "Greater than GHS 25,000",
+                                      "GHS 20,000 - GHS 25,000",
+                                      "GHS 15,000 - GHS 20,000",
+                                      "GHS 10,000 - GHS 15,000",
+                                      "GHS 8,000 - GHS 10,000",
+                                      "GHS 6,000 - GHS 8,000",
+                                      "GHS 5,000 - GHS 6,000",
+                                      "GHS 4,000 - GHS 5,000",
+                                      "GHS 3,500 - GHS 4,000",
+                                      "GHS 3,000 - GHS 3,500",
+                                      "GHS 2,500 - GHS 3,000",
+                                      "GHS 2,000 - GHS 2,500",
+                                      "GHS 1,500 - GHS 2,000",
+                                      "Less than GHS 1,500")
+    
   )
 
 skills <- rio::import("data/clean/skills_final.csv") %>% 
@@ -884,8 +926,11 @@ basic_barplot(my_df = compute_perc(Qs, solution_research_17),
 
 ## Q18. Which of the following best describes the highest level of formal education that you have completed?
 
-### All Respondents
+Most of the survey participants have at least a secondary high-school degree whereas half of the students have a secondary high school degree and every third professional developer has a bachelor's degree
 
+::::: {.panelset}
+::: {.panel}
+### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs, highest_edu_18), 
@@ -893,8 +938,9 @@ basic_barplot(my_df = compute_perc(Qs, highest_edu_18),
               title = "")
 
 ```
-
-### Professional Developers
+:::
+::: {.panel}
+### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), highest_edu_18), 
@@ -902,9 +948,9 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
               title = "")
 
 ```
-
-### Students
-
+:::
+::: {.panel}
+### Students {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), highest_edu_18), 
@@ -912,13 +958,15 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
               title = "")
 
 ```
-
+:::
+:::::
 
 
 ## Q19. What was your primary field of study?
 
-### All Respondents
-
+::::: {.panelset}
+::: {.panel}
+### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs, prim_study_19), 
@@ -926,8 +974,9 @@ basic_barplot(my_df = compute_perc(Qs, prim_study_19),
               title = "")
 
 ```
-
-### Professional Developers
+:::
+::: {.panel}
+### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), prim_study_19), 
@@ -935,9 +984,9 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
               title = "")
 
 ```
-
-### Students
-
+:::
+::: {.panel}
+### Students {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), prim_study_19), 
@@ -945,40 +994,44 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
               title = "")
 
 ```
-
+:::
+:::::
 
 
 ## Q20. How important is a formal education, such as a university degree in computer science, to your career?
 
-### All Respondents
-
+::::: {.panelset}
+::: {.panel}
+### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs, edu_importance_20), 
+barplot_ordered(my_df = compute_perc(Qs, edu_importance_20), 
               a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
               title = "")
 
 ```
-
-### Professional Developers
+:::
+::: {.panel}
+### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), edu_importance_20), 
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), edu_importance_20), 
               a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
               title = "")
 
 ```
-
-### Students
-
+:::
+::: {.panel}
+### Students {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), edu_importance_20), 
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), edu_importance_20), 
               a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
               title = "")
 
 ```
-
+:::
+:::::
 
 
 ## Q21. From Q18, if you could go back and change your educational path (but end up in the same career), what would you change?
@@ -993,7 +1046,7 @@ compute_perc(Qs, change_edu_21 )
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs, job_satisfaction_22 ), 
+barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ), 
               a_factor = job_satisfaction_22 , its_values = perc, labels = perc_label, 
               title = "Q22. How satisfied are you with your current job?")
 
@@ -1003,7 +1056,7 @@ basic_barplot(my_df = compute_perc(Qs, job_satisfaction_22 ),
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs, company_size_23 ), 
+barplot_ordered(my_df = compute_perc(Qs, company_size_23 ), 
               a_factor = company_size_23 , its_values = perc, labels = perc_label, 
               title = "Q23. Approximately how many people are employed by the company or organization you currently work for?")
 
@@ -1022,7 +1075,7 @@ compute_perc(Qs, weekly_work_hours_24)
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs, overtime_work_25 ), 
+barplot_ordered(my_df = compute_perc(Qs, overtime_work_25 ), 
               a_factor = overtime_work_25 , its_values = perc, labels = perc_label, 
               title = "Q25. How often do you work overtime or beyond the formal time expectation of your job?")
 
@@ -1048,13 +1101,55 @@ compute_perc(Qs, improve_onboarding_27 )
 
 ## Q28. How much is your monthly salary in Ghana Cedis?
 
+```{r}
+monthly_salary_data <- Qs %>%
+  filter(monthly_salary_28 != "NA")
+```
+
+::::: {.panelset}
+
+::: {.panel}
+
+### All Respondents {.panel-name}
+
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs, monthly_salary_28 ), 
+barplot_ordered(my_df = compute_perc(Qs, monthly_salary_28 ), 
               a_factor = monthly_salary_28 , its_values = perc, labels = perc_label, 
-              title = "Q28. How much is your monthly salary in Ghana Cedis?")
+              title = "")
 
 ```
+
+:::
+
+::: {.panel}
+
+### Only Women {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 == "Woman"), monthly_salary_28), 
+              a_factor = monthly_salary_28, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+:::
+
+::: {.panel}
+
+### Only Men {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 == "Man"), monthly_salary_28), 
+              a_factor = monthly_salary_28, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::::
 
 ## Q29. Which of the following best describes your current job-seeking status?
 
@@ -1259,7 +1354,6 @@ basic_barplot(my_df = compute_perc(dependents_data, dependents_41),
               title = "")
 
 ```
-
 
 :::
 
