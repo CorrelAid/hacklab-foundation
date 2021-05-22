@@ -4,7 +4,7 @@ library(leaflet)
 library(scales)
 
 
-clean_data <- import("~/CorrelAid/hacklab-foundation/data/clean/clean_all_Qs.rds")
+clean_data <- rio :: import("~/CorrelAid/hacklab-foundation/data/clean/clean_all_Qs.rds")
 
 #Visualizing demographic data
 
