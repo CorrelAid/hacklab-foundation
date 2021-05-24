@@ -26,6 +26,8 @@ library(tidyverse) # includes dplyr, tidyr, ggplot2, rio, stringr, ...
 library(leaflet) # for the interactive map
 library(tmaptools) # for geocoding
 
+library(wordcloud) # for the wordcloud at Q33
+
 
 ```
 
@@ -1121,10 +1123,24 @@ basic_barplot(my_df = compute_perc(Qs, dev_community_member_32 ),
 
 ## Q33. Developer communities you are a member of
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+The three largest communities to which respondents indicated membership were DevCongress (13.6%), Facebook Developer Circle (9.6%), and the Hacklab Foundation (7.4%).  
 
-compute_perc(Qs, which_dev_community_33 )
+```{r, fig.align='center', out.width = '100%', fig.height=5.5}
+# Warning! Check that all communities are in the plot. Depends on size (height) of figure and scale. Wordcloud excludes if names are too large (typically Facebook Developer Circle or DevCongress)
+# I tried to pick a scale where the smallest were still legible.
 
+# note: respondents can be members of several communities,
+# we just count them all.
+counted_communities <- Qs %>% select(ID, which_dev_community_33) %>%
+  separate_rows(which_dev_community_33, sep = ";") %>% 
+  drop_na() %>% 
+  count(which_dev_community_33) %>% 
+  arrange(-n) %>%
+  mutate(perc_of_resp = n/number_of_respondents*100)
+
+wordcloud(words = counted_communities$which_dev_community_33, freq = counted_communities$n, min.freq = 1,
+          max.words = 122, random.order = TRUE, rot.per = 0, scale = c(2.2,0.5),
+          colors = HL_colors)
 
 ```
 
