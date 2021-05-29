@@ -1348,19 +1348,35 @@ basic_barplot(my_df = compute_perc(Qs, job_status_29 ),
 ```
 
 ## Q30. In general, what drives you to look for a new job? Select all that apply.
+The main reason for developers is more income whereas for students it is gaining more experience and skills improvement.
 
 ### All Respondents
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-drivers_for_new_jobs_30_split<-Qs%>% select(drivers_for_new_jobs_30) %>%
+drivers_for_new_jobs_30_split<-Qs%>% select(drivers_for_new_jobs_30, profession_1) %>%
   separate_rows(drivers_for_new_jobs_30, sep = ";")
 
 
-new<-drivers_for_new_jobs_30_split[!(is.na(drivers_for_new_jobs_30_split$drivers_for_new_jobs_30) | drivers_for_new_jobs_30_split$drivers_for_new_jobs_30==""), ]
+drivers_for_new_jobs_30_split<-drivers_for_new_jobs_30_split[!(is.na(drivers_for_new_jobs_30_split$drivers_for_new_jobs_30) | drivers_for_new_jobs_30_split$drivers_for_new_jobs_30==""), ]
+purch_influence_16 = fct_relevel
 
+  mutate(
+    purch_influence_16 = fct_relevel(purch_influence_16,
+                                     I have little or 
+                                     
+drivers_for_new_jobs_30_split <-drivers_for_new_jobs_30_split %>% 
+  mutate( drivers_for_new_jobs_30 = recode(drivers_for_new_jobs_30, 
+                                                "A job i love and how challenging it is" = "Other",
+                                                "A Fulltime / Stable Employment " = "Other",
+                                      "Building Credibility and Connections(Relationships). As well making my skills practical." = "Other",
+                                                "Funds to seed stuffs" = "Other",
+                                                "I am focussed on running my business." = "Other",
+                                                "I have a self motivated personality" = "Other",
+                                                "to be in an environment where am challenged beyond my current capabilities" = "Other"
+))
 
-basic_barplot(my_df = compute_perc(Qs, drivers_for_new_jobs_30), 
+basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split, drivers_for_new_jobs_30), 
               a_factor = drivers_for_new_jobs_30, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1369,7 +1385,7 @@ basic_barplot(my_df = compute_perc(Qs, drivers_for_new_jobs_30),
 ### Professional Developers
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), drivers_for_new_jobs_30), 
+basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split %>% filter(profession_1 == "I am a developer by profession"), drivers_for_new_jobs_30), 
               a_factor = drivers_for_new_jobs_30, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1379,7 +1395,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), drivers_for_new_jobs_30), 
+basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split %>% filter(profession_1 == "I am a student who is learning to code"), drivers_for_new_jobs_30), 
               a_factor = drivers_for_new_jobs_30, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1391,9 +1407,16 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs, how_learn_about_company_31 ), 
+how_learn_about_company_31_split<-Qs%>% select(how_learn_about_company_31, profession_1) %>%
+  separate_rows(how_learn_about_company_31, sep = ";")
+
+
+how_learn_about_company_31_split<-how_learn_about_company_31_split[!(is.na(how_learn_about_company_31_split$how_learn_about_company_31) | how_learn_about_company_31_split$how_learn_about_company_31==""), ]
+
+basic_barplot(my_df = compute_perc(how_learn_about_company_31_split, how_learn_about_company_31 ), 
               a_factor = how_learn_about_company_31 , its_values = perc, labels = perc_label, 
               title = "Q31. When job searching, how do you learn more about a company?")
+
 
 ```
 
