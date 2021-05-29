@@ -28,6 +28,8 @@ library(tmaptools) # for geocoding
 
 library(wordcloud) # for the wordcloud at Q33
 
+library(tidyr) # for Q30 and Q31
+
 ```
 
 ```{r}
@@ -1180,11 +1182,15 @@ barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ),
 # Heat Map: Relationship between job satisfaction and overtime work
 runningcounts.df <- as.data.frame(table(Qs$job_satisfaction_22, Qs$overtime_work_25))
 
-levels(runningcounts.df$overtime_work_25) <- gsub(" ", "\n", levels(runningcounts.df$overtime_work_25))
-levels(runningcounts.df$job_satisfaction_22) <- gsub(" ", "\n", levels(runningcounts.df$job_satisfaction_22))
 
-heatmap_Q22_Q25 <- runningcounts.df %>% rename()
-ggplot(runningcounts.df, aes(Var2, Var1)) +
+
+heatmap_Q22_Q25 <- runningcounts.df %>% rename(overtime_work_25 = Var2,
+                                               job_satisfaction_22 = Var1)
+
+levels(heatmap_Q22_Q25$overtime_work_25) <- gsub(" ", "\n", levels(heatmap_Q22_Q25$overtime_work_25))
+levels(heatmap_Q22_Q25$job_satisfaction_22) <- gsub(" ", "\n", levels(heatmap_Q22_Q25$job_satisfaction_22))
+
+ggplot(heatmap_Q22_Q25, aes(overtime_work_25, job_satisfaction_22)) +
   geom_tile(aes(fill = Freq), colour = "black") +
   scale_fill_gradient(low = "white", high = HL_colors[1])
 
@@ -1346,6 +1352,13 @@ basic_barplot(my_df = compute_perc(Qs, job_status_29 ),
 ### All Respondents
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+drivers_for_new_jobs_30_split<-Qs%>% select(drivers_for_new_jobs_30) %>%
+  separate_rows(drivers_for_new_jobs_30, sep = ";")
+
+
+new<-drivers_for_new_jobs_30_split[!(is.na(drivers_for_new_jobs_30_split$drivers_for_new_jobs_30) | drivers_for_new_jobs_30_split$drivers_for_new_jobs_30==""), ]
+
 
 basic_barplot(my_df = compute_perc(Qs, drivers_for_new_jobs_30), 
               a_factor = drivers_for_new_jobs_30, its_values = perc, labels = perc_label, 
