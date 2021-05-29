@@ -1246,25 +1246,28 @@ barplot_ordered(my_df = compute_perc(Qs, company_size_23 ),
 
 compute_perc(Qs, weekly_work_hours_24)
 
-ggplot(compute_perc(Qs,weekly_work_hours_24), aes(x=weekly_work_hours_24)) + geom_histogram(color = "black", fill= HL_colors[1]) + labs(x="Weekly working hours", y = "Number of Respondents") +
-    scale_x_continuous(breaks = seq(10, 120, by=10)) +
-  theme_minimal() +  
-    theme(
-      plot.title = element_text(family = HL_font, size = main_fontsize + 2, color = "black"),
-      # plot.subtitle = element_text(family = HL_font, size = main_fontsize),
-      axis.title = element_text(family = HL_font, size = main_fontsize, color = "black"),
-      axis.text = element_text(family = HL_font, size = main_fontsize, color = "black"),
-      # plot.caption = element_text(hjust = 0, family = my_font, 
-      #                             size = main_fontsize, face= "italic"), #Default is hjust=1 / 0
-      plot.title.position = "plot",  # left-align title
-      # plot.caption.position =  "plot", 
-      panel.grid.minor.x = element_blank(),  # remove useless minor grid
-      panel.grid.major.y = element_blank(),  # remove useless major grid in bar charts
-      panel.grid.major.x = element_blank(),  # remove useless major grid in bar charts
-      axis.text.x = element_blank(),
-      axis.ticks.x = element_blank(),
-      # plot.margin = margin(0.1, 0.1, 0.1, 0.1, unit = "cm")
-    )
+ggplot(compute_perc(Qs,weekly_work_hours_24), aes(x=weekly_work_hours_24)) + geom_histogram(color = "white", fill= HL_colors[1], binwidth = 20) + labs(x="Weekly working hours", y = "Number of Respondents") +
+    scale_x_continuous(breaks = seq(0, 120, by=20)) +
+  theme_minimal() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        axis.line = element_line(colour = "black"))
+    # theme(
+    #   plot.title = element_text(family = HL_font, size = main_fontsize + 2, color = "black"),
+    #   # plot.subtitle = element_text(family = HL_font, size = main_fontsize),
+    #   axis.title = element_text(family = HL_font, size = main_fontsize, color = "black"),
+    #   axis.text = element_text(family = HL_font, size = main_fontsize, color = "black"),
+    #   # plot.caption = element_text(hjust = 0, family = my_font, 
+    #   #                             size = main_fontsize, face= "italic"), #Default is hjust=1 / 0
+    #   plot.title.position = "plot",  # left-align title
+    #   # plot.caption.position =  "plot", 
+    #   panel.grid.minor.x = element_blank(),  # remove useless minor grid
+    #   panel.grid.major.y = element_blank(),  # remove useless major grid in bar charts
+    #   panel.grid.major.x = element_blank(),  # remove useless major grid in bar charts
+    #   axis.text.x = element_blank(),
+    #   axis.ticks.x = element_blank(),
+    #   # plot.margin = margin(0.1, 0.1, 0.1, 0.1, unit = "cm")
+    # )
 
 ```
 
@@ -1301,6 +1304,7 @@ compute_perc(Qs, improve_onboarding_27 )
 
 ## Q28. How much is your monthly salary in Ghana Cedis?
 
+50% of the respondents earn less than 2000 GHS per month whereas women 
 ```{r}
 monthly_salary_data <- Qs %>%
   filter(monthly_salary_28 != "NA")
