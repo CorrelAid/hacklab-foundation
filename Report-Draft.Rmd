@@ -1129,6 +1129,8 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 
 ## Q20. How important is a formal education, such as a university degree in computer science, to your career?
 
+Half of the respondents find a formal education very or even critically important for their career.
+
 ::::: {.panelset}
 ::: {.panel}
 ### All Respondents {.panel-name}
@@ -1173,6 +1175,9 @@ compute_perc(Qs, change_edu_21 )
 
 ## Q22. How satisfied are you with your current job? (If you work multiple jobs, answer for one you spend the most hours on.)
 
+A little bit than more of 50% of the respondents are slightly satisfied or satisfied with their current jobs.
+Whereas 20% are slightly dissatisfied or dissatisfied.
+
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ), 
@@ -1209,45 +1214,51 @@ ggplot(heatmap_Q22_Q25, aes(overtime_work_25, job_satisfaction_22)) +
   geom_tile(aes(fill = Freq), colour = "black") +
   scale_fill_gradient(low = "white", high = HL_colors[1])
 
-# Barplot: Relationship between job satisfaction and overtime work
-ggplot(runningcounts.df, aes(factor(Var1))) +
-  geom_bar(aes(y = Freq, alpha = rev(Var2)),
-           stat = "identity",
-           color = "#209f1b", fill = "#35665C") +
-  geom_text(aes(y = -5, label = Freq), color = "red") +
-  facet_grid(Var2 ~ Var1, switch = "both") +
-  labs(title = "frequency",
-       y = "Satsifaction",
-       x = "Overtime") +
-  theme_minimal() +
-  theme(strip.background = element_blank(),
-        axis.text.y = element_blank(),
-        axis.text.x = element_text(size = 12),
-        axis.ticks = element_blank(),
-        strip.text.y = element_text(angle = 0),
-        strip.text = element_text(size = 12),
-        legend.position = "none")
+# # Barplot: Relationship between job satisfaction and overtime work
+# ggplot(runningcounts.df, aes(factor(Var1))) +
+#   geom_bar(aes(y = Freq, alpha = rev(Var2)),
+#            stat = "identity",
+#            color = "#209f1b", fill = "#35665C") +
+#   geom_text(aes(y = -5, label = Freq), color = "red") +
+#   facet_grid(Var2 ~ Var1, switch = "both") +
+#   labs(title = "frequency",
+#        y = "Satsifaction",
+#        x = "Overtime") +
+#   theme_minimal() +
+#   theme(strip.background = element_blank(),
+#         axis.text.y = element_blank(),
+#         axis.text.x = element_text(size = 12),
+#         axis.ticks = element_blank(),
+#         strip.text.y = element_text(angle = 0),
+#         strip.text = element_text(size = 12),
+#         legend.position = "none")
 
 ```
 
 ## Q23. Approximately how many people are employed by the company or organization you currently work for?
 
+Half of the respondents work in a small company with less than 10 workers. Only 10% of the respondents work in a big company with more than 100 workers.
+
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-barplot_ordered(my_df = compute_perc(Qs, company_size_23 ), 
+#Removing NA
+
+company_size_23_NA_remov <- Qs %>%
+  filter(company_size_23 != "NA")
+
+barplot_ordered(my_df = compute_perc(company_size_23_NA_remov, company_size_23 ), 
               a_factor = company_size_23 , its_values = perc, labels = perc_label, 
               title = "Q23. Approximately how many people are employed by the company or organization you currently work for?")
 
 ```
 
 ## Q24. On average, how many hours per week do you work? Please enter a whole number in the box.
+Working hours are quite evenly scattered across the scale from 0-80 hours a week.
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-compute_perc(Qs, weekly_work_hours_24)
-
-ggplot(compute_perc(Qs,weekly_work_hours_24), aes(x=weekly_work_hours_24)) + geom_histogram(color = "white", fill= HL_colors[1], binwidth = 20) + labs(x="Weekly working hours", y = "Number of Respondents") +
-    scale_x_continuous(breaks = seq(0, 120, by=20)) +
+ggplot(compute_perc(Qs,weekly_work_hours_24), aes(x=weekly_work_hours_24)) + geom_histogram(color = "white", fill= HL_colors[1], binwidth = 10) + labs(x="Weekly working hours", y = "Number of Respondents") +
+    scale_x_continuous(breaks = seq(0, 120, by=10)) +
   theme_minimal() + 
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(), 
@@ -1304,7 +1315,8 @@ compute_perc(Qs, improve_onboarding_27 )
 
 ## Q28. How much is your monthly salary in Ghana Cedis?
 
-50% of the respondents earn less than 2000 GHS per month whereas women 
+50% of the respondents earn less than 2000 GHS per month. 
+
 ```{r}
 monthly_salary_data <- Qs %>%
   filter(monthly_salary_28 != "NA")
@@ -1371,7 +1383,11 @@ basic_barplot(my_df = compute_perc(Qs, job_status_29 ),
 ## Q30. In general, what drives you to look for a new job? Select all that apply.
 The main reason for developers is more income whereas for students it is gaining more experience and skills improvement.
 
-### All Respondents
+::::: {.panelset}
+
+::: {.panel}
+
+### All Respondents {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
@@ -1397,8 +1413,13 @@ basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split, drivers_for_ne
               title = "")
 
 ```
+``
 
-### Professional Developers
+:::
+
+::: {.panel}
+
+### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split %>% filter(profession_1 == "I am a developer by profession"), drivers_for_new_jobs_30), 
@@ -1406,8 +1427,11 @@ basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split %>% filter(prof
               title = "")
 
 ```
+:::
 
-### Students
+::: {.panel}
+
+### Students {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
@@ -1416,7 +1440,9 @@ basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split %>% filter(prof
               title = "")
 
 ```
+:::
 
+::::
 
 
 ## Q31. When job searching, how do you learn more about a company? Select all that apply.
@@ -1450,7 +1476,9 @@ basic_barplot(my_df = compute_perc(how_learn_about_company_31_split, how_learn_a
 ```
 
 ## Q32. Are you a member of any other online/offline developer communities?
+
 2 in 3 respondends are part of a developer community.
+
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs, dev_community_member_32 ), 
