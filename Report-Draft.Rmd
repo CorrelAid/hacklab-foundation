@@ -1179,6 +1179,11 @@ barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ),
 
 # Heat Map: Relationship between job satisfaction and overtime work
 runningcounts.df <- as.data.frame(table(Qs$job_satisfaction_22, Qs$overtime_work_25))
+
+levels(runningcounts.df$overtime_work_25) <- gsub(" ", "\n", levels(runningcounts.df$overtime_work_25))
+levels(runningcounts.df$job_satisfaction_22) <- gsub(" ", "\n", levels(runningcounts.df$job_satisfaction_22))
+
+heatmap_Q22_Q25 <- runningcounts.df %>% rename()
 ggplot(runningcounts.df, aes(Var2, Var1)) +
   geom_tile(aes(fill = Freq), colour = "black") +
   scale_fill_gradient(low = "white", high = HL_colors[1])
@@ -1579,7 +1584,6 @@ basic_barplot(my_df = compute_perc(dependents_data %>% filter(gender_35 == "Woma
 :::
 
 ::::
-
 
 
 
