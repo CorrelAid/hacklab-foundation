@@ -101,7 +101,7 @@ Qs <- rio::import("data/clean/clean_all_Qs.rds") %>%
                            "Mathematics_Statistics" = "Mathematics/Statistics"),
     prim_study_19 = fct_relevel(prim_study_19,
                                 "Education",
-                                "Socia Science",
+                                "Social Science",
                                 "Graphic Design",
                                 "Architecture",
                                 "Visual Arts",
@@ -1179,17 +1179,32 @@ barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ),
               a_factor = job_satisfaction_22 , its_values = perc, labels = perc_label, 
               title = "Q22. How satisfied are you with your current job?")
 
+
+```
+
+## Relationship between job satisfaction and overtime work
+
+Interestingly, people who work more than 3 times a week overtime are satisfied with their job. There seems no relationship that the more overtime the less job satisfaction. The tendency is rather the opposite. 
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
 # Heat Map: Relationship between job satisfaction and overtime work
 runningcounts.df <- as.data.frame(table(Qs$job_satisfaction_22, Qs$overtime_work_25))
 
-
-
 heatmap_Q22_Q25 <- runningcounts.df %>% rename(overtime_work_25 = Var2,
-                                               job_satisfaction_22 = Var1)
-
+                                               job_satisfaction_22 = Var1) %>%
+  mutate(overtime_work_25 = recode(overtime_work_25, 
+                                                "Often: 1-2 days per week" = "1-2 days per week",
+                                                "Sometimes: 1-2 days per month but less than weekly" = "1-2 days per month",
+                                      "Rarely: 1-2 days per year or less" = "<1-2 days per year",
+                                   "Occasionally: 1-2 days per quarter but less than monthly" = "1-2 days per quarter",
+                                   "Frequently: 3 or more days per week" = ">3 days per week"))
+                                      
 levels(heatmap_Q22_Q25$overtime_work_25) <- gsub(" ", "\n", levels(heatmap_Q22_Q25$overtime_work_25))
 levels(heatmap_Q22_Q25$job_satisfaction_22) <- gsub(" ", "\n", levels(heatmap_Q22_Q25$job_satisfaction_22))
 
+
+                                      
 ggplot(heatmap_Q22_Q25, aes(overtime_work_25, job_satisfaction_22)) +
   geom_tile(aes(fill = Freq), colour = "black") +
   scale_fill_gradient(low = "white", high = HL_colors[1])
@@ -1339,6 +1354,8 @@ barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 ==
 
 ## Q29. Which of the following best describes your current job-seeking status?
 
+60% of the respondents are open for new job oppourtunities and one in three respondents is even actively looking for a job.
+
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs, job_status_29 ), 
@@ -1359,11 +1376,6 @@ drivers_for_new_jobs_30_split<-Qs%>% select(drivers_for_new_jobs_30, profession_
 
 
 drivers_for_new_jobs_30_split<-drivers_for_new_jobs_30_split[!(is.na(drivers_for_new_jobs_30_split$drivers_for_new_jobs_30) | drivers_for_new_jobs_30_split$drivers_for_new_jobs_30==""), ]
-purch_influence_16 = fct_relevel
-
-  mutate(
-    purch_influence_16 = fct_relevel(purch_influence_16,
-                                     I have little or 
                                      
 drivers_for_new_jobs_30_split <-drivers_for_new_jobs_30_split %>% 
   mutate( drivers_for_new_jobs_30 = recode(drivers_for_new_jobs_30, 
@@ -1405,6 +1417,8 @@ basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split %>% filter(prof
 
 ## Q31. When job searching, how do you learn more about a company? Select all that apply.
 
+The most popular method to find out more about a company among the respondents is researching company media. There also seem no differences between developers and students.
+
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 how_learn_about_company_31_split<-Qs%>% select(how_learn_about_company_31, profession_1) %>%
@@ -1413,6 +1427,17 @@ how_learn_about_company_31_split<-Qs%>% select(how_learn_about_company_31, profe
 
 how_learn_about_company_31_split<-how_learn_about_company_31_split[!(is.na(how_learn_about_company_31_split$how_learn_about_company_31) | how_learn_about_company_31_split$how_learn_about_company_31==""), ]
 
+
+how_learn_about_company_31_split <-how_learn_about_company_31_split %>% 
+  mutate(how_learn_about_company_31 = recode(how_learn_about_company_31, 
+                                                "Company website" = "Read company media, such as employees blogs or company culture videos",
+                                                "Google & their website" = "Read company media, such as employees blogs or company culture videos",
+                                             "linkedin" = "Read company media, such as employees blogs or company culture videos",
+                                             "Online (Linkedin" = "Read company media, such as employees blogs or company culture videos",
+                                             "Websites " = "Read company media, such as employees blogs or company culture videos",
+                                             "Personal assessment.. Occasionally going to the company to see how they cooperate with one another " = "Make personal contact to company",
+                                             "Just going there frequently just access their interpersonal relationships with each other " = "Make personal contact with company"))
+                                      
 basic_barplot(my_df = compute_perc(how_learn_about_company_31_split, how_learn_about_company_31 ), 
               a_factor = how_learn_about_company_31 , its_values = perc, labels = perc_label, 
               title = "Q31. When job searching, how do you learn more about a company?")
@@ -1421,7 +1446,7 @@ basic_barplot(my_df = compute_perc(how_learn_about_company_31_split, how_learn_a
 ```
 
 ## Q32. Are you a member of any other online/offline developer communities?
-
+2 in 3 respondends are part of a developer community.
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc(Qs, dev_community_member_32 ), 
