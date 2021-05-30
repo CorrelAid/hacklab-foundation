@@ -726,7 +726,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 
 ## Which web frameworks have you done extensive development work in over the past year?
 
-_React.js_ is the most popular web framework.  BUT see next question...
+_React.js_ is the most popular web framework.   
 
 ```{r}
 
@@ -788,8 +788,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 
 ## Which other frameworks, libraries and tools have you done extensive development work in over the past year?
 
-TBD. Most seems to be web frameworks? group with question above? -> It seems that Node.js is in reality more used thant Ract.js!
-
+TBD...
 
 ```{r}
 
@@ -1030,13 +1029,33 @@ barplot_ordered(my_df = compute_perc(Qs %>%
 
 ## Q17. When buying a new tool or software, how do you discover and research available solutions? Select all that apply.
 
-__TBD.__
+Most of the respondents declared relying on free trials and colleagues.  
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-basic_barplot(my_df = compute_perc(Qs, solution_research_17), 
+# multiple choice question: we separate the different answers (separate_rows),
+#   and compute the % according to the total number of respondents
+perc_solution_research_17 <- Qs %>% 
+  select(ID, profession_1, solution_research_17) %>% 
+  separate_rows(solution_research_17, sep = ";") %>% 
+  # drop_na(any_of("solution_research_17")) %>% 
+  filter(solution_research_17 != "") %>% 
+  mutate(
+    solution_research_17 = ifelse(solution_research_17 == "YouTube Videos", "YouTube", solution_research_17), # group those
+    solution_research_17 = ifelse(solution_research_17 == "YouTube ", "YouTube", solution_research_17) # group those
+  ) %>%
+  count(solution_research_17) %>% 
+  mutate(
+      perc = n/number_of_respondents,  # % to total number of respondents -> some resp. selected several choices
+      perc_label = paste0(as.character(round(perc*100,1)), "%")
+    ) %>% 
+    arrange(-perc) 
+
+basic_barplot(my_df = perc_solution_research_17, 
               a_factor = solution_research_17, its_values = perc, labels = perc_label, 
-              title = "Q17. When buying a new tool or software, how do you discover and research available solutions?")
+              title = "")
+
+  
 
 ```
 
