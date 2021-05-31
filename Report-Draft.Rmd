@@ -253,6 +253,21 @@ compute_perc_popular_skills <- function(the_skills, skillset, number_of_resp){
     return()
 }
 
+compute_perc_future_skills <- function(the_skills, skillset, number_of_resp){
+  # USE THIS FUNCTION for the future, nexy year, skills (next year + both)
+  # NOTE: we use all respondents, not only those who responded. -> some respondents did not enter any skills. -> not optimal, but annoying to correct?
+  the_skills %>%
+    filter(tool %in% skillset) %>% # select only the languages from all the tools
+    filter(level == "Want to work with NEXT year" | level == "Both") %>%
+    count(tool) %>%
+    mutate(
+      perc = n/number_of_resp, 
+      perc_label = paste0(as.character(round(perc*100,1)), "%")
+    ) %>% 
+    arrange(-perc) %>%  
+    return()
+}
+
 
 ```
 
@@ -594,7 +609,9 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 
 ## Which programming, scripting and markup languages have you done extensive development work in over the past year?
 
-_HTML/CSS_ is the most used language, followed by _JavaScript_, _Python_ and _SQL_. Professional developers are more likely to use _JavaScript_ and _SQL_. _C++_ and _C_ are still widely useds to teach coding to students.  
+_HTML/CSS_ is the most used language, followed by _JavaScript_, _Python_ and _SQL_. Professional developers are more likely to use _JavaScript_ and _SQL_. _C++_ and _C_ are still widely used to teach coding to students.    
+
+[note: includes "both" and "this year"]
 
 ```{r}
 
@@ -660,7 +677,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 
 ## Which platforms have you done extensive development work in over the past year?
 
-TBD...
+A comment here...  
 
 ```{r}
 
@@ -788,7 +805,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 
 ## Which other frameworks, libraries and tools have you done extensive development work in over the past year?
 
-TBD...
+A comment here...  
 
 ```{r}
 
@@ -845,7 +862,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 :::::
 
 
-## Which collaborative tools have you done extensive development work in over the past year?
+## Which collaborative tools have you used extensively over the past year?
 
 _GitHub_ is by far the most popular version control tool. _Slack_ is the most used business communication platform.  
 
@@ -908,14 +925,298 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 
 
 
-&nbsp;
 &nbsp;  
-** === add something about next year ===**
-&nbsp;
-&nbsp;
+
+&nbsp;   
+
+== __Not sure yet how to combine this year and next year, tbd. For now they are separated.__ ==
+
+&nbsp;    
+
+&nbsp;  
+
+## Which programming, scripting and markup languages do you want to work in over the next year?
+
+A comment here... [note: includes "both" and "next year" (for all the following plots)]
+
+::::: {.panelset}
+::: {.panel}
+### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = languages,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = languages,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = languages,
+                                                  number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
 
 
+## Which platforms do you want to work with over the next year?
 
+A comment here...  
+
+::::: {.panelset}
+::: {.panel}
+### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = platforms,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = platforms,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = platforms,
+                                                  number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+## Which web frameworks do you want to work with over the next year?
+
+_React.js_ is the most popular web framework.   
+
+```{r}
+
+web_frameworks = c(
+"Angular",			
+"ASP.NET",		
+"Django",			
+"Express",		
+"jQuery",			
+"Laravel",
+"React.js",
+"Ruby on Rails",
+"Vue.js",
+"Spring"
+)
+
+```
+::::: {.panelset}
+::: {.panel}
+### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = web_frameworks,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = web_frameworks,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = web_frameworks,
+                                                  number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+## Which other frameworks, libraries and tools do you want to work with over the next year?
+
+A comment here...  
+
+```{r}
+
+other_frameworks = c(
+".NET",			
+".NET Core",			
+"Flutter",			
+"Node.js",			
+"Puppet",			
+"React Native",			
+"Deno.js"
+)
+
+```
+::::: {.panelset}
+::: {.panel}
+### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = other_frameworks,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = other_frameworks,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = other_frameworks,
+                                                  number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+## Which collaborative tools do you want to work with over the next year?
+
+_GitHub_ is by far the most popular version control tool. _Slack_ is the most used business communication platform.  
+
+```{r}
+
+collaborative_tools = c(
+"GitHub",			
+"GitLab",			
+"Facebook Workplace",			
+"Slack",			
+"Microsoft Teams",			
+"Microsoft Azure",			
+"Trello",			
+"Google Suite (Docs, Meet, etc)",			
+"Stack Overflow for Teams",			
+"Jira"
+)
+
+```
+::::: {.panelset}
+::: {.panel}
+### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = collaborative_tools,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = collaborative_tools,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = collaborative_tools,
+                                                  number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+&nbsp;  
+
+&nbsp;  
+
+&nbsp;  
+
+&nbsp;  
 
 
 ## What is the primary operating system in which you work?
