@@ -1,12 +1,13 @@
 ---
 title: "Hacklab Developer Census 2020"
+description: "Preliminary Draft - May 31"
 output: 
   distill::distill_article:
-    toc: true     # adding table of contents
+    toc: true
+    toc_float: true # not sure why not working
     toc_depth: 1
-    toc_float: true
-    toc_collapsed: true
-    theme: theme.css
+    # toc_collapsed: true
+    theme: draft_theme.css
 ---
 
 
@@ -611,7 +612,9 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 
 _HTML/CSS_ is the most used language, followed by _JavaScript_, _Python_ and _SQL_. Professional developers are more likely to use _JavaScript_ and _SQL_. _C++_ and _C_ are still widely used to teach coding to students.    
 
-[note: includes "both" and "this year"]
+<aside>
+  note: includes "both" and "this year".
+</aside>  
 
 ```{r}
 
@@ -937,7 +940,12 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 
 ## Which programming, scripting and markup languages do you want to work in over the next year?
 
-A comment here... [note: includes "both" and "next year" (for all the following plots)]
+A comment here... 
+
+<aside>
+  note: includes "both" and "next year" (for the 5 following plots)
+</aside>  
+
 
 ::::: {.panelset}
 ::: {.panel}
