@@ -1,13 +1,13 @@
 ---
 title: "Hacklab Developer Census 2020"
-description: "Preliminary Draft - May 31"
+description: "Preliminary Draft - `r Sys.Date()`"
 output: 
   distill::distill_article:
     toc: true
     toc_float: true # not sure why not working
     toc_depth: 1
     # toc_collapsed: true
-    theme: draft_theme.css
+    theme: css_theme/theme.css
 ---
 
 
