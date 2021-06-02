@@ -2,12 +2,14 @@
 title: "Hacklab Developer Census 2020"
 description: "Preliminary Draft - `r Sys.Date()`"
 output: 
-  distill::distill_article:
+  html_document:  
+    # instead of distill::distill_article:
     toc: true
-    toc_float: true # not sure why not working
-    toc_depth: 1
-    # toc_collapsed: true
-    theme: css_theme/theme.css
+    toc_float: true # not working in distill...
+    toc_depth: 2
+    toc_collapsed: true
+    # theme: paper
+    css: css_theme/css_from_scratch.css # css instead of theme
 ---
 
 
@@ -273,7 +275,7 @@ compute_perc_future_skills <- function(the_skills, skillset, number_of_resp){
 ```
 
 
-# Basic Information
+# Basic Information {.header1} 
 
 ## What describes you best?
 
@@ -556,7 +558,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 
 
 
-# Technology and Tech Culture
+# Technology and Tech Culture {.header1} 
 
 ## How frequently do you learn a new language or framework?
 
@@ -1377,7 +1379,7 @@ basic_barplot(my_df = perc_solution_research_17,
 
 
 
-# Education, Work and Career
+# Education, Work and Career {.header1}
 
 ## Q18. Which of the following best describes the highest level of formal education that you have completed?
 
@@ -1842,7 +1844,7 @@ wordcloud(words = counted_communities$which_dev_community_33, freq = counted_com
 
 
 
-# Demographics  
+# Demographics {.header1}
 
 ## Gender 
 

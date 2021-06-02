@@ -1,0 +1,94 @@
+
+
+/*
+Hacklab Foundation colors:
+  from the hackathon:
+    1) violet:  #610b70
+    2) green: #88b101
+    3) pink: #eb1c96
+    4) orange: #e98403
+    5) dark_grey: #454545
+  from the website:
+    - ligth_grey, text color: #777777
+    - pink buttons and URL: #D4145A
+    - titles: #222222
+
+*/
+
+/* THIS IS A GREAT TUTORIAL: https://rstudio4edu.github.io/rstudio4edu-book/rmd-fancy.html */
+
+html {
+  /*-- Definition of some "variables" --*/
+
+  /* HOW TO DEFINE VARIABLES, THIS IS NOT WORKING ?? */
+
+}
+
+/* this is for everything, the whole report */
+body {
+  font-family: Gotham;
+}
+
+/* The TITLE */
+.title {
+  font-size: 4vw;
+  color: #222222;
+  margin-top: 2em;  /* Relative to the font-size of the element (2em means 2 times the size of the current font) */
+  margin-bottom: 0.75em;
+}
+
+
+/* size of the headers */
+h1 { /* Header 1 */
+    font-size: 2vw;
+    font-weight: bold;
+    color:  #222222;  /* --header-color; */
+}
+
+h2 { /* Header 2 */
+    font-size: 1.7vw;
+    font-weight: bold;
+    color:  #222222;
+}
+h3 { /* Header 3 -> not working? */
+  font-size: 1.5vw;
+  font-weight: bold;
+  color: #222222;
+}
+p { /* the paragraph, text */
+  font-size: 1.3vw;
+}
+
+/* the table of contents */
+.tocify {
+  color: #222222;
+  font-family: sans-serif; /* Gotham is ugly in the TOC */
+  /* position: -webkit-sticky; */
+  /* position: sticky; */
+  /* top: 120px; /*Controls where TOC stops when sticky */ */
+  /* width: 100%; */
+  border: none;
+}
+}
+
+/* Space Between TOC and Righthand side content on large screens */
+/* NOT SURE IF WORKING AND USEFUL */
+@media (min-width: 992px) {
+  .col-md-9 {
+    width: 75%;
+    padding-left: 5em;
+  }
+}
+
+/* add a logo above our table of contents */
+#TOC::before {
+  content: "";
+  display: block;
+  height: 80px;
+  margin: 1em 10px 20px 10px;
+  background-image: url("hacklab-logo-dark.png");
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  /* background-color: #454545; */
+}
