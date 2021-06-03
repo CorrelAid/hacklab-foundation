@@ -9,9 +9,20 @@ output:
     toc_depth: 2
     toc_collapsed: true
     # theme: paper
-    css: css_theme/css_from_scratch.css # css instead of theme
+    css: css_theme/css_from_scratch.css
+    # css: css_theme/Splendor.css
+    # css: css_theme/readthedown/readthedown.css
+    # css: css_theme/stackoverflow.css # not working...
 ---
 
+
+```{css toc-content, echo = FALSE}
+/* add some space before the TOC */
+/* for no apparent reason, this is working here but not in the .css... */
+#TOC {
+  margin-top: 5rem;
+}
+```
 
 
 
@@ -144,7 +155,7 @@ skills <- rio::import("../../data/clean/skills_final.csv") %>%
 # we add characteristics of the respondents to the skills, 
 # so that we can differentiate their popularity by occupation or gender:
 skills_with_characteristics <- skills %>% left_join(select(Qs, ID, profession_1, gender_35), by = c("id" = "ID"))
- 
+
 number_of_respondents = dim(Qs)[1] # number of respondents (272) used to compute percentages.
 number_of_prof_dev = dim(Qs %>% filter(profession_1 == "I am a developer by profession"))[1]
 number_of_students = dim(Qs %>% filter(profession_1 == "I am a student who is learning to code"))[1]
@@ -382,8 +393,8 @@ basic_barplot(my_df = compute_perc(employment_data, employment_3),
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Man"), employment_3), 
-              a_factor = employment_3, its_values = perc, labels = perc_label,
-              title = "")
+                a_factor = employment_3, its_values = perc, labels = perc_label,
+                title = "")
 
 ```
 
@@ -396,8 +407,8 @@ barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Ma
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Woman"), employment_3), 
-              a_factor = employment_3, its_values = perc, labels = perc_label,
-              title = "")
+                a_factor = employment_3, its_values = perc, labels = perc_label,
+                title = "")
 
 ```
 
@@ -424,11 +435,11 @@ region_data <- Qs %>%
   filter(region_4 != "Not in Ghana")
 
 region_data$region_4 <- recode(region_data$region_4,
-         "Eastern Region, Ghana" = "Eastern Region", 
-         "Northern Region, Ghana" = "Northern Region", 
-         "Central Region, Ghana" = "Central Region", 
-         "Western Region, Ghana"= "Western Region"
-  )
+                               "Eastern Region, Ghana" = "Eastern Region", 
+                               "Northern Region, Ghana" = "Northern Region", 
+                               "Central Region, Ghana" = "Central Region", 
+                               "Western Region, Ghana"= "Western Region"
+)
 
 basic_barplot(my_df = compute_perc(region_data, region_4), 
               a_factor = region_4, its_values = perc, labels = perc_label,
@@ -518,8 +529,8 @@ Qs$age_range_6 <- factor(Qs$age_range_6, levels(Qs$age_range_6)[c(6:1)])
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs, age_range_6), 
-              a_factor = age_range_6, its_values = perc, labels = perc_label, 
-              title = "")
+                a_factor = age_range_6, its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 
@@ -533,8 +544,8 @@ barplot_ordered(my_df = compute_perc(Qs, age_range_6),
 
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), age_range_6), 
-              a_factor = age_range_6, its_values = perc, labels = perc_label,
-              title = "")
+                a_factor = age_range_6, its_values = perc, labels = perc_label,
+                title = "")
 
 ```
 
@@ -547,8 +558,8 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), age_range_6), 
-              a_factor = age_range_6, its_values = perc, labels = perc_label,
-              title = "")
+                a_factor = age_range_6, its_values = perc, labels = perc_label,
+                title = "")
 
 ```
 
@@ -575,8 +586,8 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs, new_tool_7), 
-              a_factor = new_tool_7, its_values = perc, labels = perc_label, 
-              title = "") + scale_x_discrete(limits=rev)
+                a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+                title = "") + scale_x_discrete(limits=rev)
 
 ```
 
@@ -589,8 +600,8 @@ barplot_ordered(my_df = compute_perc(Qs, new_tool_7),
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), new_tool_7), 
-              a_factor = new_tool_7, its_values = perc, labels = perc_label, 
-              title = "") + scale_x_discrete(limits=rev)
+                a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+                title = "") + scale_x_discrete(limits=rev)
 
 ```
 
@@ -603,8 +614,8 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), new_tool_7), 
-              a_factor = new_tool_7, its_values = perc, labels = perc_label, 
-              title = "") + scale_x_discrete(limits=rev)
+                a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+                title = "") + scale_x_discrete(limits=rev)
 
 ```
 
