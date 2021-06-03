@@ -20,75 +20,120 @@ Hacklab Foundation colors:
 html {
   /*-- Definition of some "variables" --*/
 
-  /* HOW TO DEFINE VARIABLES, THIS IS NOT WORKING ?? */
+  /*-- Main font sizes --*/
+  font-size: 120%; /* the base font size of 100% is the default 16px */
+  /* --title-size:      4rem; */
+  /* --body-size:       1rem; defined relatively to base font-size. e.g. 4rem = 4*16px = 64px  */
+  --code-size:       0.9rem;
+  --fig-cap-size:    0.9rem;
+  /*-- Main font colors --*/
+  --highlight-color:     #D4145A; /* pink */
+  --header-color:    #222222; /* very dark grey, almost black*/
+  --body-color:      #777777; /* ligth_grey -> darker?*/
+
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    "Source Sans Pro";
+  --body-font:       "Source Sans Pro";
 
 }
 
 /* this is for everything, the whole report */
 body {
-  font-family: Gotham;
+  font-family: var(--body-font); /* define default font. var() is the way to use variables defined above*/
 }
 
 /* The TITLE */
-.title {
-  font-size: 4vw;
-  color: #222222;
-  margin-top: 2em;  /* Relative to the font-size of the element (2em means 2 times the size of the current font) */
-  margin-bottom: 0.75em;
+h1.title {
+  font-size: 4rem; /* NOT SURE WHAY CAN'T CHANGE TITLE SIZE? */
+  color: var(--highlight-color);
+  margin-top: 1em;  /* Relative to the font-size of the element (2em means 2 times the size of the current font) */
+  margin-bottom: 1em;
+  font-weight: 400;
 }
+
 
 
 /* size of the headers */
 h1 { /* Header 1 */
-    font-size: 2vw;
+    font-size: 3rem;
     font-weight: bold;
-    color:  #222222;  /* --header-color; */
+    color:  var(--header-color);  /* --header-color; */
+    margin-top: 4rem; /* add some space before h1 */
 }
 
 h2 { /* Header 2 */
-    font-size: 1.7vw;
+    font-size: 2rem;
     font-weight: bold;
-    color:  #222222;
+    color:  var(--header-color);
+    margin-top: 2rem; /* add some space before h2 */
 }
 h3 { /* Header 3 -> not working? */
-  font-size: 1.5vw;
+  font-size: 1.5rem;
   font-weight: bold;
-  color: #222222;
+  color: var(--header-color);
 }
 p { /* the paragraph, text */
-  font-size: 1.3vw;
+  font-size: 1rem;
+  color: var(--body-color);
 }
 
 /* the table of contents */
 .tocify {
-  color: #222222;
-  font-family: sans-serif; /* Gotham is ugly in the TOC */
-  /* position: -webkit-sticky; */
-  /* position: sticky; */
-  /* top: 120px; /*Controls where TOC stops when sticky */ */
-  /* width: 100%; */
-  border: none;
+  color: var(--header-color);
+  /* width: 100%;  not sure what this is?  */
+  /* outline: 0; not sure why not working ??  */
+  font-size: 1rem;
+  margin-top: 6em;
+  /* height: 100%; useless because the heigth is dynamic...  */
+  border: 1px solid var(--body-color);
+  border-radius: 6px; /* rounded edges for the toc border */
 }
+/* the items in the toc*/
+.tocify-item {
+    /* color: #D53027; */
+    /* background-color: white; */
+    /* border: none; */
+}
+/* the items in the toc that is currently active */
+.tocify-item.active {
+    color: white;
+    background-color: var(--highlight-color);
+    border: none;
+}
+/* what happens when you hover on elements of toc */
+.list-group-item:hover,
+.list-group-item.active:hover {
+    color: white;
+    background-color: var(--highlight-color);
 }
 
-/* Space Between TOC and Righthand side content on large screens */
-/* NOT SURE IF WORKING AND USEFUL */
-@media (min-width: 992px) {
-  .col-md-9 {
-    width: 75%;
-    padding-left: 5em;
-  }
-}
-
-/* add a logo above our table of contents */
-#TOC::before {
+/* add a logo before TOC, but "inside it" */
+/* #TOC::before {
   content: "";
   display: block;
-  height: 80px;
-  margin: 1em 10px 20px 10px;
-  background-image: url("hacklab-logo-dark.png");
+  height: 200px;
+  margin: 2em 20px 40px 20px;
+  background-image: url("logo-black.png");
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
-  /* background-color: #454545; */
+} */
+
+
+/* The panels aka the tabs */
+.panelset {
+  font-size: 1.2rem;
+  width: 100%;
+  position: relative;
+  --panel-tabs-border-bottom: #ddd;
+  --panel-tab-foreground: currentColor;
+  --panel-tab-background: unset;
+  --panel-tab-active-foreground: currentColor;
+  --panel-tab-active-background: unset;
+  --panel-tab-hover-foreground: currentColor;
+  --panel-tab-hover-background: unset;
+  --panel-tab-active-border-color: var(--highlight-color); /* was: currentColor; */
+  --panel-tab-hover-border-color: var(--highlight-color); /* was: currentColor; */
+  --panel-tab-inactive-opacity: 0.5;
+  --panel-tab-font-family: inherit;
 }
