@@ -44,6 +44,10 @@ library(wordcloud) # for the wordcloud at Q33
 
 library(tidyr) # for Q30 and Q31
 
+library(ggiraph) # for "interactive" plots
+
+library(ggchicklet) # to round edges of barplots. install.packages("ggchicklet", repos = "https://cinc.rud.is")
+
 ```
 
 ```{r}
@@ -167,13 +171,15 @@ number_of_students = dim(Qs %>% filter(profession_1 == "I am a student who is le
 
 # Themes and Functions:
 
-HL_colors = c("#610b70","#88b101","#eb1c96","#e98403","#454545")
 highlight_col = "#d4145a"
 text_col = "#777777"
 header_col = "#222222"
 font_in_viz = "sans" # !!! Should change and use Gotham !!!
 text_col_in_viz = "black"
-main_fontsize = 7 
+main_fontsize = 10
+HL_colors = c(text_col, "#610b70","#88b101","#eb1c96","#e98403","#454545")
+geom_text_size = 3.9
+
 
 barplot_theme <- function(){
   # the definition of a custom ggplot theme for our barplots.
@@ -205,10 +211,54 @@ basic_barplot <- function(my_df, a_factor, its_values, labels, title){
   current_plot <- ggplot(data = my_df, 
                          aes(x = fct_reorder({{a_factor}}, {{its_values}}), 
                              y = {{its_values}})) + 
-    geom_col(fill = HL_colors[1]) + 
+    geom_chicklet(radius = grid::unit(1, 'mm'), fill = HL_colors[1]) +  # NNNNNEEEEEEEEEWWWWW !!!!!!
     geom_text(
       aes(label = {{labels}}, y = {{its_values}} + (0.06*max({{its_values}}))),
-      size = 2
+      size = geom_text_size
+    ) +
+    scale_y_continuous(labels = scales::percent) +
+    barplot_theme() + 
+    coord_flip() +
+    labs(title = stringr::str_wrap(title,100)) + # automated text wrap in title
+    xlab("") +
+    ylab("")
+  return(current_plot)
+}
+
+basic_barplot_dark <- function(my_df, a_factor, its_values, labels, title){
+  # a function to plot a standard barplot
+  # uses the barplot_theme defined above
+  # needs an (ordered) factor as input, and its values
+  # returns a ggplot
+  current_plot <- ggplot(data = my_df, 
+                         aes(x = fct_reorder({{a_factor}}, {{its_values}}), 
+                             y = {{its_values}})) + 
+    geom_chicklet(radius = grid::unit(1, 'mm'), fill = header_col) +  # NNNNNEEEEEEEEEWWWWW !!!!!!
+    geom_text(
+      aes(label = {{labels}}, y = {{its_values}} + (0.06*max({{its_values}}))),
+      size = geom_text_size
+    ) +
+    scale_y_continuous(labels = scales::percent) +
+    barplot_theme() + 
+    coord_flip() +
+    labs(title = stringr::str_wrap(title,100)) + # automated text wrap in title
+    xlab("") +
+    ylab("")
+  return(current_plot)
+}
+
+basic_barplot_pink <- function(my_df, a_factor, its_values, labels, title){
+  # a function to plot a standard barplot
+  # uses the barplot_theme defined above
+  # needs an (ordered) factor as input, and its values
+  # returns a ggplot
+  current_plot <- ggplot(data = my_df, 
+                         aes(x = fct_reorder({{a_factor}}, {{its_values}}), 
+                             y = {{its_values}})) + 
+    geom_chicklet(radius = grid::unit(1, 'mm'), fill = highlight_col) +  # NNNNNEEEEEEEEEWWWWW !!!!!!
+    geom_text(
+      aes(label = {{labels}}, y = {{its_values}} + (0.06*max({{its_values}}))),
+      size = geom_text_size
     ) +
     scale_y_continuous(labels = scales::percent) +
     barplot_theme() + 
@@ -220,18 +270,20 @@ basic_barplot <- function(my_df, a_factor, its_values, labels, title){
 }
 
 #Function for barplot that does not override order
-barplot_ordered <- function(my_df, a_factor, its_values, labels, title){
+barplot_ordered <- function(my_df, a_factor, its_values, labels, title, tooltip, data_id){
   # a function to plot a standard barplot
   # uses the barplot_theme defined above
   # needs an (ordered) factor as input, and its values
   # returns a ggplot
   current_plot <- ggplot(data = my_df, 
                          aes(x = {{a_factor}},
-                             y = {{its_values}})) + 
-    geom_col(fill = HL_colors[1]) + 
+                             y = {{its_values}},
+                             tooltip = {{tooltip}}, 
+                             data_id = {{data_id}})) + 
+    geom_col_interactive(fill = HL_colors[1]) + 
     geom_text(
       aes(label = {{labels}}, y = {{its_values}} + (0.06*max({{its_values}}))),
-      size = 2
+      size = geom_text_size
     ) +
     scale_y_continuous(labels = scales::percent) +
     barplot_theme() + 
@@ -286,6 +338,8 @@ compute_perc_future_skills <- function(the_skills, skillset, number_of_resp){
     return()
 }
 
+fig_height_factor = 2
+
 
 ```
 
@@ -296,7 +350,12 @@ compute_perc_future_skills <- function(the_skills, skillset, number_of_resp){
 
 The two biggest subgroups among the respondents are professional developers as well as students. Additionally, there are respondents coding as a part of their work, coding as a hobby, as well as former developers. 
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r}
+# THIS IS A TEST: TRY TO SEE IF WE CAN DYNAMICALLY DEFINE FIGURE SIZES!
+next_fig_height = dim(compute_perc(Qs, profession_1))[1] / fig_height_factor 
+```
+
+```{r, fig.align='center', out.width = '100%', fig.height=next_fig_height}
 
 basic_barplot(my_df = compute_perc(Qs, profession_1), 
               a_factor = profession_1, its_values = perc, labels = perc_label, 
@@ -307,13 +366,19 @@ basic_barplot(my_df = compute_perc(Qs, profession_1),
 
 Most of the respondents code as a hobby. Interestingly, professional developers seem to code for a hobby less often than students which may be related to their reduced time availability. 
 
+```{r}
+# THIS IS A TEST: TRY TO SEE IF WE CAN DYNAMICALLY DEFINE FIGURE SIZES!
+next_fig_height = dim(compute_perc(Qs, hobby_coding_2))[1] / fig_height_factor
+```
+
+
 ::::: {.panelset}
 
 ::: {.panel}
 
 ### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=next_fig_height}
 
 basic_barplot(my_df = compute_perc(Qs, hobby_coding_2), 
               a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
@@ -327,7 +392,7 @@ basic_barplot(my_df = compute_perc(Qs, hobby_coding_2),
 ::: {.panel}
 
 ### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=next_fig_height}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), hobby_coding_2), 
               a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
@@ -341,7 +406,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
 
 ### Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=next_fig_height}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), hobby_coding_2), 
               a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
@@ -363,6 +428,10 @@ employment_data <- Qs %>%
     employment_3 = factor(employment_3, 
                           levels(employment_3)[c(4,2,3,6,5,1)])
   )
+
+# THIS IS A TEST: TRY TO SEE IF WE CAN DYNAMICALLY DEFINE FIGURE SIZES!
+next_fig_height = dim(compute_perc(employment_data, employment_3))[1] / fig_height_factor 
+
 ```
 
 Most of the respondents are employed full-time. Furthermore, there is a great share of students. Sadly, there is also a significant share of unemployed developers looking for work. 
@@ -375,9 +444,9 @@ When it comes to gender differences, there is a greater share of students among 
 
 ### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=next_fig_height}
 
-basic_barplot(my_df = compute_perc(employment_data, employment_3), 
+basic_barplot_dark(my_df = compute_perc(employment_data, employment_3), 
               a_factor = employment_3, its_values = perc, labels = perc_label,
               title = "")
 
@@ -390,9 +459,9 @@ basic_barplot(my_df = compute_perc(employment_data, employment_3),
 
 ### Men only {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=next_fig_height}
 
-barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Man"), employment_3), 
+basic_barplot_dark(my_df = compute_perc(employment_data %>% filter(gender_35 == "Man"), employment_3), 
                 a_factor = employment_3, its_values = perc, labels = perc_label,
                 title = "")
 
@@ -404,9 +473,9 @@ barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Ma
 
 ### Women only {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=next_fig_height}
 
-barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Woman"), employment_3), 
+basic_barplot_dark(my_df = compute_perc(employment_data %>% filter(gender_35 == "Woman"), employment_3), 
                 a_factor = employment_3, its_values = perc, labels = perc_label,
                 title = "")
 
@@ -424,13 +493,8 @@ barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Wo
 
 Most respondents come from the greater Accra region. However, the extent of concentration in Accra seems to be larger for professional developers than for students. 
 
-::::: {.panelset}
+```{r}
 
-::: {.panel}
-
-### All Respondents {.panel-name}
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
 region_data <- Qs %>%
   filter(region_4 != "Not in Ghana")
 
@@ -441,7 +505,22 @@ region_data$region_4 <- recode(region_data$region_4,
                                "Western Region, Ghana"= "Western Region"
 )
 
-basic_barplot(my_df = compute_perc(region_data, region_4), 
+# THIS IS A TEST: TRY TO SEE IF WE CAN DYNAMICALLY DEFINE FIGURE SIZES!
+next_fig_height = dim(compute_perc(region_data, region_4))[1] / fig_height_factor
+
+```
+
+
+::::: {.panelset}
+
+::: {.panel}
+
+### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=next_fig_height}
+
+
+basic_barplot_pink(my_df = compute_perc(region_data, region_4), 
               a_factor = region_4, its_values = perc, labels = perc_label,
               title = "")
 
@@ -454,9 +533,9 @@ basic_barplot(my_df = compute_perc(region_data, region_4),
 
 ### Professional Developers {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=next_fig_height}
 
-basic_barplot(my_df = compute_perc(region_data %>% filter(profession_1 == "I am a developer by profession"), region_4), 
+basic_barplot_pink(my_df = compute_perc(region_data %>% filter(profession_1 == "I am a developer by profession"), region_4), 
               a_factor = region_4, its_values = perc, labels = perc_label,
               title = "")
 
@@ -468,9 +547,9 @@ basic_barplot(my_df = compute_perc(region_data %>% filter(profession_1 == "I am 
 
 ### Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=next_fig_height}
 
-basic_barplot(my_df = compute_perc(region_data %>% filter(profession_1 == "I am a student who is learning to code"), region_4), 
+basic_barplot_pink(my_df = compute_perc(region_data %>% filter(profession_1 == "I am a student who is learning to code"), region_4), 
               a_factor = region_4, its_values = perc, labels = perc_label,
               title = "")
 
@@ -528,9 +607,17 @@ Qs$age_range_6 <- factor(Qs$age_range_6, levels(Qs$age_range_6)[c(6:1)])
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-barplot_ordered(my_df = compute_perc(Qs, age_range_6), 
+p <- barplot_ordered(my_df = compute_perc(Qs, age_range_6), 
                 a_factor = age_range_6, its_values = perc, labels = perc_label, 
-                title = "")
+                tooltip = perc_label, data_id = perc,
+                title = "") + scale_x_discrete(limits=rev)
+girafe(ggobj = p,
+       options = list(
+         opts_sizing(rescale = FALSE), # else, rescale differently...
+         opts_hover_inv(css = "opacity:0.1;"),
+         opts_hover(css = "fill:#d4145a;")
+       )
+)
 
 ```
 
@@ -543,9 +630,17 @@ barplot_ordered(my_df = compute_perc(Qs, age_range_6),
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 
-barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), age_range_6), 
-                a_factor = age_range_6, its_values = perc, labels = perc_label,
-                title = "")
+p <- barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), age_range_6), 
+                a_factor = age_range_6, its_values = perc, labels = perc_label, 
+                tooltip = perc_label, data_id = perc,
+                title = "") + scale_x_discrete(limits=rev)
+girafe(ggobj = p,
+       options = list(
+         opts_sizing(rescale = FALSE), # else, rescale differently...
+         opts_hover_inv(css = "opacity:0.1;"),
+         opts_hover(css = "fill:#d4145a;")
+       )
+)
 
 ```
 
@@ -557,9 +652,18 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), age_range_6), 
-                a_factor = age_range_6, its_values = perc, labels = perc_label,
-                title = "")
+
+p <- barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), age_range_6), 
+                a_factor = age_range_6, its_values = perc, labels = perc_label, 
+                tooltip = perc_label, data_id = perc,
+                title = "") + scale_x_discrete(limits=rev)
+girafe(ggobj = p,
+       options = list(
+         opts_sizing(rescale = FALSE), # else, rescale differently...
+         opts_hover_inv(css = "opacity:0.1;"),
+         opts_hover(css = "fill:#d4145a;")
+       )
+)
 
 ```
 
@@ -577,17 +681,27 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 
 ## How frequently do you learn a new language or framework?
 
+
+
 ::::: {.panelset}
 
 ::: {.panel}
 
 ### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2}
 
-barplot_ordered(my_df = compute_perc(Qs, new_tool_7), 
+p <- barplot_ordered(my_df = compute_perc(Qs, new_tool_7), 
                 a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+                tooltip = perc_label, data_id = perc,
                 title = "") + scale_x_discrete(limits=rev)
+girafe(ggobj = p,
+       options = list(
+         opts_sizing(rescale = FALSE), # else, rescale differently...
+         opts_hover_inv(css = "opacity:0.1;"),
+         opts_hover(css = "fill:#d4145a;")
+       )
+)
 
 ```
 
@@ -597,11 +711,18 @@ barplot_ordered(my_df = compute_perc(Qs, new_tool_7),
 ::: {.panel}
 
 ### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2}
 
-barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), new_tool_7), 
+p <- barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), new_tool_7), 
                 a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+                tooltip = perc_label, data_id = perc,
                 title = "") + scale_x_discrete(limits=rev)
+girafe(ggobj = p,
+       options = list(
+         # opts_hover_inv(css = "opacity:0.1;"),
+         opts_hover(css = "fill:#d4145a;")
+       )
+)
 
 ```
 
@@ -611,11 +732,19 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 
 ### Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2}
 
-barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), new_tool_7), 
+p <- barplot_ordered(my_df = compute_perc(Qs %>% 
+                                            filter(profession_1 == "I am a student who is learning to code"), new_tool_7),
                 a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+                tooltip = perc_label, data_id = perc,
                 title = "") + scale_x_discrete(limits=rev)
+girafe(ggobj = p,
+       options = list(
+         opts_hover_inv(css = "opacity:0.1;"),
+         opts_hover(css = "fill:#d4145a;")
+       )
+)
 
 ```
 
