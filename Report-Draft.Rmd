@@ -1763,6 +1763,7 @@ relation_ordinal_Q18_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
                                                highest_edu_18 = Var1)
 
 levels(relation_ordinal_Q18_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
+levels(relation_ordinal_Q18_28$highest_edu_18) <- gsub(" ", "\n", levels(relation_ordinal_Q18_28$highest_edu_18))
 
 
 colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001",  "black")
