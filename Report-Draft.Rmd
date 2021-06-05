@@ -33,6 +33,8 @@ library(wordcloud) # for the wordcloud at Q33
 
 library(tidyr) # for Q30 and Q31
 
+library(plotly) # for interactive bubble plots
+
 ```
 
 ```{r}
@@ -271,7 +273,49 @@ compute_perc_future_skills <- function(the_skills, skillset, number_of_resp){
     return()
 }
 
+barplot_theme <- function(){
+  # the definition of a custom ggplot theme for our barplots.
+  theme_minimal() + 
+    theme(
+      plot.title = element_text(family = HL_font, size = main_fontsize + 2, color = "black"),
+      # plot.subtitle = element_text(family = HL_font, size = main_fontsize),
+      axis.title = element_text(family = HL_font, size = main_fontsize, color = "black"),
+      axis.text = element_text(family = HL_font, size = main_fontsize, color = "black"),
+      # plot.caption = element_text(hjust = 0, family = my_font, 
+      #                             size = main_fontsize, face= "italic"), #Default is hjust=1 / 0
+      plot.title.position = "plot",  # left-align title
+      # plot.caption.position =  "plot", 
+      panel.grid.minor.x = element_blank(),  # remove useless minor grid
+      panel.grid.major.y = element_blank(),  # remove useless major grid in bar charts
+      panel.grid.major.x = element_blank(),  # remove useless major grid in bar charts
+      axis.title.x = element_blank(), # we do not want an y axis for the barplot, we have labels already
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank()
+      # plot.margin = margin(0.1, 0.1, 0.1, 0.1, unit = "cm")
+    )
+}
+ 
+bubble_plotly_theme <- function(){
+  theme_minimal() +
+  theme(legend.position="none",
+        panel.grid.major.y = element_blank(),
+        panel.grid.major.x = element_blank()
+        )
+}
 
+bubble_plot <- function(df, x_value, y_value, freq, colour_choice, title){
+  ggplot(data = df, aes(x={{x_value}}, y={{y_value}}, 
+              text=text)) + # text = text that appears when hover over the bubble, needs to be defined beforehand
+  geom_point(aes(size = {{freq}},  # bubbles with the size according to how many respondents
+                 fill = {{x_value}}), # bubble color according to x value level
+             alpha = 0.75, 
+             shape = 19, color=NA) + # circles and no border
+  scale_size(range = c(1.4, 10)) + # size of the bubbles
+  labs( x= "", y = "", size = "Number of respondents", fill = "") +
+  scale_fill_manual(values = {{colour_choice}}) +
+  scale_colour_manual(values= "white")
+    
+}
 ```
 
 
@@ -1526,7 +1570,7 @@ Interestingly, people who work more than 3 times a week overtime are satisfied w
 # Heat Map: Relationship between job satisfaction and overtime work
 runningcounts.df <- as.data.frame(table(Qs$job_satisfaction_22, Qs$overtime_work_25))
 
-heatmap_Q22_Q25 <- runningcounts.df %>% rename(overtime_work_25 = Var2,
+relation_ordinal_Q22_25 <- runningcounts.df %>% rename(overtime_work_25 = Var2,
                                                job_satisfaction_22 = Var1) %>%
   mutate(overtime_work_25 = recode(overtime_work_25, 
                                                 "Often: 1-2 days per week" = "1-2 days per week",
@@ -1535,34 +1579,18 @@ heatmap_Q22_Q25 <- runningcounts.df %>% rename(overtime_work_25 = Var2,
                                    "Occasionally: 1-2 days per quarter but less than monthly" = "1-2 days per quarter",
                                    "Frequently: 3 or more days per week" = ">3 days per week"))
                                       
-levels(heatmap_Q22_Q25$overtime_work_25) <- gsub(" ", "\n", levels(heatmap_Q22_Q25$overtime_work_25))
-levels(heatmap_Q22_Q25$job_satisfaction_22) <- gsub(" ", "\n", levels(heatmap_Q22_Q25$job_satisfaction_22))
+levels(relation_ordinal_Q22_25$overtime_work_25) <- gsub(" ", "\n", levels(relation_ordinal_Q22_25$overtime_work_25))
+levels(relation_ordinal_Q22_25$job_satisfaction_22) <- gsub(" ", "\n", levels(relation_ordinal_Q22_25$job_satisfaction_22))
 
+colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001")
 
-                                      
-ggplot(heatmap_Q22_Q25, aes(overtime_work_25, job_satisfaction_22)) +
-  geom_tile(aes(fill = Freq), colour = "black") +
-  scale_fill_gradient(low = "white", high = HL_colors[1])
-
-# # Barplot: Relationship between job satisfaction and overtime work
-# ggplot(runningcounts.df, aes(factor(Var1))) +
-#   geom_bar(aes(y = Freq, alpha = rev(Var2)),
-#            stat = "identity",
-#            color = "#209f1b", fill = "#35665C") +
-#   geom_text(aes(y = -5, label = Freq), color = "red") +
-#   facet_grid(Var2 ~ Var1, switch = "both") +
-#   labs(title = "frequency",
-#        y = "Satsifaction",
-#        x = "Overtime") +
-#   theme_minimal() +
-#   theme(strip.background = element_blank(),
-#         axis.text.y = element_blank(),
-#         axis.text.x = element_text(size = 12),
-#         axis.ticks = element_blank(),
-#         strip.text.y = element_text(angle = 0),
-#         strip.text = element_text(size = 12),
-#         legend.position = "none")
-
+relation_ordinal_Q22_25 <- relation_ordinal_Q22_25 %>%
+  # prepare text for tooltip
+  mutate(text = paste(Freq, "respondent/s")) 
+  
+bubble<-bubble_plot(df = relation_ordinal_Q22_25, x_value = overtime_work_25, y_value = job_satisfaction_22, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
+  
+ggplotly(bubble, tooltip="text", width = 800, height = 600)
 ```
 
 ## Q23. Approximately how many people are employed by the company or organization you currently work for?
