@@ -33,7 +33,6 @@ nodes <- skills %>%
   summarise(weight = n()) 
 
 # EDGES LIST:
-# we first construct a table with all the possible edges:
 edges <- skills %>%
   # we group by respondent
   group_by(id) %>%
