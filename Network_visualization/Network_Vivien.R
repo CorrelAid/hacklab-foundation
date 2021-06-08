@@ -36,11 +36,11 @@ nodes <- skills %>%
 edges <- skills %>%
   # we group by respondent
   group_by(id) %>%
-  # we add a new column with all the tools used by the respondent
-  # we just past all together separated by a ";"
-  # this works, because we grouped by id
+  # we add a new column with all the tools used by the respondents
+  # we just paste all of them together, separated by a ";"
+  # it works because we grouped by id
   mutate(target = paste(tool, collapse = ';')) %>%
-  # we do not need to worked on the grouped dataframe for now:
+  # we do not need to continue working on the grouped dataframe:
   ungroup() %>%
   # then we create a new row for all the combinations observed in the data,
   # by splitting the column added above:
@@ -51,18 +51,18 @@ edges <- skills %>%
   # just to make it clear:
   select(resp_id = id, source = tool, target) %>%
   # we do not want "self-references", link from a tool to itself,
-  # we remove cases where source == target:
+  # so we remove cases where source == target:
   filter(source != target) %>%
   # for each respondent, we have the link (edges) twice, in both directions
   # we do not want this (e.g. source=HTML/CSS, target=JavaScript + source=JavaScript, target=HTML/CSS)
   # we want to count only one link for these!
   # first we sort the data (not really useful, just easier to see what's going on:)
   arrange(resp_id, source, target) %>%
-  # the next operation (mutate) will be performed row by row (and by column)
+  # the next operation (mutate) will be performed row by row (and not by column)
   # more info: https://dplyr.tidyverse.org/articles/rowwise.html
   rowwise() %>%
   # what we want to do is "remove unordered combinations".
-  # we add a new column which is the concatenation of the source and target (paste),
+  # we add a new column which is the concatenation/contraction of the source and target (paste),
   # but here is the trick: we sort the source and target alphabetically (str_sort).
   # (inspired by this: https://stackoverflow.com/questions/32329315/duplicate-combination-of-values-in-columns?rq=1)
   # Voilà, now we can identify the duplicates!
@@ -105,7 +105,6 @@ ggnet # the layout is bad, not great to see "clusters"
 
 # test layout kk:
 lay <- ggraph::create_layout(graph, layout = "kk") %>%
-  # we add the weight to the nodes:
   left_join(nodes, by = c("name" = "tool"))
 ggnet <- ggraph(lay) + 
   geom_edge_link(alpha = 0.05) + 
@@ -125,7 +124,6 @@ ggnet # a bit better, but not great neither.
 
 # test layout dh:
 lay <- ggraph::create_layout(graph, layout = "dh") %>%
-  # we add the weight to the nodes:
   left_join(nodes, by = c("name" = "tool"))
 ggnet <- ggraph(lay) + 
   geom_edge_link(alpha = 0.05) + 
@@ -141,7 +139,7 @@ ggnet # a bit better we see the structure better.
 # see https://igraph.org/r/doc/layout_with_dh.html
 
 
-# hard thing to do now: find a nice combination of 
+# hard thing to do now: find a nice combination of technology (ggraph or other),
 # layout, arguments of the layout function, and how to label nicely...
 # possibly, thinking "theoretically" what the best layout would be, is a good idea? or too hard?
 # Maybe we should remove all non-programming languages/technologies
