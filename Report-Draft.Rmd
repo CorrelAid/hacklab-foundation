@@ -33,7 +33,13 @@ library(wordcloud) # for the wordcloud at Q33
 
 library(tidyr) # for Q30 and Q31
 
+library(ggiraph) # for responsive bubble plots
 library(plotly) # for interactive bubble plots
+
+library(ggExtra) # for interactive Heatmaps
+library (ggiraphExtra) # for interactive Heatmaps
+library(moonBook) # for interactive Heatmaps
+library(sjmisc) # for interactive Heatmaps
 
 ```
 
@@ -318,6 +324,7 @@ bubble_plot <- function(df, x_value, y_value, freq, colour_choice, title){
   scale_colour_manual(values= "white")
     
 }
+
 ```
 
 
@@ -1567,6 +1574,7 @@ barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ),
 
 Interestingly, people who work more than 3 times a week overtime are satisfied with their job. There seems no relationship that the more overtime the less job satisfaction. The tendency is rather the opposite. 
 
+OLD Plot - non-responsive
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 # Bubble chart: Relationship between job satisfaction and overtime work
@@ -1593,6 +1601,29 @@ relation_ordinal_Q22_25 <- relation_ordinal_Q22_25 %>%
 bubble_Q22_25<-bubble_plot(df = relation_ordinal_Q22_25, x_value = overtime_work_25, y_value = job_satisfaction_22, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
   
 ggplotly(bubble_Q22_25, tooltip="text", width = 800, height = 600)
+```
+
+NEW Plot - responsive
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+bubble_Q22_25_resp = ggplot(data = relation_ordinal_Q22_25) +
+    geom_point_interactive(aes(x = overtime_work_25, 
+                               y = job_satisfaction_22, 
+                               color = overtime_work_25,
+                               tooltip = text, 
+                               size = Freq),
+                           shape = 19) + 
+scale_fill_manual(values = colours) +
+  labs(x = "", y = "") +
+    bubble_plotly_theme()
+
+
+girafe(ggobj = bubble_Q22_25_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 4.5, 
+       height_svg = 4.5,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
 ```
 
 ## Q23. Approximately how many people are employed by the company or organization you currently work for?
@@ -1730,7 +1761,13 @@ barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 ==
 
 ## Relationship between Size of company and Salary
 
-```{r}
+::::: {.panelset}
+
+::: {.panel}
+
+### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}}
 company_size_23_NA_remov <- Qs %>%
   filter(company_size_23 != "NA")
 
@@ -1748,13 +1785,112 @@ relation_ordinal_Q23_28 <- relation_ordinal_Q23_28 %>%
   # prepare text for tooltip
   mutate(text = paste(Freq, "respondent/s")) 
   
-bubble_Q23_28<-bubble_plot(df = relation_ordinal_Q23_28, x_value = company_size_23, y_value = monthly_salary_28, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
-  
-ggplotly(bubble_Q23_28, tooltip="text", width = 800, height = 600)
+
+# Heatmap as an alternative
+ggHeatmap(relation_ordinal_Q23_28, 
+          aes(x = company_size_23, 
+              y = monthly_salary_28, 
+              fill = Freq), 
+          addlabel=FALSE,
+          interactive=TRUE,
+          tooltip = text)
+
+
+
+
+
+# non responsive plotly
+# bubble_Q23_28<-bubble_plot(df = relation_ordinal_Q23_28, x_value = company_size_23, y_value = monthly_salary_28, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
+# ggplotly(bubble_Q23_28, tooltip="text", width = 800, height = 600)
 ```
+
+:::
+
+::: {.panel}
+
+### Only Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}}
+company_size_23_NA_remov_prof <- Qs %>%
+  filter(company_size_23 != "NA" & profession_1 == "I am a developer by profession")
+
+runningcounts.df <- as.data.frame(table(company_size_23_NA_remov_prof$company_size_23, company_size_23_NA_remov_prof$monthly_salary_28))
+
+relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
+                                               company_size_23 = Var1)
+
+levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
+
+
+colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001",  "black")
+
+relation_ordinal_Q23_28 <- relation_ordinal_Q23_28 %>%
+  # prepare text for tooltip
+  mutate(text = paste(Freq, "respondent/s")) 
+  
+
+# Heatmap as an alternative
+ggHeatmap(relation_ordinal_Q23_28, 
+          aes(x = company_size_23, 
+              y = monthly_salary_28, 
+              fill = Freq), 
+          addlabel=FALSE,
+          interactive=TRUE,
+          tooltip = text,
+          color = "#D4145A")
+
+
+
+# non responsive plotly 
+# bubble_Q23_28<-bubble_plot(df = relation_ordinal_Q23_28, x_value = company_size_23, y_value = monthly_salary_28, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
+# ggplotly(bubble_Q23_28, tooltip="text", width = 800, height = 600)
+```
+
+:::
+
+::: {.panel}
+
+### Only Students {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}}
+company_size_23_NA_remov_stud <- Qs %>%
+  filter(company_size_23 != "NA" & profession_1 == "I am a student who is learning to code")
+
+runningcounts.df <- as.data.frame(table(company_size_23_NA_remov_stud$company_size_23, company_size_23_NA_remov_stud$monthly_salary_28))
+
+relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
+                                               company_size_23 = Var1)
+
+levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
+
+
+colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001",  "black")
+
+relation_ordinal_Q23_28 <- relation_ordinal_Q23_28 %>%
+  # prepare text for tooltip
+  mutate(text = paste(Freq, "respondent/s")) 
+
+
+ggHeatmap(relation_ordinal_Q23_28, 
+          aes(x = company_size_23, 
+              y = monthly_salary_28, 
+              fill = Freq), 
+          addlabel=FALSE,
+          interactive=TRUE,
+          tooltip = text,
+          color = "#D4145A")
+
+# non responsive Plotly
+# bubble_Q23_28<-bubble_plot(df = relation_ordinal_Q23_28, x_value = company_size_23, y_value = monthly_salary_28, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
+#   
+# ggplotly(bubble_Q23_28, tooltip="text", width = 800, height = 600)
+```
+:::
+
+::::
+
 ## Relationship between Highest Education and Salary
 
-```{r}
+```{r, fig.align='center', out.width = '100%', fig.height=3}}
 # Variables: highest_edu_18, monthly_salary_28
 
 runningcounts.df <- as.data.frame(table(Qs$highest_edu_18, Qs$monthly_salary_28))
