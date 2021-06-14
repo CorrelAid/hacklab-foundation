@@ -6,7 +6,7 @@ library(tidygraph)
 # library(igraph)
 # library(network)
 
-skills <- rio::import("../data/clean/skills_final.csv") %>% 
+skills <- rio::import("./data/clean/skills_final.csv") %>% 
   select(-V1) %>%  # artifact due to a save as .csv to remove (at least on a Mac?)
   mutate_all(na_if,"") %>%
   drop_na(level) %>%
@@ -31,6 +31,35 @@ skills <- rio::import("../data/clean/skills_final.csv") %>%
 nodes <- skills %>%  
   group_by(tool) %>%
   summarise(weight = n()) 
+
+#adding a new column with the category
+languages = c("C", "C#", "C++", "HTML/CSS", "Java", "JavaScript", 
+              "Kotlin", "PHP", "Python", "Ruby", "SQL", "Swift", "TypeScript")
+
+platforms = c("Android", "Arduino", "AWS", "Docker", "Google Cloud Platform", 
+              "Heroku", "IBM Cloud or Watson", "iOS", "Linux", "MacOS", 
+              "Microsoft Azure", "Raspberry Pi", "Windows", "WordPress")
+
+web_frameworks = c("Angular", "ASP.NET", "Django", "Express", "jQuery", 
+                   "Lavarel", "React.js", "Ruby on Rails", "Vue.js", 
+                   "Spring")
+
+web_frameworks_frontend = c(".NET", ".NET Core", "Flutter", "Node.js",
+                            "Puppet", "React Native", "Deno.js")
+
+
+nodes_new <- nodes %>%
+  mutate(
+    category = ifelse(is.element(tool, languages), "language", 
+                      ifelse(is.element(tool, platforms), "platforms", 
+                             ifelse(is.element(tool, web_frameworks), 
+                                    "web_frameworks_backend",
+                                    ifelse(is.element(tool, web_frameworks_frontend), 
+                                           "web_frameworks_frontend", "other")))
+    )) %>%
+  filter(weight > 1)
+
+
 
 # EDGES LIST:
 edges <- skills %>%
@@ -72,7 +101,7 @@ edges <- skills %>%
   # we stop the rowwise:
   ungroup() %>%
   # we remove all the rows with duplicates "source_target":
-  distinct(source_target, .keep_all = TRUE) %>% # keep_all to keep all columns
+#  distinct(source_target, .keep_all = TRUE) %>% # keep_all to keep all columns
   # IT WORKS! woot woot!
   # we can now keep only what we need: source and target:
   select(source, target)
@@ -98,7 +127,8 @@ ggnet <- ggraph(lay) +
 ggnet # the layout is bad, not great to see "clusters"
 
 # here is a webpage where to check for some of the possible layouts:
-#   https://igraph.org/c/doc/igraph-Layout.html#two-d-layout-generators
+#   https://igraph.org/c/doc/igraph-Layout.html
+#two-d-layout-generators
 # and : the animation somewhere after the middle of this page https://www.data-imaginist.com/2017/ggraph-introduction-layouts
 # and the list here: https://rdrr.io/cran/ggraph/man/layout_tbl_graph_igraph.html
 # ==> kk, fr, graphopt, dh, mds...
@@ -145,6 +175,58 @@ ggnet # a bit better we see the structure better.
 # Maybe we should remove all non-programming languages/technologies
 # (e.g. Slack, Asana, Windows, GitHub, Trello, AI, Internet-of-Things, ML/AI, ...)
 # they clutter the graph and are not really interesting? 
+
+#Ideas: 
+#Include only certain tools
+#Set minimum weight (popularity)/edge value (strong connections)
+#min weight = 2
+#min edge value!
+#Color the nodes 
+#Include 4th category
+
+
+
+nodes_filter <- nodes_new %>%
+  filter(category != "other") %>%
+  filter(weight > 1)
+
+edges_filter <- edges %>%
+  filter(is.element(source, languages) |
+           is.element(source, platforms) | 
+           is.element(source, web_frameworks) |
+           is.element(source, web_frameworks_frontend)) %>%
+  filter(is.element(target, languages) |
+           is.element(target, platforms) |
+           is.element(target, web_frameworks) |
+           is.element(target, web_frameworks_frontend)) %>%
+  group_by(source, target) %>%
+  count() %>%
+  filter(source != target) %>%
+  filter(n > 20)
+
+nodes_filter <- nodes_filter %>%
+  filter(is.element(tool, edges_filter$target) |
+           is.element(tool, edges_filter$source)) 
+
+##to do: Use hacklab foundation colors!
+got_palette <- c("#1A5878", "#C44237", "#AD8941", "#E99093")
+
+graph <- as_tbl_graph(edges_filter, directed = FALSE, vertices = nodes_filter) 
+# create the layout for the graph:
+lay <- ggraph::create_layout(graph, layout = "dh") %>%
+  left_join(nodes, by = c("name" = "tool"))
+
+ggnet <- ggraph(lay) + 
+  geom_edge_link(alpha = 0.05) + 
+  geom_node_point(
+    aes(size = weight, fill = nodes_filter$category), 
+    shape = 21,
+    show.legend = FALSE) +
+  geom_node_text(aes(label = name), repel = TRUE) + # remove the labels if want to plot faster (comment this line)
+  theme_graph() + 
+  scale_fill_manual(values = got_palette) +
+  scale_edge_width(range = c(0.2,3))
+ggnet
 
 
 
