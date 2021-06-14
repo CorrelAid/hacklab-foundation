@@ -84,6 +84,20 @@ p { /* the paragraph, text */
   color: var(--body-color);
 }
 
+/* the URL links */
+a {
+  color: var(--highlight-color);
+  background-color: transparent;
+}
+a:hover, a:active {
+  color: var(--highlight-color);
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+
+
+
 /* the table of contents */
 .tocify {
   color: var(--header-color);

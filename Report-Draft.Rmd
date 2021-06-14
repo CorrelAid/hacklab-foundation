@@ -8,13 +8,12 @@ output:
     toc_depth: 2
     toc_collapsed: true
     css: css_theme/theme.css # where the css theme is defined
-    urlcolor: "#d4145a"
 ---
 
 ```{css toc-content, echo = FALSE}
 /* add some space before the TOC */
-/* for no apparent reason, this is working here but not in the .css... */
-#TOC {
+  /* for no apparent reason, this is working here but not in the .css... */
+  #TOC {
   margin-top: 5rem;
 }
 ```
@@ -161,7 +160,7 @@ skills <- rio::import("data/clean/skills_final.csv") %>%
 # we add characteristics of the respondents to the skills, 
 # so that we can differentiate their popularity by occupation or gender:
 skills_with_characteristics <- skills %>% left_join(select(Qs, ID, profession_1, gender_35), by = c("id" = "ID"))
- 
+
 number_of_respondents = dim(Qs)[1] # number of respondents (272) used to compute percentages.
 number_of_prof_dev = dim(Qs %>% filter(profession_1 == "I am a developer by profession"))[1]
 number_of_students = dim(Qs %>% filter(profession_1 == "I am a student who is learning to code"))[1]
@@ -240,16 +239,30 @@ barplot_ordered <- function(my_df, a_factor, its_values, labels, title){
   current_plot <- ggplot(data = my_df, 
                          aes(x = {{a_factor}},
                              y = {{its_values}})) + 
-    # geom_chicklet(radius = grid::unit(1, 'mm'), fill = highlight_col) + 
-    geom_point(color = highlight_col, size = 11) + 
-    geom_segment(aes(x={{a_factor}}, xend={{a_factor}}, 
-                     y=0, yend={{its_values}}), 
-                 color = highlight_col,
-                 size = 1.8) +
+    # CHICKLET
+    geom_chicklet(radius = grid::unit(1, 'mm'), fill = highlight_col) +
+    # FAT LOLLIPOP
+    # geom_point(color = highlight_col, size = 10) + 
+    # geom_segment(aes(x={{a_factor}}, xend={{a_factor}}, 
+    #                  y=0, yend={{its_values}}), 
+    #              color = highlight_col,
+    #              size = 1.5) +
+    # geom_text(
+    #   aes(label = {{labels}}, y = {{its_values}}),
+    #   size = 2.5,
+  #   color = "white",
+  #   fontface = "bold"
+  # ) +
+  # SKINNY LOLLIPOPO:
+  # geom_point(color = highlight_col, size = 5) +
+  #   geom_segment(aes(x={{a_factor}}, xend={{a_factor}},
+  #                    y=0, yend={{its_values}}),
+  #                color = highlight_col,
+  #                size = 1) +
     geom_text(
-      aes(label = {{labels}}, y = {{its_values}}),
+      aes(label = {{labels}}, y = {{its_values}} + (0.06*max({{its_values}}))),
       size = 3,
-      color = "white"
+      color = text_col_in_viz
     ) +
     scale_y_continuous(labels = scales::percent) +
     barplot_theme() + 
@@ -305,29 +318,29 @@ compute_perc_future_skills <- function(the_skills, skillset, number_of_resp){
 }
 
 
- 
+
 bubble_plotly_theme <- function(){
   theme_minimal() +
-  theme(legend.position="none",
-        panel.grid.major.y = element_blank(),
-        panel.grid.major.x = element_blank()
-        )
+    theme(legend.position="none",
+          panel.grid.major.y = element_blank(),
+          panel.grid.major.x = element_blank()
+    )
 }
 
 colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001",  "black")
 
 bubble_plot <- function(df, x_value, y_value, freq, colour_choice, title){
   ggplot(data = df, aes(x={{x_value}}, y={{y_value}}, 
-              text=text)) + # text = text that appears when hover over the bubble, needs to be defined beforehand
-  geom_point(aes(size=ifelse({{freq}}==0, NA, {{freq}}),  # bubbles with the size according to how many respondents
-                 fill = {{x_value}}), # bubble color according to x value level
-             alpha = 0.75, 
-             shape = 19, color=NA) + # circles and no border
-  scale_size(range = c(1.4, 15)) + # size of the bubbles
-  labs( x= "", y = "", size = "Number of respondents", fill = "") +
-  scale_fill_manual(values = {{colour_choice}}) +
-  scale_colour_manual(values= "white")
-    
+                        text=text)) + # text = text that appears when hover over the bubble, needs to be defined beforehand
+    geom_point(aes(size=ifelse({{freq}}==0, NA, {{freq}}),  # bubbles with the size according to how many respondents
+                   fill = {{x_value}}), # bubble color according to x value level
+               alpha = 0.75, 
+               shape = 19, color=NA) + # circles and no border
+    scale_size(range = c(1.4, 15)) + # size of the bubbles
+    labs( x= "", y = "", size = "Number of respondents", fill = "") +
+    scale_fill_manual(values = {{colour_choice}}) +
+    scale_colour_manual(values= "white")
+  
 }
 
 ```
@@ -450,8 +463,8 @@ basic_barplot(my_df = compute_perc(employment_data, employment_3),
 ```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Man"), employment_3), 
-              a_factor = employment_3, its_values = perc, labels = perc_label,
-              title = "")
+                a_factor = employment_3, its_values = perc, labels = perc_label,
+                title = "")
 
 ```
 
@@ -464,8 +477,8 @@ barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Ma
 ```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Woman"), employment_3), 
-              a_factor = employment_3, its_values = perc, labels = perc_label,
-              title = "")
+                a_factor = employment_3, its_values = perc, labels = perc_label,
+                title = "")
 
 ```
 
@@ -492,11 +505,11 @@ region_data <- Qs %>%
   filter(region_4 != "Not in Ghana")
 
 region_data$region_4 <- recode(region_data$region_4,
-         "Eastern Region, Ghana" = "Eastern Region", 
-         "Northern Region, Ghana" = "Northern Region", 
-         "Central Region, Ghana" = "Central Region", 
-         "Western Region, Ghana"= "Western Region"
-  )
+                               "Eastern Region, Ghana" = "Eastern Region", 
+                               "Northern Region, Ghana" = "Northern Region", 
+                               "Central Region, Ghana" = "Central Region", 
+                               "Western Region, Ghana"= "Western Region"
+)
 
 basic_barplot(my_df = compute_perc(region_data, region_4), 
               a_factor = region_4, its_values = perc, labels = perc_label,
@@ -588,8 +601,8 @@ Qs$age_range_6 <- factor(Qs$age_range_6, levels(Qs$age_range_6)[c(6:1)])
 ```{r, fig.align='center', out.width = '100%', fig.height=2}
 
 barplot_ordered(my_df = compute_perc(Qs, age_range_6), 
-              a_factor = age_range_6, its_values = perc, labels = perc_label, 
-              title = "")
+                a_factor = age_range_6, its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 
@@ -603,8 +616,8 @@ barplot_ordered(my_df = compute_perc(Qs, age_range_6),
 
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), age_range_6), 
-              a_factor = age_range_6, its_values = perc, labels = perc_label,
-              title = "")
+                a_factor = age_range_6, its_values = perc, labels = perc_label,
+                title = "")
 
 ```
 
@@ -617,8 +630,8 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 ```{r, fig.align='center', out.width = '100%', fig.height=2}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), age_range_6), 
-              a_factor = age_range_6, its_values = perc, labels = perc_label,
-              title = "")
+                a_factor = age_range_6, its_values = perc, labels = perc_label,
+                title = "")
 
 ```
 
@@ -645,8 +658,8 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 ```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 barplot_ordered(my_df = compute_perc(Qs, new_tool_7), 
-              a_factor = new_tool_7, its_values = perc, labels = perc_label, 
-              title = "") + scale_x_discrete(limits=rev)
+                a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+                title = "") + scale_x_discrete(limits=rev)
 
 ```
 
@@ -659,8 +672,8 @@ barplot_ordered(my_df = compute_perc(Qs, new_tool_7),
 ```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), new_tool_7), 
-              a_factor = new_tool_7, its_values = perc, labels = perc_label, 
-              title = "") + scale_x_discrete(limits=rev)
+                a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+                title = "") + scale_x_discrete(limits=rev)
 
 ```
 
@@ -673,8 +686,8 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 ```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), new_tool_7), 
-              a_factor = new_tool_7, its_values = perc, labels = perc_label, 
-              title = "") + scale_x_discrete(limits=rev)
+                a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+                title = "") + scale_x_discrete(limits=rev)
 
 ```
 
@@ -689,7 +702,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 _HTML/CSS_ is the most used language, followed by _JavaScript_, _Python_ and _SQL_. Professional developers are more likely to use _JavaScript_ and _SQL_. _C++_ and _C_ are still widely used to teach coding to students.    
 
 <aside>
-  note: includes "both" and "this year".
+note: includes "both" and "this year".
 </aside>  
 
 ```{r}
@@ -761,20 +774,20 @@ A comment here...
 ```{r}
 
 platforms = c(
-"Android",			
-"Arduino",			
-"AWS",			
-"Docker",		
-"Google Cloud Platform",			
-"Heroku",			
-"IBM Cloud or Watson",			
-"iOS",			
-"Linux",			
-"MacOS",		
-"Microsoft Azure",		
-"Raspberry Pi", 	
-"Windows",			
-"WordPress"
+  "Android",			
+  "Arduino",			
+  "AWS",			
+  "Docker",		
+  "Google Cloud Platform",			
+  "Heroku",			
+  "IBM Cloud or Watson",			
+  "iOS",			
+  "Linux",			
+  "MacOS",		
+  "Microsoft Azure",		
+  "Raspberry Pi", 	
+  "Windows",			
+  "WordPress"
 )
 
 ```
@@ -827,16 +840,16 @@ _React.js_ is the most popular web framework.
 ```{r}
 
 web_frameworks = c(
-"Angular",			
-"ASP.NET",		
-"Django",			
-"Express",		
-"jQuery",			
-"Laravel",
-"React.js",
-"Ruby on Rails",
-"Vue.js",
-"Spring"
+  "Angular",			
+  "ASP.NET",		
+  "Django",			
+  "Express",		
+  "jQuery",			
+  "Laravel",
+  "React.js",
+  "Ruby on Rails",
+  "Vue.js",
+  "Spring"
 )
 
 ```
@@ -889,13 +902,13 @@ A comment here...
 ```{r}
 
 other_frameworks = c(
-".NET",			
-".NET Core",			
-"Flutter",			
-"Node.js",			
-"Puppet",			
-"React Native",			
-"Deno.js"
+  ".NET",			
+  ".NET Core",			
+  "Flutter",			
+  "Node.js",			
+  "Puppet",			
+  "React Native",			
+  "Deno.js"
 )
 
 ```
@@ -948,16 +961,16 @@ _GitHub_ is by far the most popular version control tool. _Slack_ is the most us
 ```{r}
 
 collaborative_tools = c(
-"GitHub",			
-"GitLab",			
-"Facebook Workplace",			
-"Slack",			
-"Microsoft Teams",			
-"Microsoft Azure",			
-"Trello",			
-"Google Suite (Docs, Meet, etc)",			
-"Stack Overflow for Teams",			
-"Jira"
+  "GitHub",			
+  "GitLab",			
+  "Facebook Workplace",			
+  "Slack",			
+  "Microsoft Teams",			
+  "Microsoft Azure",			
+  "Trello",			
+  "Google Suite (Docs, Meet, etc)",			
+  "Stack Overflow for Teams",			
+  "Jira"
 )
 
 ```
@@ -1019,7 +1032,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 A comment here... 
 
 <aside>
-  note: includes "both" and "next year" (for the 5 following plots)
+note: includes "both" and "next year" (for the 5 following plots)
 </aside>  
 
 
@@ -1029,8 +1042,8 @@ A comment here...
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
-                                                  skillset = languages,
-                                                  number_of_resp = number_of_respondents), 
+                                                 skillset = languages,
+                                                 number_of_resp = number_of_respondents), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1041,9 +1054,9 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
-                                                    filter(profession_1 == "I am a developer by profession"), 
-                                                  skillset = languages,
-                                                  number_of_resp = number_of_prof_dev), 
+                                                   filter(profession_1 == "I am a developer by profession"), 
+                                                 skillset = languages,
+                                                 number_of_resp = number_of_prof_dev), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1054,9 +1067,9 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
-                                                    filter(profession_1 == "I am a student who is learning to code"), 
-                                                  skillset = languages,
-                                                  number_of_resp = number_of_students), 
+                                                   filter(profession_1 == "I am a student who is learning to code"), 
+                                                 skillset = languages,
+                                                 number_of_resp = number_of_students), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1075,8 +1088,8 @@ A comment here...
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
-                                                  skillset = platforms,
-                                                  number_of_resp = number_of_respondents), 
+                                                 skillset = platforms,
+                                                 number_of_resp = number_of_respondents), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1087,9 +1100,9 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
-                                                    filter(profession_1 == "I am a developer by profession"), 
-                                                  skillset = platforms,
-                                                  number_of_resp = number_of_prof_dev), 
+                                                   filter(profession_1 == "I am a developer by profession"), 
+                                                 skillset = platforms,
+                                                 number_of_resp = number_of_prof_dev), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1100,9 +1113,9 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
-                                                    filter(profession_1 == "I am a student who is learning to code"), 
-                                                  skillset = platforms,
-                                                  number_of_resp = number_of_students), 
+                                                   filter(profession_1 == "I am a student who is learning to code"), 
+                                                 skillset = platforms,
+                                                 number_of_resp = number_of_students), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1118,16 +1131,16 @@ _React.js_ is the most popular web framework.
 ```{r}
 
 web_frameworks = c(
-"Angular",			
-"ASP.NET",		
-"Django",			
-"Express",		
-"jQuery",			
-"Laravel",
-"React.js",
-"Ruby on Rails",
-"Vue.js",
-"Spring"
+  "Angular",			
+  "ASP.NET",		
+  "Django",			
+  "Express",		
+  "jQuery",			
+  "Laravel",
+  "React.js",
+  "Ruby on Rails",
+  "Vue.js",
+  "Spring"
 )
 
 ```
@@ -1137,8 +1150,8 @@ web_frameworks = c(
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
-                                                  skillset = web_frameworks,
-                                                  number_of_resp = number_of_respondents), 
+                                                 skillset = web_frameworks,
+                                                 number_of_resp = number_of_respondents), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1149,9 +1162,9 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
-                                                    filter(profession_1 == "I am a developer by profession"), 
-                                                  skillset = web_frameworks,
-                                                  number_of_resp = number_of_prof_dev), 
+                                                   filter(profession_1 == "I am a developer by profession"), 
+                                                 skillset = web_frameworks,
+                                                 number_of_resp = number_of_prof_dev), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1162,9 +1175,9 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
-                                                    filter(profession_1 == "I am a student who is learning to code"), 
-                                                  skillset = web_frameworks,
-                                                  number_of_resp = number_of_students), 
+                                                   filter(profession_1 == "I am a student who is learning to code"), 
+                                                 skillset = web_frameworks,
+                                                 number_of_resp = number_of_students), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1180,13 +1193,13 @@ A comment here...
 ```{r}
 
 other_frameworks = c(
-".NET",			
-".NET Core",			
-"Flutter",			
-"Node.js",			
-"Puppet",			
-"React Native",			
-"Deno.js"
+  ".NET",			
+  ".NET Core",			
+  "Flutter",			
+  "Node.js",			
+  "Puppet",			
+  "React Native",			
+  "Deno.js"
 )
 
 ```
@@ -1196,8 +1209,8 @@ other_frameworks = c(
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
-                                                  skillset = other_frameworks,
-                                                  number_of_resp = number_of_respondents), 
+                                                 skillset = other_frameworks,
+                                                 number_of_resp = number_of_respondents), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1208,9 +1221,9 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
-                                                    filter(profession_1 == "I am a developer by profession"), 
-                                                  skillset = other_frameworks,
-                                                  number_of_resp = number_of_prof_dev), 
+                                                   filter(profession_1 == "I am a developer by profession"), 
+                                                 skillset = other_frameworks,
+                                                 number_of_resp = number_of_prof_dev), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1221,9 +1234,9 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
-                                                    filter(profession_1 == "I am a student who is learning to code"), 
-                                                  skillset = other_frameworks,
-                                                  number_of_resp = number_of_students), 
+                                                   filter(profession_1 == "I am a student who is learning to code"), 
+                                                 skillset = other_frameworks,
+                                                 number_of_resp = number_of_students), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1239,16 +1252,16 @@ _GitHub_ is by far the most popular version control tool. _Slack_ is the most us
 ```{r}
 
 collaborative_tools = c(
-"GitHub",			
-"GitLab",			
-"Facebook Workplace",			
-"Slack",			
-"Microsoft Teams",			
-"Microsoft Azure",			
-"Trello",			
-"Google Suite (Docs, Meet, etc)",			
-"Stack Overflow for Teams",			
-"Jira"
+  "GitHub",			
+  "GitLab",			
+  "Facebook Workplace",			
+  "Slack",			
+  "Microsoft Teams",			
+  "Microsoft Azure",			
+  "Trello",			
+  "Google Suite (Docs, Meet, etc)",			
+  "Stack Overflow for Teams",			
+  "Jira"
 )
 
 ```
@@ -1258,8 +1271,8 @@ collaborative_tools = c(
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
-                                                  skillset = collaborative_tools,
-                                                  number_of_resp = number_of_respondents), 
+                                                 skillset = collaborative_tools,
+                                                 number_of_resp = number_of_respondents), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1270,9 +1283,9 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
-                                                    filter(profession_1 == "I am a developer by profession"), 
-                                                  skillset = collaborative_tools,
-                                                  number_of_resp = number_of_prof_dev), 
+                                                   filter(profession_1 == "I am a developer by profession"), 
+                                                 skillset = collaborative_tools,
+                                                 number_of_resp = number_of_prof_dev), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1283,9 +1296,9 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
-                                                    filter(profession_1 == "I am a student who is learning to code"), 
-                                                  skillset = collaborative_tools,
-                                                  number_of_resp = number_of_students), 
+                                                   filter(profession_1 == "I am a student who is learning to code"), 
+                                                 skillset = collaborative_tools,
+                                                 number_of_resp = number_of_students), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
 
@@ -1393,8 +1406,8 @@ Unsurprisingly, professional developers are more likely to have influence over n
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs, purch_influence_16), 
-              a_factor = purch_influence_16, its_values = perc, labels = perc_label, 
-              title = "")
+                a_factor = purch_influence_16, its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 :::
@@ -1403,10 +1416,10 @@ barplot_ordered(my_df = compute_perc(Qs, purch_influence_16),
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs %>% 
-                                     filter(profession_1 == "I am a developer by profession"),
-                                   purch_influence_16), 
-              a_factor = purch_influence_16, its_values = perc, labels = perc_label, 
-              title = "")
+                                       filter(profession_1 == "I am a developer by profession"),
+                                     purch_influence_16), 
+                a_factor = purch_influence_16, its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 :::
@@ -1431,16 +1444,16 @@ perc_solution_research_17 <- Qs %>%
   ) %>%
   count(solution_research_17) %>% 
   mutate(
-      perc = n/number_of_respondents,  # % to total number of respondents -> some resp. selected several choices
-      perc_label = paste0(as.character(round(perc*100,1)), "%")
-    ) %>% 
-    arrange(-perc) 
+    perc = n/number_of_respondents,  # % to total number of respondents -> some resp. selected several choices
+    perc_label = paste0(as.character(round(perc*100,1)), "%")
+  ) %>% 
+  arrange(-perc) 
 
 basic_barplot(my_df = perc_solution_research_17, 
               a_factor = solution_research_17, its_values = perc, labels = perc_label, 
               title = "")
 
-  
+
 
 ```
 
@@ -1465,8 +1478,8 @@ Most of the survey participants have at least a secondary high-school degree whe
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs, highest_edu_18), 
-              a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
-              title = "")
+                a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 :::
@@ -1475,8 +1488,8 @@ barplot_ordered(my_df = compute_perc(Qs, highest_edu_18),
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), highest_edu_18), 
-              a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
-              title = "")
+                a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 :::
@@ -1485,8 +1498,8 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), highest_edu_18), 
-              a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
-              title = "")
+                a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 :::
@@ -1503,8 +1516,8 @@ Most participants study or studied Computer Science or Computer Engineering, fol
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs, prim_study_19), 
-              a_factor = prim_study_19, its_values = perc, labels = perc_label, 
-              title = "")
+                a_factor = prim_study_19, its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 :::
@@ -1513,8 +1526,8 @@ barplot_ordered(my_df = compute_perc(Qs, prim_study_19),
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), prim_study_19), 
-              a_factor = prim_study_19, its_values = perc, labels = perc_label, 
-              title = "")
+                a_factor = prim_study_19, its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 :::
@@ -1523,8 +1536,8 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), prim_study_19), 
-              a_factor = prim_study_19, its_values = perc, labels = perc_label, 
-              title = "")
+                a_factor = prim_study_19, its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 :::
@@ -1541,8 +1554,8 @@ Half of the respondents find a formal education very or even critically importan
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs, edu_importance_20), 
-              a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
-              title = "")
+                a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 :::
@@ -1551,8 +1564,8 @@ barplot_ordered(my_df = compute_perc(Qs, edu_importance_20),
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), edu_importance_20), 
-              a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
-              title = "")
+                a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 :::
@@ -1561,8 +1574,8 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), edu_importance_20), 
-              a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
-              title = "")
+                a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 :::
@@ -1585,8 +1598,8 @@ Whereas 20% are slightly dissatisfied or dissatisfied.
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ), 
-              a_factor = job_satisfaction_22 , its_values = perc, labels = perc_label, 
-              title = "Q22. How satisfied are you with your current job?")
+                a_factor = job_satisfaction_22 , its_values = perc, labels = perc_label, 
+                title = "Q22. How satisfied are you with your current job?")
 
 
 ```
@@ -1602,14 +1615,14 @@ OLD Plot - non-responsive
 runningcounts.df <- as.data.frame(table(Qs$job_satisfaction_22, Qs$overtime_work_25))
 
 relation_ordinal_Q22_25 <- runningcounts.df %>% rename(overtime_work_25 = Var2,
-                                               job_satisfaction_22 = Var1) %>%
+                                                       job_satisfaction_22 = Var1) %>%
   mutate(overtime_work_25 = recode(overtime_work_25, 
-                                                "Often: 1-2 days per week" = "1-2 days per week",
-                                                "Sometimes: 1-2 days per month but less than weekly" = "1-2 days per month",
-                                      "Rarely: 1-2 days per year or less" = "<1-2 days per year",
+                                   "Often: 1-2 days per week" = "1-2 days per week",
+                                   "Sometimes: 1-2 days per month but less than weekly" = "1-2 days per month",
+                                   "Rarely: 1-2 days per year or less" = "<1-2 days per year",
                                    "Occasionally: 1-2 days per quarter but less than monthly" = "1-2 days per quarter",
                                    "Frequently: 3 or more days per week" = ">3 days per week"))
-                                      
+
 levels(relation_ordinal_Q22_25$overtime_work_25) <- gsub(" ", "\n", levels(relation_ordinal_Q22_25$overtime_work_25))
 levels(relation_ordinal_Q22_25$job_satisfaction_22) <- gsub(" ", "\n", levels(relation_ordinal_Q22_25$job_satisfaction_22))
 
@@ -1618,9 +1631,9 @@ colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001")
 relation_ordinal_Q22_25 <- relation_ordinal_Q22_25 %>%
   # prepare text for tooltip
   mutate(text = paste(Freq, "respondent/s")) 
-  
+
 bubble_Q22_25<-bubble_plot(df = relation_ordinal_Q22_25, x_value = overtime_work_25, y_value = job_satisfaction_22, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
-  
+
 ggplotly(bubble_Q22_25, tooltip="text", width = 800, height = 600)
 ```
 
@@ -1628,15 +1641,15 @@ NEW Plot - responsive
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 bubble_Q22_25_resp = ggplot(data = relation_ordinal_Q22_25) +
-    geom_point_interactive(aes(x = overtime_work_25, 
-                               y = job_satisfaction_22, 
-                               color = overtime_work_25,
-                               tooltip = text, 
-                               size = Freq),
-                           shape = 19) + 
-scale_fill_manual(values = colours) +
+  geom_point_interactive(aes(x = overtime_work_25, 
+                             y = job_satisfaction_22, 
+                             color = overtime_work_25,
+                             tooltip = text, 
+                             size = Freq),
+                         shape = 19) + 
+  scale_fill_manual(values = colours) +
   labs(x = "", y = "") +
-    bubble_plotly_theme()
+  bubble_plotly_theme()
 
 
 girafe(ggobj = bubble_Q22_25_resp, 
@@ -1659,8 +1672,8 @@ company_size_23_NA_remov <- Qs %>%
   filter(company_size_23 != "NA")
 
 barplot_ordered(my_df = compute_perc(company_size_23_NA_remov, company_size_23 ), 
-              a_factor = company_size_23 , its_values = perc, labels = perc_label, 
-              title = "Q23. Approximately how many people are employed by the company or organization you currently work for?")
+                a_factor = company_size_23 , its_values = perc, labels = perc_label, 
+                title = "Q23. Approximately how many people are employed by the company or organization you currently work for?")
 
 ```
 
@@ -1670,27 +1683,27 @@ Working hours are quite evenly scattered across the scale from 0-80 hours a week
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 ggplot(compute_perc(Qs,weekly_work_hours_24), aes(x=weekly_work_hours_24)) + geom_histogram(color = "white", fill= HL_colors[1], binwidth = 10) + labs(x="Weekly working hours", y = "Number of Respondents") +
-    scale_x_continuous(breaks = seq(0, 120, by=10)) +
+  scale_x_continuous(breaks = seq(0, 120, by=10)) +
   theme_minimal() + 
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(), 
         axis.line = element_line(colour = "black"))
-    # theme(
-    #   plot.title = element_text(family = HL_font, size = main_fontsize + 2, color = "black"),
-    #   # plot.subtitle = element_text(family = HL_font, size = main_fontsize),
-    #   axis.title = element_text(family = HL_font, size = main_fontsize, color = "black"),
-    #   axis.text = element_text(family = HL_font, size = main_fontsize, color = "black"),
-    #   # plot.caption = element_text(hjust = 0, family = my_font, 
-    #   #                             size = main_fontsize, face= "italic"), #Default is hjust=1 / 0
-    #   plot.title.position = "plot",  # left-align title
-    #   # plot.caption.position =  "plot", 
-    #   panel.grid.minor.x = element_blank(),  # remove useless minor grid
-    #   panel.grid.major.y = element_blank(),  # remove useless major grid in bar charts
-    #   panel.grid.major.x = element_blank(),  # remove useless major grid in bar charts
-    #   axis.text.x = element_blank(),
-    #   axis.ticks.x = element_blank(),
-    #   # plot.margin = margin(0.1, 0.1, 0.1, 0.1, unit = "cm")
-    # )
+# theme(
+#   plot.title = element_text(family = HL_font, size = main_fontsize + 2, color = "black"),
+#   # plot.subtitle = element_text(family = HL_font, size = main_fontsize),
+#   axis.title = element_text(family = HL_font, size = main_fontsize, color = "black"),
+#   axis.text = element_text(family = HL_font, size = main_fontsize, color = "black"),
+#   # plot.caption = element_text(hjust = 0, family = my_font, 
+#   #                             size = main_fontsize, face= "italic"), #Default is hjust=1 / 0
+#   plot.title.position = "plot",  # left-align title
+#   # plot.caption.position =  "plot", 
+#   panel.grid.minor.x = element_blank(),  # remove useless minor grid
+#   panel.grid.major.y = element_blank(),  # remove useless major grid in bar charts
+#   panel.grid.major.x = element_blank(),  # remove useless major grid in bar charts
+#   axis.text.x = element_blank(),
+#   axis.ticks.x = element_blank(),
+#   # plot.margin = margin(0.1, 0.1, 0.1, 0.1, unit = "cm")
+# )
 
 ```
 
@@ -1702,8 +1715,8 @@ Around 50% of the respondents work overtime on 3 or more days in a week.
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs, overtime_work_25 ), 
-              a_factor = overtime_work_25 , its_values = perc, labels = perc_label, 
-              title = "Q25. How often do you work overtime or beyond the formal time expectation of your job?")
+                a_factor = overtime_work_25 , its_values = perc, labels = perc_label, 
+                title = "Q25. How often do you work overtime or beyond the formal time expectation of your job?")
 
 ```
 
@@ -1744,8 +1757,8 @@ monthly_salary_data <- Qs %>%
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs, monthly_salary_28 ), 
-              a_factor = monthly_salary_28 , its_values = perc, labels = perc_label, 
-              title = "")
+                a_factor = monthly_salary_28 , its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 
@@ -1758,8 +1771,8 @@ barplot_ordered(my_df = compute_perc(Qs, monthly_salary_28 ),
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 == "Woman"), monthly_salary_28), 
-              a_factor = monthly_salary_28, its_values = perc, labels = perc_label,
-              title = "")
+                a_factor = monthly_salary_28, its_values = perc, labels = perc_label,
+                title = "")
 
 ```
 :::
@@ -1771,8 +1784,8 @@ barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 ==
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 == "Man"), monthly_salary_28), 
-              a_factor = monthly_salary_28, its_values = perc, labels = perc_label,
-              title = "")
+                a_factor = monthly_salary_28, its_values = perc, labels = perc_label,
+                title = "")
 
 ```
 
@@ -1795,7 +1808,7 @@ company_size_23_NA_remov <- Qs %>%
 runningcounts.df <- as.data.frame(table(company_size_23_NA_remov$company_size_23, company_size_23_NA_remov$monthly_salary_28))
 
 relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
-                                               company_size_23 = Var1)
+                                                       company_size_23 = Var1)
 
 levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
 
@@ -1805,7 +1818,7 @@ colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001",  
 relation_ordinal_Q23_28 <- relation_ordinal_Q23_28 %>%
   # prepare text for tooltip
   mutate(text = paste(Freq, "respondent/s")) 
-  
+
 
 # Heatmap as an alternative
 ggHeatmap(relation_ordinal_Q23_28, 
@@ -1837,7 +1850,7 @@ company_size_23_NA_remov_prof <- Qs %>%
 runningcounts.df <- as.data.frame(table(company_size_23_NA_remov_prof$company_size_23, company_size_23_NA_remov_prof$monthly_salary_28))
 
 relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
-                                               company_size_23 = Var1)
+                                                       company_size_23 = Var1)
 
 levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
 
@@ -1847,7 +1860,7 @@ colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001",  
 relation_ordinal_Q23_28 <- relation_ordinal_Q23_28 %>%
   # prepare text for tooltip
   mutate(text = paste(Freq, "respondent/s")) 
-  
+
 
 # Heatmap as an alternative
 ggHeatmap(relation_ordinal_Q23_28, 
@@ -1879,7 +1892,7 @@ company_size_23_NA_remov_stud <- Qs %>%
 runningcounts.df <- as.data.frame(table(company_size_23_NA_remov_stud$company_size_23, company_size_23_NA_remov_stud$monthly_salary_28))
 
 relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
-                                               company_size_23 = Var1)
+                                                       company_size_23 = Var1)
 
 levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
 
@@ -1917,7 +1930,7 @@ ggHeatmap(relation_ordinal_Q23_28,
 runningcounts.df <- as.data.frame(table(Qs$highest_edu_18, Qs$monthly_salary_28))
 
 relation_ordinal_Q18_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
-                                               highest_edu_18 = Var1)
+                                                       highest_edu_18 = Var1)
 
 levels(relation_ordinal_Q18_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
 levels(relation_ordinal_Q18_28$highest_edu_18) <- gsub(" ", "\n", levels(relation_ordinal_Q18_28$highest_edu_18))
@@ -1928,9 +1941,9 @@ colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001",  
 relation_ordinal_Q18_28 <- relation_ordinal_Q18_28 %>%
   # prepare text for tooltip
   mutate(text = paste(Freq, "respondent/s")) 
-  
+
 bubble_Q18_28<-bubble_plot(df = relation_ordinal_Q18_28, x_value = highest_edu_18, y_value = monthly_salary_28, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
-  
+
 ggplotly(bubble_Q18_28, tooltip="text", width = 800, height = 600)
 
 ```
@@ -1962,17 +1975,17 @@ drivers_for_new_jobs_30_split<-Qs%>% select(drivers_for_new_jobs_30, profession_
 
 
 drivers_for_new_jobs_30_split<-drivers_for_new_jobs_30_split[!(is.na(drivers_for_new_jobs_30_split$drivers_for_new_jobs_30) | drivers_for_new_jobs_30_split$drivers_for_new_jobs_30==""), ]
-                                     
+
 drivers_for_new_jobs_30_split <-drivers_for_new_jobs_30_split %>% 
   mutate( drivers_for_new_jobs_30 = recode(drivers_for_new_jobs_30, 
-                                                "A job i love and how challenging it is" = "Other",
-                                                "A Fulltime / Stable Employment " = "Other",
-                                      "Building Credibility and Connections(Relationships). As well making my skills practical." = "Other",
-                                                "Funds to seed stuffs" = "Other",
-                                                "I am focussed on running my business." = "Other",
-                                                "I have a self motivated personality" = "Other",
-                                                "to be in an environment where am challenged beyond my current capabilities" = "Other"
-))
+                                           "A job i love and how challenging it is" = "Other",
+                                           "A Fulltime / Stable Employment " = "Other",
+                                           "Building Credibility and Connections(Relationships). As well making my skills practical." = "Other",
+                                           "Funds to seed stuffs" = "Other",
+                                           "I am focussed on running my business." = "Other",
+                                           "I have a self motivated personality" = "Other",
+                                           "to be in an environment where am challenged beyond my current capabilities" = "Other"
+  ))
 
 basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split, drivers_for_new_jobs_30), 
               a_factor = drivers_for_new_jobs_30, its_values = perc, labels = perc_label, 
@@ -2026,14 +2039,14 @@ how_learn_about_company_31_split<-how_learn_about_company_31_split[!(is.na(how_l
 
 how_learn_about_company_31_split <-how_learn_about_company_31_split %>% 
   mutate(how_learn_about_company_31 = recode(how_learn_about_company_31, 
-                                                "Company website" = "Read company media, such as employees blogs or company culture videos",
-                                                "Google & their website" = "Read company media, such as employees blogs or company culture videos",
+                                             "Company website" = "Read company media, such as employees blogs or company culture videos",
+                                             "Google & their website" = "Read company media, such as employees blogs or company culture videos",
                                              "linkedin" = "Read company media, such as employees blogs or company culture videos",
                                              "Online (Linkedin" = "Read company media, such as employees blogs or company culture videos",
                                              "Websites " = "Read company media, such as employees blogs or company culture videos",
                                              "Personal assessment.. Occasionally going to the company to see how they cooperate with one another " = "Make personal contact to company",
                                              "Just going there frequently just access their interpersonal relationships with each other " = "Make personal contact with company"))
-                                      
+
 basic_barplot(my_df = compute_perc(how_learn_about_company_31_split, how_learn_about_company_31 ), 
               a_factor = how_learn_about_company_31 , its_values = perc, labels = perc_label, 
               title = "Q31. When job searching, how do you learn more about a company?")
@@ -2108,8 +2121,8 @@ gender_data <- Qs %>%
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(gender_data, gender_35), 
-              a_factor = gender_35, its_values = perc, labels = perc_label, 
-              title = "")
+                a_factor = gender_35, its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 
@@ -2123,8 +2136,8 @@ barplot_ordered(my_df = compute_perc(gender_data, gender_35),
 
 
 barplot_ordered(my_df = compute_perc(gender_data %>% filter(profession_1 == "I am a developer by profession"), gender_35), 
-              a_factor = gender_35, its_values = perc, labels = perc_label,
-              title = "")
+                a_factor = gender_35, its_values = perc, labels = perc_label,
+                title = "")
 
 ```
 
@@ -2137,8 +2150,8 @@ barplot_ordered(my_df = compute_perc(gender_data %>% filter(profession_1 == "I a
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(gender_data %>% filter(profession_1 == "I am a student who is learning to code"), gender_35), 
-              a_factor = gender_35, its_values = perc, labels = perc_label,
-              title = "")
+                a_factor = gender_35, its_values = perc, labels = perc_label,
+                title = "")
 
 ```
 
@@ -2168,7 +2181,7 @@ basic_barplot(my_df = compute_perc(transgender_data, transgender_36),
 
 ```{r}
 sexual_orientation_data <- Qs %>%
-    filter(sexual_orientation_37 != "NA" & sexual_orientation_37 != "Prefer not to say")
+  filter(sexual_orientation_37 != "NA" & sexual_orientation_37 != "Prefer not to say")
 
 ```
 
