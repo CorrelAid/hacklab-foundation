@@ -1,17 +1,4 @@
 
-/* base variables */
-/* to do: add the color scheme and font etc here.*/
-
-/* Edit the CSS properties in this file to create a custom
-   Distill theme. Only edit values in the right column
-   for each row; values shown are the CSS defaults.
-   To return any property to the default,
-   you may set its value to: unset
-   All rows must end with a semi-colon.                      */
-
-/* Optional: embed custom fonts here with @import url('https://fonts.googleapis.com/css2?family=Montserrat'); */
-/* This must remain at the top of this file.     */
-
 /*
 Hacklab Foundation colors:
   from the hackathon:
@@ -27,106 +14,133 @@ Hacklab Foundation colors:
 
 */
 
+/* THIS IS A GREAT TUTORIAL: https://rstudio4edu.github.io/rstudio4edu-book/rmd-fancy.html */
+
+
+
+/* Optional: embed custom fonts here with @import url('https://fonts.googleapis.com/css2?family=Montserrat'); */
+/* This must remain at the top of this file.     */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+
 html {
   /*-- Definition of some "variables" --*/
 
   /*-- Main font sizes --*/
-  --title-size:      4vw;
-  --body-size:       1.3vw; /* 1vw is 1% of the viewport width*/
-  --code-size:       14px;
-  --aside-size:      12px;
-  --fig-cap-size:    13px;
+  font-size: 120%; /* the base font size of 100% is the default 16px */
+  /* --title-size:      4rem; */
+  /* --body-size:       1rem; defined relatively to base font-size. e.g. 4rem = 4*16px = 64px  */
+  --code-size:       0.9rem;
+  --fig-cap-size:    0.9rem;
   /*-- Main font colors --*/
-  --title-color:     #610b70; /* violet */
-  --header-color:    #222222; /* very dark grey, almost black*/
-  --body-color:      #777777; /* ligth_grey -> darker?*/
-  --aside-color:     rgba(0, 0, 0, 0.6);
-  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  --highlight-color:     #D4145A; /* pink , as on Hacklab's website */
+  --header-color:    #222222; /* very dark grey, almost black, as on Hacklab's website */
+  --body-color:      #777777; /* ligth_greym, as on Hacklab's website */
+
   /*-- Specify custom fonts ~~~ must be imported above   --*/
-  --heading-font:    "Gotham", sans-serif;
-  --mono-font:       "Gotham", monospace;
-  --body-font:       "Gotham", sans-serif;
+  --heading-font:    'Source Sans Pro', sans-serif; /*  , as on Hacklab's website */
+  --body-font:       'Source Sans Pro', sans-serif; /*  , as on Hacklab's website */
 
 }
 
 /* this is for everything, the whole report */
 body {
-  font-family: Gotham;
+  font-family: var(--body-font); /* define default font. var() is the way to use variables defined above*/
 }
 
 
-/*-- ARTICLE METADATA --*/
-d-byline {
-  --heading-size:    0.6rem;
-  --heading-color:   rgba(0, 0, 0, 0.5);
-  --body-size:       0.8rem;
-  --body-color:      rgba(0, 0, 0, 0.8);
-}
-
-/*-- ARTICLE TABLE OF CONTENTS --*/
-.d-contents {
-  --heading-size:    2vw;
-  --contents-size:   1.5vw;
-}
-
-
-
-/*
-#TOC::before {
-  content: "";
-  display: block;
-  height: 400px;
-  margin: 2em 20px 40px 20px;
-  background-image: url("Hackathon_Startpage.png");
-  background-size: contain;
-  background-position: top;
-  background-repeat: no-repeat;
-}
-
-#toc_container {
-  background: #CEFFCE;
-  border: 1px solid #006400;
-  display: table;
-  font-size: 200%;
+/* The TITLE */
+h1.title {
+  font-size: 4rem; /* NOT SURE WHAY CAN'T CHANGE TITLE SIZE? */
+  color: var(--highlight-color);
+  margin-top: 1em;  /* Relative to the font-size of the element (2em means 2 times the size of the current font) */
   margin-bottom: 1em;
-  padding: 25px;
-  width: 100%;
-}
-*/
-
-/*-- ARTICLE APPENDIX --*/
-d-appendix {
-  --heading-size:    15px;
-  --heading-color:   rgba(0, 0, 0, 0.65);
-  --text-size:       0.8em;
-  --text-color:      rgba(0, 0, 0, 0.5);
+  font-weight: 400;
 }
 
 
-/*-- Additional custom styles --*/
-/* Add any additional CSS rules below                      */
 
 /* size of the headers */
-h1 { /* Header 1 , this works.*/
-    font-size: 2vw;
-    color: color: #eb1c96; /* --header-color; */
+h1 { /* Header 1 */
+    font-size: 3rem;
+    font-weight: bold;
+    color:  var(--header-color);  /* --header-color; */
+    margin-top: 4rem; /* add some space before h1 */
 }
-#header1 {
-color: red;
-}
+
 h2 { /* Header 2 */
-    font-size: 1.7vw;
-    color:  --header-color;
+    font-size: 2rem;
+    font-weight: bold;
+    color:  var(--header-color);
+    margin-top: 2rem; /* add some space before h2 */
 }
 h3 { /* Header 3 -> not working? */
-  font-size: 18px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--header-color);
+}
+p { /* the paragraph, text */
+  font-size: 1rem;
+  color: var(--body-color);
 }
 
 /* the table of contents */
-tocify {
-  color: #eb1c96;
+.tocify {
+  color: var(--header-color);
+  /* width: 100%;  not sure what this is?  */
+  /* outline: 0; not sure why not working ??  */
+  font-size: 1rem;
+  margin-top: 6em;
+  /* height: 100%; useless because the heigth is dynamic...  */
+  border: 1px solid var(--body-color);
+  border-radius: 6px; /* rounded edges for the toc border */
 }
-TOC {
-  color: #eb1c96;
+/* the items in the toc*/
+.tocify-item {
+    /* color: #D53027; */
+    /* background-color: white; */
+    /* border: none; */
+}
+/* the items in the toc that is currently active */
+.tocify-item.active {
+    color: white;
+    background-color: var(--highlight-color);
+    border: none;
+}
+/* what happens when you hover on elements of toc */
+.list-group-item:hover,
+.list-group-item.active:hover {
+    color: white;
+    background-color: var(--highlight-color);
+}
 
+/* add a logo before TOC, but "inside it" */
+/* #TOC::before {
+  content: "";
+  display: block;
+  height: 200px;
+  margin: 2em 20px 40px 20px;
+  background-image: url("logo-black.png");
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+} */
+
+
+/* The panels aka the tabs */
+.panelset {
+  font-size: 1.2rem;
+  width: 100%;
+  position: relative;
+  --panel-tabs-border-bottom: #ddd;
+  --panel-tab-foreground: currentColor;
+  --panel-tab-background: unset;
+  --panel-tab-active-foreground: currentColor;
+  --panel-tab-active-background: unset;
+  --panel-tab-hover-foreground: currentColor;
+  --panel-tab-hover-background: unset;
+  --panel-tab-active-border-color: var(--highlight-color); /* was: currentColor; */
+  --panel-tab-hover-border-color: var(--highlight-color); /* was: currentColor; */
+  --panel-tab-inactive-opacity: 0.5;
+  --panel-tab-font-family: inherit;
 }

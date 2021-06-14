@@ -27,13 +27,13 @@ html {
   --code-size:       0.9rem;
   --fig-cap-size:    0.9rem;
   /*-- Main font colors --*/
-  --highlight-color:     #D4145A; /* pink */
-  --header-color:    #222222; /* very dark grey, almost black*/
-  --body-color:      #777777; /* ligth_grey -> darker?*/
+  --highlight-color:     #D4145A; /* pink , as on Hacklab's website */
+  --header-color:    #222222; /* very dark grey, almost black, as on Hacklab's website */
+  --body-color:      #777777; /* ligth_greym, as on Hacklab's website */
 
   /*-- Specify custom fonts ~~~ must be imported above   --*/
-  --heading-font:    "Source Sans Pro";
-  --body-font:       "Source Sans Pro";
+  --heading-font:    "Source Sans Pro"; /*  , as on Hacklab's website */
+  --body-font:       "Source Sans Pro"; /*  , as on Hacklab's website */
 
 }
 

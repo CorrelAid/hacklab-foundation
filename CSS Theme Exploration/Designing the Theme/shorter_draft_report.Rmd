@@ -174,7 +174,7 @@ number_of_students = dim(Qs %>% filter(profession_1 == "I am a student who is le
 highlight_col = "#d4145a"
 text_col = "#777777"
 header_col = "#222222"
-font_in_viz = "sans" # !!! Should change and use Gotham !!!
+font_in_viz = "sans" # !!! SHOULD WE CHANGE ????
 text_col_in_viz = "black"
 main_fontsize = 10
 HL_colors = c(text_col, "#610b70","#88b101","#eb1c96","#e98403","#454545")

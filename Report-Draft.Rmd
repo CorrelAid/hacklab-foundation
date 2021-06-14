@@ -1,17 +1,23 @@
 ---
-title: "Hacklab Developer Census 2020"
-description: "Preliminary Draft - `r Sys.Date()`"
+title: "Hacklab Ghana Developer Census 2020"
+subtitle: "Published by the Hacklab Foundation"
 output: 
   html_document:  
-    # instead of distill::distill_article:
     toc: true
-    toc_float: true # not working in distill...
+    toc_float: true 
     toc_depth: 2
     toc_collapsed: true
-    # theme: paper
-    css: css_theme/css_from_scratch.css # css instead of theme
+    css: css_theme/theme.css # where the css theme is defined
+    urlcolor: "#d4145a"
 ---
 
+```{css toc-content, echo = FALSE}
+/* add some space before the TOC */
+/* for no apparent reason, this is working here but not in the .css... */
+#TOC {
+  margin-top: 5rem;
+}
+```
 
 
 
@@ -37,9 +43,12 @@ library(ggiraph) # for responsive bubble plots
 library(plotly) # for interactive bubble plots
 
 library(ggExtra) # for interactive Heatmaps
-library (ggiraphExtra) # for interactive Heatmaps
+library(ggiraphExtra) # for interactive Heatmaps
 library(moonBook) # for interactive Heatmaps
 library(sjmisc) # for interactive Heatmaps
+
+library(ggchicklet) # to round edges of barplots. install.packages("ggchicklet", repos = "https://cinc.rud.is")
+
 
 ```
 
@@ -164,18 +173,26 @@ number_of_students = dim(Qs %>% filter(profession_1 == "I am a student who is le
 
 # Themes and Functions:
 
-HL_colors = c("#610b70","#88b101","#eb1c96","#e98403","#454545")
-HL_font = "sans" # !!! Should change and use Gotham !!!
-main_fontsize = 7 
+# Definition of some styling variables for the plots,
+# they are used in the theme and plotting functions.
+highlight_col = "#d4145a"
+text_col = "#777777"
+header_col = "#222222"
+font_in_viz = "sans" # !!! SHOULD WE CHANGE ????
+text_col_in_viz = header_col
+main_fontsize = 10 # 'default' base size for the plots
+HL_colors = c(text_col, "#610b70","#88b101","#eb1c96","#e98403","#454545")
+geom_text_size = 3.5 # size of text in plots
+
 
 barplot_theme <- function(){
   # the definition of a custom ggplot theme for our barplots.
   theme_minimal() + 
     theme(
-      plot.title = element_text(family = HL_font, size = main_fontsize + 2, color = "black"),
-      # plot.subtitle = element_text(family = HL_font, size = main_fontsize),
-      axis.title = element_text(family = HL_font, size = main_fontsize, color = "black"),
-      axis.text = element_text(family = HL_font, size = main_fontsize, color = "black"),
+      plot.title = element_text(family = font_in_viz, size = main_fontsize + 2, color = text_col_in_viz),
+      # plot.subtitle = element_text(family = font_in_viz, size = main_fontsize),
+      axis.title = element_text(family = font_in_viz, size = main_fontsize, color = text_col_in_viz),
+      axis.text = element_text(family = font_in_viz, size = main_fontsize, color = text_col_in_viz),
       # plot.caption = element_text(hjust = 0, family = my_font, 
       #                             size = main_fontsize, face= "italic"), #Default is hjust=1 / 0
       plot.title.position = "plot",  # left-align title
@@ -193,15 +210,17 @@ barplot_theme <- function(){
 basic_barplot <- function(my_df, a_factor, its_values, labels, title){
   # a function to plot a standard barplot
   # uses the barplot_theme defined above
-  # needs an (ordered) factor as input, and its values
+  # needs an factor as input, and its values
   # returns a ggplot
+  # REORDERS FACTOR IN FUNCTION OF ITS VALUES
   current_plot <- ggplot(data = my_df, 
                          aes(x = fct_reorder({{a_factor}}, {{its_values}}), 
                              y = {{its_values}})) + 
-    geom_col(fill = HL_colors[1]) + 
+    # rounding the edges of the bars: 
+    geom_chicklet(radius = grid::unit(1, 'mm'), fill = highlight_col) + 
     geom_text(
       aes(label = {{labels}}, y = {{its_values}} + (0.06*max({{its_values}}))),
-      size = 2
+      size = geom_text_size
     ) +
     scale_y_continuous(labels = scales::percent) +
     barplot_theme() + 
@@ -221,10 +240,16 @@ barplot_ordered <- function(my_df, a_factor, its_values, labels, title){
   current_plot <- ggplot(data = my_df, 
                          aes(x = {{a_factor}},
                              y = {{its_values}})) + 
-    geom_col(fill = HL_colors[1]) + 
+    # geom_chicklet(radius = grid::unit(1, 'mm'), fill = highlight_col) + 
+    geom_point(color = highlight_col, size = 11) + 
+    geom_segment(aes(x={{a_factor}}, xend={{a_factor}}, 
+                     y=0, yend={{its_values}}), 
+                 color = highlight_col,
+                 size = 1.8) +
     geom_text(
-      aes(label = {{labels}}, y = {{its_values}} + (0.06*max({{its_values}}))),
-      size = 2
+      aes(label = {{labels}}, y = {{its_values}}),
+      size = 3,
+      color = "white"
     ) +
     scale_y_continuous(labels = scales::percent) +
     barplot_theme() + 
@@ -279,27 +304,7 @@ compute_perc_future_skills <- function(the_skills, skillset, number_of_resp){
     return()
 }
 
-barplot_theme <- function(){
-  # the definition of a custom ggplot theme for our barplots.
-  theme_minimal() + 
-    theme(
-      plot.title = element_text(family = HL_font, size = main_fontsize + 2, color = "black"),
-      # plot.subtitle = element_text(family = HL_font, size = main_fontsize),
-      axis.title = element_text(family = HL_font, size = main_fontsize, color = "black"),
-      axis.text = element_text(family = HL_font, size = main_fontsize, color = "black"),
-      # plot.caption = element_text(hjust = 0, family = my_font, 
-      #                             size = main_fontsize, face= "italic"), #Default is hjust=1 / 0
-      plot.title.position = "plot",  # left-align title
-      # plot.caption.position =  "plot", 
-      panel.grid.minor.x = element_blank(),  # remove useless minor grid
-      panel.grid.major.y = element_blank(),  # remove useless major grid in bar charts
-      panel.grid.major.x = element_blank(),  # remove useless major grid in bar charts
-      axis.title.x = element_blank(), # we do not want an y axis for the barplot, we have labels already
-      axis.text.x = element_blank(),
-      axis.ticks.x = element_blank()
-      # plot.margin = margin(0.1, 0.1, 0.1, 0.1, unit = "cm")
-    )
-}
+
  
 bubble_plotly_theme <- function(){
   theme_minimal() +
@@ -327,6 +332,20 @@ bubble_plot <- function(df, x_value, y_value, freq, colour_choice, title){
 
 ```
 
+# Overview
+
+Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana. In 2020, the Hacklab Foundation fielded a survey covering everything from developers’ favorite technologies to their job preferences. This marks the first of annual surveys to be published. This maiden edition witnessed the participation of 266 developers who took the 20-minute survey earlier between November - December 2020.  
+
+Despite our survey’s reach and capacity for informing valuable conclusions, we acknowledge that our results don’t represent everyone in the Ghana developer community evenly. We have further work to do to make the Hacklab Ghana Developer Census 2020 a more inclusive, diverse platform, and a reflection in the community at large.  
+
+We are committed to building on steps we have taken and improving the coverage, insights and beyond in the coming years to better improve the support and interventions needed to give developers a more enabling ecosystem to thrive. Some of these survey results directly guide those efforts. To address the characteristics of our data, be sure to check out where we summarize results by developer persona (Professional, Student, Hobbyists) or gender, highlight results for underrepresented racial/ethnic groups, or use survey weighting to correct for demographic skew.  
+
+We looked at breakdowns by demographics throughout our analysis and its reflection of the distribution of talents.  
+
+Want to dive into the results yourself? The anonymized results of the survey are [available for download]() under the [Open Database License (ODbL)](https://opendatacommons.org/licenses/odbl/1-0/). We look forward to seeing what you find!  
+
+This maiden edition could not have been successful without the contributions of [Twitter](https://twitter.com/?lang=en) and [CorrelAid](https://correlaid.org/).  
+
 
 # Basic Information {.header1} 
 
@@ -334,7 +353,7 @@ bubble_plot <- function(df, x_value, y_value, freq, colour_choice, title){
 
 The two biggest subgroups among the respondents are professional developers as well as students. Additionally, there are respondents coding as a part of their work, coding as a hobby, as well as former developers. 
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 basic_barplot(my_df = compute_perc(Qs, profession_1), 
               a_factor = profession_1, its_values = perc, labels = perc_label, 
@@ -351,7 +370,7 @@ Most of the respondents code as a hobby. Interestingly, professional developers 
 
 ### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=1}
 
 basic_barplot(my_df = compute_perc(Qs, hobby_coding_2), 
               a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
@@ -365,7 +384,7 @@ basic_barplot(my_df = compute_perc(Qs, hobby_coding_2),
 ::: {.panel}
 
 ### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=1}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), hobby_coding_2), 
               a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
@@ -379,7 +398,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
 
 ### Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=1}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), hobby_coding_2), 
               a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
@@ -413,7 +432,7 @@ When it comes to gender differences, there is a greater share of students among 
 
 ### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 basic_barplot(my_df = compute_perc(employment_data, employment_3), 
               a_factor = employment_3, its_values = perc, labels = perc_label,
@@ -428,7 +447,7 @@ basic_barplot(my_df = compute_perc(employment_data, employment_3),
 
 ### Men only {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Man"), employment_3), 
               a_factor = employment_3, its_values = perc, labels = perc_label,
@@ -442,7 +461,7 @@ barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Ma
 
 ### Women only {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Woman"), employment_3), 
               a_factor = employment_3, its_values = perc, labels = perc_label,
@@ -547,6 +566,8 @@ leaflet(data = data_city_geo) %>%
              icon = violet_icon, label = ~profession_1)
 ```
 
+
+
 ## How old are the respondents? 
 
 Most respondents are between 20 and 30. 
@@ -564,7 +585,7 @@ Qs$age_range_6 <- factor(Qs$age_range_6, levels(Qs$age_range_6)[c(6:1)])
 
 ### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2}
 
 barplot_ordered(my_df = compute_perc(Qs, age_range_6), 
               a_factor = age_range_6, its_values = perc, labels = perc_label, 
@@ -578,7 +599,7 @@ barplot_ordered(my_df = compute_perc(Qs, age_range_6),
 ::: {.panel}
 
 ### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2}
 
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), age_range_6), 
@@ -593,7 +614,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 
 ### Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), age_range_6), 
               a_factor = age_range_6, its_values = perc, labels = perc_label,
@@ -621,7 +642,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 
 ### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 barplot_ordered(my_df = compute_perc(Qs, new_tool_7), 
               a_factor = new_tool_7, its_values = perc, labels = perc_label, 
@@ -635,7 +656,7 @@ barplot_ordered(my_df = compute_perc(Qs, new_tool_7),
 ::: {.panel}
 
 ### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), new_tool_7), 
               a_factor = new_tool_7, its_values = perc, labels = perc_label, 
@@ -649,7 +670,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 
 ### Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), new_tool_7), 
               a_factor = new_tool_7, its_values = perc, labels = perc_label, 
@@ -1290,7 +1311,7 @@ Windows in the most used operating system. Professional developers use MacOS and
 ::: {.panel}
 ### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2}
 
 basic_barplot(my_df = compute_perc(Qs, prim_opsyst_14), 
               a_factor = prim_opsyst_14, its_values = perc, labels = perc_label, 
@@ -1301,7 +1322,7 @@ basic_barplot(my_df = compute_perc(Qs, prim_opsyst_14),
 ::: {.panel}
 ### Professional Developers {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), prim_opsyst_14), 
               a_factor = prim_opsyst_14, its_values = perc, labels = perc_label, 
@@ -1312,7 +1333,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
 ::: {.panel}
 ### Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), prim_opsyst_14), 
               a_factor = prim_opsyst_14, its_values = perc, labels = perc_label, 
@@ -1767,7 +1788,7 @@ barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 ==
 
 ### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
 company_size_23_NA_remov <- Qs %>%
   filter(company_size_23 != "NA")
 
@@ -1809,7 +1830,7 @@ ggHeatmap(relation_ordinal_Q23_28,
 ::: {.panel}
 
 ### Only Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
 company_size_23_NA_remov_prof <- Qs %>%
   filter(company_size_23 != "NA" & profession_1 == "I am a developer by profession")
 
@@ -1851,7 +1872,7 @@ ggHeatmap(relation_ordinal_Q23_28,
 
 ### Only Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
 company_size_23_NA_remov_stud <- Qs %>%
   filter(company_size_23 != "NA" & profession_1 == "I am a student who is learning to code")
 
@@ -1890,7 +1911,7 @@ ggHeatmap(relation_ordinal_Q23_28,
 
 ## Relationship between Highest Education and Salary
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
 # Variables: highest_edu_18, monthly_salary_28
 
 runningcounts.df <- as.data.frame(table(Qs$highest_edu_18, Qs$monthly_salary_28))
