@@ -8,6 +8,8 @@ output:
     toc_depth: 2
     toc_collapsed: true
     css: css_theme/theme.css # where the css theme is defined
+    includes:
+      after_body: css_theme/footer.html
 ---
 
 ```{css toc-content, echo = FALSE}
@@ -151,8 +153,29 @@ Qs <- rio::import("data/clean/clean_all_Qs.rds") %>%
                                  "Professional Diploma",
                                  "Higher National Diploma",
                                  "Bachelor",
-                                 "Master")
+                                 "Master"),
+    profession_1 = recode(profession_1,
+                          "I am a developer by profession" = "I am a developer by profession",
+                          "I am not primarily a developer, but I write code sometimes as part of my work" = "I am not primarily a developer,\nbut sometimes write code at work",
+                          "I am a student who is learning to code" = "I am a student who is learning to code",
+                          "I code primarily as a hobby" = "I code primarily as a hobby",
+                          "I used to be a developer by profession, but no longer am" = "I used to be a developer by profession,\nbut no longer am",
+                          "None of these" = "None of these"),
+    job_status_29 = as_factor(job_status_29),
+    job_status_29 = recode(job_status_29,
+                           "I'm not actively looking, but I am open to new opportunities" = "I'm not actively looking,\nbut I am open to new opportunities",
+                           "I am actively looking for a job" = "I am actively looking for a job",
+                           "I am not interested in new job oportunities" = "I am not interested\nin new job oportunities"),
+    overtime_work_25 = recode(overtime_work_25,
+                              "Often: 1-2 days per week" = "Often: 1-2 days per week",
+                              "Frequently: 3 or more days per week" = "Frequently: 3 or more days per week",
+                              "Sometimes: 1-2 days per month but less than weekly" = "Sometimes: 1-2 days per month\nbut less than weekly",
+                              "Occasionally: 1-2 days per quarter but less than monthly" = "Occasionally: 1-2 days per quarter\nbut less than monthly",
+                              "Rarely: 1-2 days per year or less" = "Rarely: 1-2 days per year or less",
+                              "Never" = "Never")
+    
   )
+
 
 skills <- rio::import("data/clean/skills_final.csv") %>% 
   select(-V1) %>%  # artifact due to a save as .csv to remove (at least on a Mac?)
@@ -250,8 +273,8 @@ barplot_ordered <- function(my_df, a_factor, its_values, labels, title){
     # geom_text(
     #   aes(label = {{labels}}, y = {{its_values}}),
     #   size = 2.5,
-  #   color = "white",
-  #   fontface = "bold"
+    #   color = "white",
+    #   fontface = "bold"
   # ) +
   # SKINNY LOLLIPOPO:
   # geom_point(color = highlight_col, size = 5) +
@@ -259,11 +282,11 @@ barplot_ordered <- function(my_df, a_factor, its_values, labels, title){
   #                    y=0, yend={{its_values}}),
   #                color = highlight_col,
   #                size = 1) +
-    geom_text(
-      aes(label = {{labels}}, y = {{its_values}} + (0.06*max({{its_values}}))),
-      size = 3,
-      color = text_col_in_viz
-    ) +
+  geom_text(
+    aes(label = {{labels}}, y = {{its_values}} + (0.06*max({{its_values}}))),
+    size = 3,
+    color = text_col_in_viz
+  ) +
     scale_y_continuous(labels = scales::percent) +
     barplot_theme() + 
     coord_flip() +
@@ -303,11 +326,11 @@ compute_perc_popular_skills <- function(the_skills, skillset, number_of_resp){
 }
 
 compute_perc_future_skills <- function(the_skills, skillset, number_of_resp){
-  # USE THIS FUNCTION for the future, nexy year, skills (next year + both)
+  # USE THIS FUNCTION for the future, nexy year, skills (next year only)
   # NOTE: we use all respondents, not only those who responded. -> some respondents did not enter any skills. -> not optimal, but annoying to correct?
   the_skills %>%
     filter(tool %in% skillset) %>% # select only the languages from all the tools
-    filter(level == "Want to work with NEXT year" | level == "Both") %>%
+    filter(level == "Want to work with NEXT year") %>%
     count(tool) %>%
     mutate(
       perc = n/number_of_resp, 
@@ -347,7 +370,7 @@ bubble_plot <- function(df, x_value, y_value, freq, colour_choice, title){
 
 # Overview
 
-Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana. In 2020, the Hacklab Foundation fielded a survey covering everything from developers’ favorite technologies to their job preferences. This marks the first of annual surveys to be published. This maiden edition witnessed the participation of 266 developers who took the 20-minute survey earlier between November - December 2020.  
+Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana. In 2020, the Hacklab Foundation fielded a survey covering everything from developers’ favorite technologies to their job preferences. This marks the first of annual surveys to be published. This maiden edition witnessed the participation of 272 developers who took the 20-minute survey earlier between November - December 2020.  
 
 Despite our survey’s reach and capacity for informing valuable conclusions, we acknowledge that our results don’t represent everyone in the Ghana developer community evenly. We have further work to do to make the Hacklab Ghana Developer Census 2020 a more inclusive, diverse platform, and a reflection in the community at large.  
 
@@ -360,9 +383,37 @@ Want to dive into the results yourself? The anonymized results of the survey are
 This maiden edition could not have been successful without the contributions of [Twitter](https://twitter.com/?lang=en) and [CorrelAid](https://correlaid.org/).  
 
 
-# Basic Information {.header1} 
+## Key Insights
 
-## What describes you best?
+Here are a few of the top takeaways from this year’s results.  [_add links and a few sentences_]
+
+1.	Gender Representation
+2.	Geographical concentration
+3.	Most known Languages
+4.	Most familiar Frameworks
+5.	Communities
+6.	Highest level of education
+7.	Primary field of study (Business comes 3rd after Computer Engineering/Science and IT )
+8.	Overtime & Compensation
+
+
+
+
+
+
+
+<hr>
+
+
+
+
+
+
+# Developer Profile
+
+## Type of Developer
+
+### What describes you best?
 
 The two biggest subgroups among the respondents are professional developers as well as students. Additionally, there are respondents coding as a part of their work, coding as a hobby, as well as former developers. 
 
@@ -373,7 +424,7 @@ basic_barplot(my_df = compute_perc(Qs, profession_1),
               title = "")
 ```
 
-## Do you code as a hobby? 
+### Do you code as a hobby? 
 
 Most of the respondents code as a hobby. Interestingly, professional developers seem to code for a hobby less often than students which may be related to their reduced time availability. 
 
@@ -381,7 +432,7 @@ Most of the respondents code as a hobby. Interestingly, professional developers 
 
 ::: {.panel}
 
-### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=1}
 
@@ -396,7 +447,7 @@ basic_barplot(my_df = compute_perc(Qs, hobby_coding_2),
 
 ::: {.panel}
 
-### Professional Developers {.panel-name}
+##### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=1}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), hobby_coding_2), 
@@ -409,7 +460,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
 
 ::: {.panel}
 
-### Students {.panel-name}
+##### Students {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=1}
 
@@ -435,7 +486,7 @@ employment_data <- Qs %>%
   )
 ```
 
-Most of the respondents are employed full-time. Furthermore, there is a great share of students. Sadly, there is also a significant share of unemployed developers looking for work. 
+Most of the respondents full-time employees. There is also a great share of students. Sadly, there is also a significant share of unemployed developers looking for work. 
 
 When it comes to gender differences, there is a greater share of students among the female respondents. In addition, women seem to be self-employed less often when compared with men. 
 
@@ -443,7 +494,7 @@ When it comes to gender differences, there is a greater share of students among 
 
 ::: {.panel}
 
-### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
@@ -458,7 +509,7 @@ basic_barplot(my_df = compute_perc(employment_data, employment_3),
 
 ::: {.panel}
 
-### Men only {.panel-name}
+##### Men only {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
@@ -472,7 +523,7 @@ barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Ma
 
 ::: {.panel}
 
-### Women only {.panel-name}
+##### Women only {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
@@ -488,7 +539,7 @@ barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Wo
 
 
 
-## Where do the developers come from? 
+## Geography 
 
 ### Region
 
@@ -498,7 +549,7 @@ Most respondents come from the greater Accra region. However, the extent of conc
 
 ::: {.panel}
 
-### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 region_data <- Qs %>%
@@ -522,7 +573,7 @@ basic_barplot(my_df = compute_perc(region_data, region_4),
 
 ::: {.panel}
 
-### Professional Developers {.panel-name}
+##### Professional Developers {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
@@ -536,7 +587,7 @@ basic_barplot(my_df = compute_perc(region_data %>% filter(profession_1 == "I am 
 
 ::: {.panel}
 
-### Students {.panel-name}
+#####  Students {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
@@ -581,9 +632,9 @@ leaflet(data = data_city_geo) %>%
 
 
 
-## How old are the respondents? 
+### Age
 
-Most respondents are between 20 and 30. 
+Most respondents are between 20 and 30 years old. 
 
 While the students are very young in most cases, the professional developers display a little more variance in their ages. However, we have a very young sample at hand.
 
@@ -596,7 +647,7 @@ Qs$age_range_6 <- factor(Qs$age_range_6, levels(Qs$age_range_6)[c(6:1)])
 
 ::: {.panel}
 
-### All Respondents {.panel-name}
+#####  All Respondents {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=2}
 
@@ -611,7 +662,7 @@ barplot_ordered(my_df = compute_perc(Qs, age_range_6),
 
 ::: {.panel}
 
-### Professional Developers {.panel-name}
+##### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=2}
 
 
@@ -625,7 +676,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 
 ::: {.panel}
 
-### Students {.panel-name}
+##### Students {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=2}
 
@@ -641,13 +692,22 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 
 
 
+### Gender 
 
+#### What Gender do you identify with?
 
+There is a  greater share of women among the students than among the professional developers. 
 
+Ghana's developer community may become more representative in the upcoming years. 
 
-# Technology and Tech Culture {.header1} 
+```{r}
 
-## How frequently do you learn a new language or framework?
+#Removing NA
+
+gender_data <- Qs %>%
+  filter(gender_35 != "NA")
+```
+
 
 ::::: {.panelset}
 
@@ -655,11 +715,11 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 
 ### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+```{r, fig.align='center', out.width = '100%', fig.height=1}
 
-barplot_ordered(my_df = compute_perc(Qs, new_tool_7), 
-                a_factor = new_tool_7, its_values = perc, labels = perc_label, 
-                title = "") + scale_x_discrete(limits=rev)
+barplot_ordered(my_df = compute_perc(gender_data, gender_35), 
+                a_factor = gender_35, its_values = perc, labels = perc_label, 
+                title = "")
 
 ```
 
@@ -669,11 +729,12 @@ barplot_ordered(my_df = compute_perc(Qs, new_tool_7),
 ::: {.panel}
 
 ### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+```{r, fig.align='center', out.width = '100%', fig.height=1}
 
-barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), new_tool_7), 
-                a_factor = new_tool_7, its_values = perc, labels = perc_label, 
-                title = "") + scale_x_discrete(limits=rev)
+
+barplot_ordered(my_df = compute_perc(gender_data %>% filter(profession_1 == "I am a developer by profession"), gender_35), 
+                a_factor = gender_35, its_values = perc, labels = perc_label,
+                title = "")
 
 ```
 
@@ -683,27 +744,145 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 
 ### Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+```{r, fig.align='center', out.width = '100%', fig.height=1}
 
-barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), new_tool_7), 
-                a_factor = new_tool_7, its_values = perc, labels = perc_label, 
-                title = "") + scale_x_discrete(limits=rev)
+barplot_ordered(my_df = compute_perc(gender_data %>% filter(profession_1 == "I am a student who is learning to code"), gender_35), 
+                a_factor = gender_35, its_values = perc, labels = perc_label,
+                title = "")
 
 ```
 
 :::
 
-:::::
+::::
+
+
+#### Do you identify as transgender? 
+
+```{r}
+transgender_data <- Qs %>%
+  filter(transgender_36 != "NA")
+```
+
+
+```{r, fig.align='center', out.width = '100%', fig.height=1}
+
+basic_barplot(my_df = compute_perc(transgender_data, transgender_36), 
+              a_factor = transgender_36, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+
+### Sexual orientation
+
+```{r}
+sexual_orientation_data <- Qs %>%
+  filter(sexual_orientation_37 != "NA" & sexual_orientation_37 != "Prefer not to say")
+
+```
+
+```{r, fig.align='center', out.width = '100%', fig.height=1.8}
+
+basic_barplot(my_df = compute_perc(sexual_orientation_data, sexual_orientation_37), 
+              a_factor = sexual_orientation_37, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+### Ethnicity 
+
+```{r, fig.align='center', out.width = '100%', fig.height=1}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(ethnicity_38 != "NA" & ethnicity_38 != "I prefer not to answer"), ethnicity_38), 
+              a_factor = ethnicity_38, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+### Do you have any dependents you care for? 
+
+Among our respondents, women seem to have dependents they care for less often than men do. This may partly be due to the fact, that more women are still in their studies and that the women in our sample may be younger than the men. 
+
+```{r}
+dependents_data <- Qs %>%
+  filter(dependents_41 != "I prefer not to say" & dependents_41 != "NA")
+```
+
+::::: {.panelset}
+
+::: {.panel}
+
+##### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=1}
+
+basic_barplot(my_df = compute_perc(dependents_data, dependents_41), 
+              a_factor = dependents_41, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+##### Only Men {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=1}
+
+basic_barplot(my_df = compute_perc(dependents_data %>% filter(gender_35 == "Man"), dependents_41), 
+              a_factor = dependents_41, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+##### Only Women {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=1}
+
+basic_barplot(my_df = compute_perc(dependents_data %>% filter(gender_35 == "Woman"), dependents_41), 
+              a_factor = dependents_41, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::::
 
 
 
-## Which programming, scripting and markup languages have you done extensive development work in over the past year?
+
+
+
+
+
+<hr>
+
+
+
+
+
+
+
+
+
+
+# Technology and Tech Culture 
+
+## Most Popular Technologies
+
+These are the technologies with which the respondents have done extensive development work in over the past year.  
+
+
+### Programming, scripting and markup languages
 
 _HTML/CSS_ is the most used language, followed by _JavaScript_, _Python_ and _SQL_. Professional developers are more likely to use _JavaScript_ and _SQL_. _C++_ and _C_ are still widely used to teach coding to students.    
 
-<aside>
-note: includes "both" and "this year".
-</aside>  
 
 ```{r}
 
@@ -727,7 +906,7 @@ languages = c(
 ```
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
@@ -739,7 +918,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
+##### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
@@ -752,7 +931,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 ```
 :::
 ::: {.panel}
-### Students {.panel-name}
+##### Students {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
@@ -767,7 +946,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 :::::
 
 
-## Which platforms have you done extensive development work in over the past year?
+### Platforms
 
 A comment here...  
 
@@ -793,7 +972,7 @@ platforms = c(
 ```
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
@@ -805,7 +984,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
+##### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
@@ -818,7 +997,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 ```
 :::
 ::: {.panel}
-### Students {.panel-name}
+##### Students {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
@@ -833,7 +1012,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 :::::
 
 
-## Which web frameworks have you done extensive development work in over the past year?
+### Web frameworks
 
 _React.js_ is the most popular web framework.   
 
@@ -855,7 +1034,7 @@ web_frameworks = c(
 ```
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
@@ -867,7 +1046,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
+##### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
@@ -880,7 +1059,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 ```
 :::
 ::: {.panel}
-### Students {.panel-name}
+##### Students {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
@@ -895,9 +1074,9 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 :::::
 
 
-## Which other frameworks, libraries and tools have you done extensive development work in over the past year?
+### Other frameworks, libraries and tools
 
-A comment here...  
+_Node.js_ is also a popular back-end environment.    
 
 ```{r}
 
@@ -914,8 +1093,8 @@ other_frameworks = c(
 ```
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
                                                   skillset = other_frameworks,
@@ -926,8 +1105,8 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
                                                     filter(profession_1 == "I am a developer by profession"), 
@@ -939,8 +1118,8 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 ```
 :::
 ::: {.panel}
-### Students {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
                                                     filter(profession_1 == "I am a student who is learning to code"), 
@@ -954,7 +1133,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 :::::
 
 
-## Which collaborative tools have you used extensively over the past year?
+### Collaborative tools
 
 _GitHub_ is by far the most popular version control tool. _Slack_ is the most used business communication platform.  
 
@@ -976,7 +1155,7 @@ collaborative_tools = c(
 ```
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
@@ -988,7 +1167,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
+##### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
@@ -1001,7 +1180,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 ```
 :::
 ::: {.panel}
-### Students {.panel-name}
+##### Students {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
@@ -1017,28 +1196,18 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 
 
 
-&nbsp;  
+## Wanted Technologies 
 
-&nbsp;   
+These are the technologies that the respondents are currently not using but want to work in over the next year.  
 
-== __Not sure yet how to combine this year and next year, tbd. For now they are separated.__ ==
+### Programming, scripting and markup languages
 
-&nbsp;    
-
-&nbsp;  
-
-## Which programming, scripting and markup languages do you want to work in over the next year?
-
-A comment here... 
-
-<aside>
-note: includes "both" and "next year" (for the 5 following plots)
-</aside>  
+_TypeScript_, followed by _Python_ and _Swift_ are the technologies that professional developers do not use but want to learn. Students are interested in "the classics": _Python_, _SQ_, and _JavaScript_.
 
 
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
@@ -1046,11 +1215,10 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
                                                  number_of_resp = number_of_respondents), 
               a_factor = tool, its_values = perc, labels = perc_label, 
               title = "")
-
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
+##### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
@@ -1063,7 +1231,7 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```
 :::
 ::: {.panel}
-### Students {.panel-name}
+##### Students {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
@@ -1078,13 +1246,13 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 :::::
 
 
-## Which platforms do you want to work with over the next year?
+### Platforms
 
-A comment here...  
+Respondents want to learn working with cloud platforms, in particular _AWS_ for the professional developers and _Microsoft Azure_ for the students. Almost 20% of professional developers indicated wanting to learn _Docker_. _iOS_ is the mobile developing system that most want to work with nextt year.        
 
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
@@ -1096,7 +1264,7 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
+##### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
@@ -1109,7 +1277,7 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```
 :::
 ::: {.panel}
-### Students {.panel-name}
+##### Students {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
@@ -1124,9 +1292,9 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 :::::
 
 
-## Which web frameworks do you want to work with over the next year?
+### Web frameworks
 
-_React.js_ is the most popular web framework.   
+If _React.js_ was [the most popular web framework](web-frameworks), it seems that _Django_ and _Vue.js_ are attractive.      
 
 ```{r}
 
@@ -1146,7 +1314,7 @@ web_frameworks = c(
 ```
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
@@ -1158,7 +1326,7 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
+##### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
@@ -1171,7 +1339,7 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```
 :::
 ::: {.panel}
-### Students {.panel-name}
+##### Students {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
@@ -1186,9 +1354,9 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 :::::
 
 
-## Which other frameworks, libraries and tools do you want to work with over the next year?
+### Other frameworks, libraries and tools
 
-A comment here...  
+A quarter of the respondents indicated wanting to work with _Flutter_ next year. Many also want to work with _React Native_ and _Node.js_.  
 
 ```{r}
 
@@ -1205,8 +1373,8 @@ other_frameworks = c(
 ```
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
                                                  skillset = other_frameworks,
@@ -1217,8 +1385,8 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
                                                    filter(profession_1 == "I am a developer by profession"), 
@@ -1230,8 +1398,8 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```
 :::
 ::: {.panel}
-### Students {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
                                                    filter(profession_1 == "I am a student who is learning to code"), 
@@ -1245,9 +1413,9 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 :::::
 
 
-## Which collaborative tools do you want to work with over the next year?
+### Collaborative tools
 
-_GitHub_ is by far the most popular version control tool. _Slack_ is the most used business communication platform.  
+_Microsoft Azure_ and _Stack Overflow for Teams_ are tools who might become more popular. Many students also indicate wanting to learn _GitHub_.  
 
 ```{r}
 
@@ -1267,7 +1435,7 @@ collaborative_tools = c(
 ```
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
@@ -1279,7 +1447,7 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
+##### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
@@ -1292,7 +1460,7 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 ```
 :::
 ::: {.panel}
-### Students {.panel-name}
+##### Students {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
@@ -1307,22 +1475,16 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 :::::
 
 
-&nbsp;  
 
-&nbsp;  
+## Operating System
 
-&nbsp;  
-
-&nbsp;  
-
-
-## What is the primary operating system in which you work?
+### What is the primary operating system in which you work?
 
 Windows in the most used operating system. Professional developers use MacOS and Linux more often than other respondents. Students are overwhelmingly on Windows.  
 
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=2}
 
@@ -1333,7 +1495,7 @@ basic_barplot(my_df = compute_perc(Qs, prim_opsyst_14),
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
+##### Professional Developers {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=2}
 
@@ -1344,7 +1506,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
 ```
 :::
 ::: {.panel}
-### Students {.panel-name}
+##### Students {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=2}
 
@@ -1357,14 +1519,14 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
 :::::
 
 
-## In which operating system would you rather work?
+### In which operating system would you rather work?
 
 MacOS, Linux and Windows are practically tied as preferred systems. Professional developers have a preference for MacOS, then Linux. Students prefer Windows.  
 
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2}
 
 basic_barplot(my_df = compute_perc(Qs, rather_opsyst_15), 
               a_factor = rather_opsyst_15, its_values = perc, labels = perc_label, 
@@ -1373,8 +1535,8 @@ basic_barplot(my_df = compute_perc(Qs, rather_opsyst_15),
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), rather_opsyst_15), 
               a_factor = rather_opsyst_15, its_values = perc, labels = perc_label, 
@@ -1383,8 +1545,8 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
 ```
 :::
 ::: {.panel}
-### Students {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), rather_opsyst_15), 
               a_factor = rather_opsyst_15, its_values = perc, labels = perc_label, 
@@ -1396,14 +1558,52 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
 
 
 
-## What level of influence do you, personally, have over new technology purchases at your organization?
+## New Technologies
+
+### How frequently do you learn a new language or framework?
+
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+
+barplot_ordered(my_df = compute_perc(Qs, new_tool_7), 
+                a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+                title = "") + scale_x_discrete(limits=rev)
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), new_tool_7), 
+                a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+                title = "") + scale_x_discrete(limits=rev)
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), new_tool_7), 
+                a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+                title = "") + scale_x_discrete(limits=rev)
+
+```
+:::
+:::::
+
+
+### What level of influence do you, personally, have over new technology purchases at your organization?
 
 Unsurprisingly, professional developers are more likely to have influence over new technology purchases.  
 
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2}
 
 barplot_ordered(my_df = compute_perc(Qs, purch_influence_16), 
                 a_factor = purch_influence_16, its_values = perc, labels = perc_label, 
@@ -1412,7 +1612,7 @@ barplot_ordered(my_df = compute_perc(Qs, purch_influence_16),
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
+##### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs %>% 
@@ -1425,7 +1625,7 @@ barplot_ordered(my_df = compute_perc(Qs %>%
 :::
 :::::
 
-## Q17. When buying a new tool or software, how do you discover and research available solutions? Select all that apply.
+### When buying a new tool or software, how do you discover and research available solutions? Select all that apply.
 
 Most of the respondents declared relying on free trials and colleagues.  
 
@@ -1464,17 +1664,32 @@ basic_barplot(my_df = perc_solution_research_17,
 
 
 
+<hr>
 
 
-# Education, Work and Career {.header1}
 
-## Q18. Which of the following best describes the highest level of formal education that you have completed?
+
+
+
+
+
+
+
+
+
+
+
+# Education, Work and Career
+
+## Education
+
+### Highest level of formal education
 
 Most of the survey participants have at least a secondary high-school degree whereas half of the students have a secondary high school degree and every third professional developer has a bachelor's degree
 
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs, highest_edu_18), 
@@ -1484,7 +1699,7 @@ barplot_ordered(my_df = compute_perc(Qs, highest_edu_18),
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
+##### Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), highest_edu_18), 
@@ -1494,7 +1709,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 ```
 :::
 ::: {.panel}
-### Students {.panel-name}
+##### Students {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), highest_edu_18), 
@@ -1506,36 +1721,36 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 :::::
 
 
-## Q19. What was your primary field of study?
+### What was your primary field of study?
 
 Most participants study or studied Computer Science or Computer Engineering, followed by Information Technology and other Engineering fields as well as Mathematics/Statistics and Business.
 
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=4}
 
-barplot_ordered(my_df = compute_perc(Qs, prim_study_19), 
+basic_barplot(my_df = compute_perc(Qs, prim_study_19), 
                 a_factor = prim_study_19, its_values = perc, labels = perc_label, 
                 title = "")
 
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=4}
 
-barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), prim_study_19), 
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), prim_study_19), 
                 a_factor = prim_study_19, its_values = perc, labels = perc_label, 
                 title = "")
 
 ```
 :::
 ::: {.panel}
-### Students {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=4}
 
-barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), prim_study_19), 
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), prim_study_19), 
                 a_factor = prim_study_19, its_values = perc, labels = perc_label, 
                 title = "")
 
@@ -1544,14 +1759,14 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 :::::
 
 
-## Q20. How important is a formal education, such as a university degree in computer science, to your career?
+### How important is a formal education, such as a university degree in computer science, to your career?
 
 Half of the respondents find a formal education very or even critically important for their career.
 
 ::::: {.panelset}
 ::: {.panel}
-### All Respondents {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 barplot_ordered(my_df = compute_perc(Qs, edu_importance_20), 
                 a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
@@ -1560,8 +1775,8 @@ barplot_ordered(my_df = compute_perc(Qs, edu_importance_20),
 ```
 :::
 ::: {.panel}
-### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), edu_importance_20), 
                 a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
@@ -1570,8 +1785,8 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 ```
 :::
 ::: {.panel}
-### Students {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), edu_importance_20), 
                 a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
@@ -1582,7 +1797,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 :::::
 
 
-## Q21. From Q18, if you could go back and change your educational path (but end up in the same career), what would you change?
+### From Q18, if you could go back and change your educational path (but end up in the same career), what would you change?
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
@@ -1590,12 +1805,18 @@ compute_perc(Qs, change_edu_21 )
 
 ```
 
-## Q22. How satisfied are you with your current job? (If you work multiple jobs, answer for one you spend the most hours on.)
+
+
+
+## Work
+
+
+### Job satisfaction
 
 A little bit than more of 50% of the respondents are slightly satisfied or satisfied with their current jobs.
 Whereas 20% are slightly dissatisfied or dissatisfied.
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2}
 
 barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ), 
                 a_factor = job_satisfaction_22 , its_values = perc, labels = perc_label, 
@@ -1604,7 +1825,7 @@ barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ),
 
 ```
 
-## Relationship between job satisfaction and overtime work
+#### Relationship between job satisfaction and overtime work
 
 Interestingly, people who work more than 3 times a week overtime are satisfied with their job. There seems no relationship that the more overtime the less job satisfaction. The tendency is rather the opposite. 
 
@@ -1660,11 +1881,11 @@ girafe(ggobj = bubble_Q22_25_resp,
          opts_tooltip(use_fill = TRUE)))
 ```
 
-## Q23. Approximately how many people are employed by the company or organization you currently work for?
+### Approximately how many people are employed by the company or organization you currently work for?
 
 Half of the respondents work in a small company with less than 10 workers. Only 10% of the respondents work in a big company with more than 100 workers.
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 #Removing NA
 
@@ -1673,16 +1894,16 @@ company_size_23_NA_remov <- Qs %>%
 
 barplot_ordered(my_df = compute_perc(company_size_23_NA_remov, company_size_23 ), 
                 a_factor = company_size_23 , its_values = perc, labels = perc_label, 
-                title = "Q23. Approximately how many people are employed by the company or organization you currently work for?")
+                title = "")
 
 ```
 
-## Q24. On average, how many hours per week do you work? Please enter a whole number in the box.
+### On average, how many hours per week do you work?
 Working hours are quite evenly scattered across the scale from 0-80 hours a week.
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-ggplot(compute_perc(Qs,weekly_work_hours_24), aes(x=weekly_work_hours_24)) + geom_histogram(color = "white", fill= HL_colors[1], binwidth = 10) + labs(x="Weekly working hours", y = "Number of Respondents") +
+ggplot(compute_perc(Qs,weekly_work_hours_24), aes(x=weekly_work_hours_24)) + geom_histogram(color = "white", fill= highlight_col, binwidth = 10) + labs(x="Weekly working hours", y = "Number of Respondents") +
   scale_x_continuous(breaks = seq(0, 120, by=10)) +
   theme_minimal() + 
   theme(panel.grid.major = element_blank(), 
@@ -1708,29 +1929,31 @@ ggplot(compute_perc(Qs,weekly_work_hours_24), aes(x=weekly_work_hours_24)) + geo
 ```
 
 
-## Q25. How often do you work overtime or beyond the formal time expectation of your job?
+### How often do you work overtime or beyond the formal time expectation of your job?
 
 Around 50% of the respondents work overtime on 3 or more days in a week.
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 barplot_ordered(my_df = compute_perc(Qs, overtime_work_25 ), 
                 a_factor = overtime_work_25 , its_values = perc, labels = perc_label, 
-                title = "Q25. How often do you work overtime or beyond the formal time expectation of your job?")
+                title = "")
 
 ```
 
-## Q26. Do you think your company has a good on-boarding process? (By on-boarding, we mean the structured process of getting you settled in to your new role at a company)
+### Do you think your company has a good on-boarding process?
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+(By on-boarding, we mean the structured process of getting you settled in to your new role at a company)
+
+```{r, fig.align='center', out.width = '100%', fig.height=1}
 
 basic_barplot(my_df = compute_perc(Qs, company_onboarding_process_26 ), 
               a_factor = company_onboarding_process_26 , its_values = perc, labels = perc_label, 
-              title = "26. Do you think your company has a good on-boarding process?")
+              title = "")
 
 ```
 
-## Q27. How could on-boarding at your company be improved?
+### How could on-boarding at your company be improved?
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
@@ -1738,22 +1961,18 @@ compute_perc(Qs, improve_onboarding_27 )
 
 ```
 
-## Q28. How much is your monthly salary in Ghana Cedis?
+### How much is your monthly salary in Ghana Cedis?
 
-50% of the respondents earn less than 2000 GHS per month. 
+50% of the respondents earn less than 2000 GHS per month. [**NEED ALSO TO DETAIL BY PROFESSIONAl/STUDENTS**]
 
 ```{r}
 monthly_salary_data <- Qs %>%
   filter(monthly_salary_28 != "NA")
 
 ```
-
 ::::: {.panelset}
-
 ::: {.panel}
-
-### All Respondents {.panel-name}
-
+##### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(Qs, monthly_salary_28 ), 
@@ -1761,13 +1980,9 @@ barplot_ordered(my_df = compute_perc(Qs, monthly_salary_28 ),
                 title = "")
 
 ```
-
 :::
-
 ::: {.panel}
-
-### Only Women {.panel-name}
-
+##### Only Women {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 == "Woman"), monthly_salary_28), 
@@ -1776,11 +1991,8 @@ barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 ==
 
 ```
 :::
-
 ::: {.panel}
-
-### Only Men {.panel-name}
-
+##### Only Men {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 == "Man"), monthly_salary_28), 
@@ -1788,18 +2000,16 @@ barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 ==
                 title = "")
 
 ```
-
 :::
-
 ::::
 
-## Relationship between Size of company and Salary
+#### Relationship between Size of company and Salary
 
 ::::: {.panelset}
 
 ::: {.panel}
 
-### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 company_size_23_NA_remov <- Qs %>%
@@ -1842,7 +2052,7 @@ ggHeatmap(relation_ordinal_Q23_28,
 
 ::: {.panel}
 
-### Only Professional Developers {.panel-name}
+##### Only Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 company_size_23_NA_remov_prof <- Qs %>%
   filter(company_size_23 != "NA" & profession_1 == "I am a developer by profession")
@@ -1883,7 +2093,7 @@ ggHeatmap(relation_ordinal_Q23_28,
 
 ::: {.panel}
 
-### Only Students {.panel-name}
+##### Only Students {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 company_size_23_NA_remov_stud <- Qs %>%
@@ -1922,7 +2132,7 @@ ggHeatmap(relation_ordinal_Q23_28,
 
 ::::
 
-## Relationship between Highest Education and Salary
+#### Relationship between Highest Education and Salary
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 # Variables: highest_edu_18, monthly_salary_28
@@ -1947,28 +2157,30 @@ bubble_Q18_28<-bubble_plot(df = relation_ordinal_Q18_28, x_value = highest_edu_1
 ggplotly(bubble_Q18_28, tooltip="text", width = 800, height = 600)
 
 ```
-## Q29. Which of the following best describes your current job-seeking status?
+
+
+### Which of the following best describes your current job-seeking status?
 
 60% of the respondents are open for new job oppourtunities and one in three respondents is even actively looking for a job.
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=1.5}
 
 basic_barplot(my_df = compute_perc(Qs, job_status_29 ), 
               a_factor = job_status_29 , its_values = perc, labels = perc_label, 
-              title = "Q29. Which of the following best describes your current job-seeking status?")
+              title = "")
 
 ```
 
-## Q30. In general, what drives you to look for a new job? Select all that apply.
+### In general, what drives you to look for a new job?
 The main reason for developers is more income whereas for students it is gaining more experience and skills improvement.
 
 ::::: {.panelset}
 
 ::: {.panel}
 
-### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 drivers_for_new_jobs_30_split<-Qs%>% select(drivers_for_new_jobs_30, profession_1) %>%
   separate_rows(drivers_for_new_jobs_30, sep = ";")
@@ -1998,8 +2210,8 @@ basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split, drivers_for_ne
 
 ::: {.panel}
 
-### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split %>% filter(profession_1 == "I am a developer by profession"), drivers_for_new_jobs_30), 
               a_factor = drivers_for_new_jobs_30, its_values = perc, labels = perc_label, 
@@ -2010,9 +2222,9 @@ basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split %>% filter(prof
 
 ::: {.panel}
 
-### Students {.panel-name}
+##### Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
 
 basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split %>% filter(profession_1 == "I am a student who is learning to code"), drivers_for_new_jobs_30), 
               a_factor = drivers_for_new_jobs_30, its_values = perc, labels = perc_label, 
@@ -2024,7 +2236,7 @@ basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split %>% filter(prof
 ::::
 
 
-## Q31. When job searching, how do you learn more about a company? Select all that apply.
+### When job searching, how do you learn more about a company?
 
 The most popular method to find out more about a company among the respondents is researching company media. There also seem no differences between developers and students.
 
@@ -2049,24 +2261,25 @@ how_learn_about_company_31_split <-how_learn_about_company_31_split %>%
 
 basic_barplot(my_df = compute_perc(how_learn_about_company_31_split, how_learn_about_company_31 ), 
               a_factor = how_learn_about_company_31 , its_values = perc, labels = perc_label, 
-              title = "Q31. When job searching, how do you learn more about a company?")
+              title = "")
 
 
 ```
 
-## Q32. Are you a member of any other online/offline developer communities?
 
-2 in 3 respondends are part of a developer community.
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+## Developer Communities
+
+2 in 3 respondents are members of a developer community.
+
+```{r, fig.align='center', out.width = '100%', fig.height=1}
 
 basic_barplot(my_df = compute_perc(Qs, dev_community_member_32 ), 
               a_factor = dev_community_member_32 , its_values = perc, labels = perc_label, 
-              title = "Q32. Are you a member of any other online/offline developer communities?")
+              title = "Are you a member of any other online/offline developer communities?")
 
 ```
 
-## Q33. Developer communities you are a member of
 
 The three largest communities to which respondents indicated membership were DevCongress (13.6%), Facebook Developer Circle (9.6%), and the Hacklab Foundation (7.4%).  
 
@@ -2093,169 +2306,6 @@ wordcloud(words = counted_communities$which_dev_community_33, freq = counted_com
 
 
 
-# Demographics {.header1}
-
-## Gender 
-
-### What Gender do you identify as?
-
-There is a  greater share of women among the students than among the professional developers. 
-
-Ghana's developer community may become more representative in the upcoming years. 
-
-```{r}
-
-#Removing NA
-
-gender_data <- Qs %>%
-  filter(gender_35 != "NA")
-```
-
-
-::::: {.panelset}
-
-::: {.panel}
-
-### All Respondents {.panel-name}
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-barplot_ordered(my_df = compute_perc(gender_data, gender_35), 
-                a_factor = gender_35, its_values = perc, labels = perc_label, 
-                title = "")
-
-```
-
-
-:::
-
-::: {.panel}
-
-### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-
-barplot_ordered(my_df = compute_perc(gender_data %>% filter(profession_1 == "I am a developer by profession"), gender_35), 
-                a_factor = gender_35, its_values = perc, labels = perc_label,
-                title = "")
-
-```
-
-:::
-
-::: {.panel}
-
-### Students {.panel-name}
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-barplot_ordered(my_df = compute_perc(gender_data %>% filter(profession_1 == "I am a student who is learning to code"), gender_35), 
-                a_factor = gender_35, its_values = perc, labels = perc_label,
-                title = "")
-
-```
-
-:::
-
-::::
-
-
-### Do you identify as transgender? 
-
-```{r}
-transgender_data <- Qs %>%
-  filter(transgender_36 != "NA")
-```
-
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-basic_barplot(my_df = compute_perc(transgender_data, transgender_36), 
-              a_factor = transgender_36, its_values = perc, labels = perc_label,
-              title = "")
-
-```
-
-
-## Sexual orientation
-
-```{r}
-sexual_orientation_data <- Qs %>%
-  filter(sexual_orientation_37 != "NA" & sexual_orientation_37 != "Prefer not to say")
-
-```
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-basic_barplot(my_df = compute_perc(sexual_orientation_data, sexual_orientation_37), 
-              a_factor = sexual_orientation_37, its_values = perc, labels = perc_label,
-              title = "")
-
-```
-
-## Ethnicity 
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-basic_barplot(my_df = compute_perc(Qs %>% filter(ethnicity_38 != "NA" & ethnicity_38 != "I prefer not to answer"), ethnicity_38), 
-              a_factor = ethnicity_38, its_values = perc, labels = perc_label,
-              title = "")
-
-```
-
-## Do you have any dependents you care for? 
-
-Among our respondents, women seem to have dependents they care for less often than men do. This may partly be due to the fact, that more women are still in their studies and that the women in our sample may be younger than the men. 
-
-```{r}
-dependents_data <- Qs %>%
-  filter(dependents_41 != "I prefer not to say" & dependents_41 != "NA")
-```
-
-::::: {.panelset}
-
-::: {.panel}
-
-### All Respondents {.panel-name}
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-basic_barplot(my_df = compute_perc(dependents_data, dependents_41), 
-              a_factor = dependents_41, its_values = perc, labels = perc_label,
-              title = "")
-
-```
-
-:::
-
-::: {.panel}
-
-### Only Men {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-basic_barplot(my_df = compute_perc(dependents_data %>% filter(gender_35 == "Man"), dependents_41), 
-              a_factor = dependents_41, its_values = perc, labels = perc_label,
-              title = "")
-
-```
-
-:::
-
-::: {.panel}
-
-### Only Women {.panel-name}
-
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-basic_barplot(my_df = compute_perc(dependents_data %>% filter(gender_35 == "Woman"), dependents_41), 
-              a_factor = dependents_41, its_values = perc, labels = perc_label,
-              title = "")
-
-```
-
-:::
-
-::::
 
 
 
