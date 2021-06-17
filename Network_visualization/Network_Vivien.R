@@ -1,9 +1,11 @@
-# install.packages("igraph")
+install.packages("igraph")
+install.packages("graphlayouts")
 # install.packages("ggraph")
 library(tidyverse)
 library(ggraph)
 library(tidygraph)
-# library(igraph)
+library(igraph)
+library(graphlayouts)
 # library(network)
 
 skills <- rio::import("./data/clean/skills_final.csv") %>% 
@@ -108,66 +110,6 @@ edges <- skills %>%
   # FIN.
   
 
-# (following a tutorial with ggraph here, you could certainly do it differently!)
-# create graph from edges, add nodes info:
-graph <- as_tbl_graph(edges, directed = FALSE, vertices = nodes) 
-# create the layout for the graph:
-lay <- ggraph::create_layout(graph, layout = "auto") %>%
-  # we add the weight to the nodes:
-  left_join(nodes, by = c("name" = "tool"))
-
-ggnet <- ggraph(lay) + 
-  geom_edge_link(alpha = 0.05) + 
-  geom_node_point(
-    aes(size = weight),
-    color = 'black',
-    show.legend = FALSE) +
-  geom_node_label(aes(label = name), repel = TRUE) +
-  theme_minimal()
-ggnet # the layout is bad, not great to see "clusters"
-
-# here is a webpage where to check for some of the possible layouts:
-#   https://igraph.org/c/doc/igraph-Layout.html
-#two-d-layout-generators
-# and : the animation somewhere after the middle of this page https://www.data-imaginist.com/2017/ggraph-introduction-layouts
-# and the list here: https://rdrr.io/cran/ggraph/man/layout_tbl_graph_igraph.html
-# ==> kk, fr, graphopt, dh, mds...
-
-# test layout kk:
-lay <- ggraph::create_layout(graph, layout = "kk") %>%
-  left_join(nodes, by = c("name" = "tool"))
-ggnet <- ggraph(lay) + 
-  geom_edge_link(alpha = 0.05) + 
-  geom_node_point(
-    aes(size = weight),
-    color = 'black',
-    show.legend = FALSE) +
-  geom_node_label(aes(label = name), repel = TRUE) + # remove the labels if want to plot faster (comment this line)
-  theme_minimal()
-ggnet # a bit better, but not great neither.
-
-# ALREADY TESTED: 
-#   - lgl is not good, too crowded.
-#   - fr is very bad, large cluster in the middle
-#   - graphopt is not so good, too crowded
-#   - mds -> place on a "plane", a bit strange
-
-# test layout dh:
-lay <- ggraph::create_layout(graph, layout = "dh") %>%
-  left_join(nodes, by = c("name" = "tool"))
-ggnet <- ggraph(lay) + 
-  geom_edge_link(alpha = 0.05) + 
-  geom_node_point(
-    aes(size = weight),
-    color = 'black',
-    show.legend = FALSE) +
-  geom_node_label(aes(label = name), repel = TRUE) + # remove the labels if want to plot faster (comment this line)
-  theme_minimal()
-ggnet # a bit better we see the structure better. 
-# we could try to play with the arguments if we want to improve the layout,
-# e.g. more distance between all nodes.
-# see https://igraph.org/r/doc/layout_with_dh.html
-
 
 # hard thing to do now: find a nice combination of technology (ggraph or other),
 # layout, arguments of the layout function, and how to label nicely...
@@ -176,16 +118,9 @@ ggnet # a bit better we see the structure better.
 # (e.g. Slack, Asana, Windows, GitHub, Trello, AI, Internet-of-Things, ML/AI, ...)
 # they clutter the graph and are not really interesting? 
 
-#Ideas: 
-#Include only certain tools
-#Set minimum weight (popularity)/edge value (strong connections)
-#min weight = 2
-#min edge value!
-#Color the nodes 
-#Include 4th category
+####Plotting the network ----
 
-
-
+#Only the interesting tools
 nodes_filter <- nodes_new %>%
   filter(category != "other") %>%
   filter(weight > 1)
@@ -202,8 +137,10 @@ edges_filter <- edges %>%
   group_by(source, target) %>%
   count() %>%
   filter(source != target) %>%
+  ##Including a threshold for connection strength
   filter(n > 20)
 
+#Excluding the tools that no longer have any connections
 nodes_filter <- nodes_filter %>%
   filter(is.element(tool, edges_filter$target) |
            is.element(tool, edges_filter$source)) 
@@ -213,58 +150,118 @@ got_palette <- c("#1A5878", "#C44237", "#AD8941", "#E99093")
 
 graph <- as_tbl_graph(edges_filter, directed = FALSE, vertices = nodes_filter) 
 # create the layout for the graph:
+set.seed(100)
 lay <- ggraph::create_layout(graph, layout = "dh") %>%
   left_join(nodes, by = c("name" = "tool"))
 
+#dn layout seems to be the best standard layout
 ggnet <- ggraph(lay) + 
   geom_edge_link(alpha = 0.05) + 
   geom_node_point(
-    aes(size = weight, fill = nodes_filter$category), 
-    shape = 21,
-    show.legend = FALSE) +
+    aes(size = weight, color = nodes_filter$category), 
+    shape = 19,
+    show.legend = TRUE) +
   geom_node_text(aes(label = name), repel = TRUE) + # remove the labels if want to plot faster (comment this line)
   theme_graph() + 
-  scale_fill_manual(values = got_palette) +
+  scale_color_manual(name = "Category", values = got_palette, 
+                     labels = c("Languages", "Platforms", "Web Frameworks Backend", 
+                                "Web Frameworks Frontend")) +
+  scale_size_continuous(name = "Number of respondents") +
   scale_edge_width(range = c(0.2,3))
 ggnet
 
+ggsave("dh_threshold.png", plot = ggnet, width = 12, height = 8)
+
+#### Some ideas from tutorials ----
+## Backbone layout
+graph_simple <- simplify(graph, remove.multiple = TRUE, remove.loops = TRUE)
+is_simple(graph_simple)
+
+net_backbone <- ggraph(graph_simple,layout = "backbone")+
+  geom_edge_link(alpha = 0.10,edge_colour = "black")+
+  geom_node_point(aes(color=nodes_filter$category,size=nodes_filter$weight),shape = 19)+
+  geom_node_text(aes(label = nodes_filter$tool), repel = TRUE)+
+  scale_edge_width_continuous(range = c(0.2,0.9)) + 
+  scale_size_continuous(name = "Number of respondents") +
+  scale_color_manual(name = "Category", values = got_palette, 
+                     labels = c("Languages", "Platforms", "Web Frameworks Backend", 
+                                "Web Frameworks Frontend"))+
+  coord_fixed()+
+  theme_graph() +
+  theme(legend.position = "right")
+
+net_backbone
+
+ggsave(filename = "backbone_threshold.png", plot = net_backbone, width = 12, height = 6)
+
+### Just for comparison: 
+##Plots without threshold ----
+
+nodes_filter <- nodes_new %>%
+  filter(category != "other") %>%
+  filter(weight > 1)
+
+edges_filter_without_threshold <- edges %>%
+  filter(is.element(source, languages) |
+           is.element(source, platforms) | 
+           is.element(source, web_frameworks) |
+           is.element(source, web_frameworks_frontend)) %>%
+  filter(is.element(target, languages) |
+           is.element(target, platforms) |
+           is.element(target, web_frameworks) |
+           is.element(target, web_frameworks_frontend)) %>%
+  group_by(source, target) %>%
+  count() %>%
+  filter(source != target)
+
+#Excluding the tools that no longer have any connections
+nodes_filter <- nodes_filter %>%
+  filter(is.element(tool, edges_filter_without_threshold$target) |
+           is.element(tool, edges_filter_without_threshold$source)) 
+
+##to do: Use hacklab foundation colors!
+got_palette <- c("#1A5878", "#C44237", "#AD8941", "#E99093")
+
+graph <- as_tbl_graph(edges_filter_without_threshold, directed = FALSE, vertices = nodes_filter) 
+# create the layout for the graph:
+lay <- ggraph::create_layout(graph, layout = "dh") %>%
+  left_join(nodes_filter, by = c("name" = "tool"))
+
+#dn layout seems to be the best standard layout
+dh <- ggraph(lay) + 
+  geom_edge_link(alpha = 0.05) + 
+  geom_node_point(
+    aes(size = weight, color = nodes_filter$category), 
+    shape = 19,
+    show.legend = T) +
+  geom_node_text(aes(label = name), repel = TRUE) + # remove the labels if want to plot faster (comment this line)
+  theme_graph() + 
+  scale_size_continuous(name = "Number of respondents") +
+  scale_color_manual(name = "Category", values = got_palette, 
+                     labels = c("Languages", "Platforms", "Web Frameworks Backend", 
+                                "Web Frameworks Frontend"))+
+  scale_edge_width(range = c(0.2,3))
+dh
+
+ggsave("dh_all.png", plot = dh, width = 12, height = 8)
 
 
+##Backbone layout
+graph_simple <- simplify(graph, remove.multiple = TRUE, remove.loops = TRUE)
+is_simple(graph_simple)
 
+backbone_all <- ggraph(graph_simple,layout = "backbone")+
+  geom_edge_link(alpha = 0.05,edge_colour = "black")+
+  geom_node_point(aes(color=nodes_filter$category,size=nodes_filter$weight),shape = 19)+
+  geom_node_text(aes(label = nodes_filter$tool), repel = TRUE)+
+  scale_edge_width_continuous(range = c(0.2,0.9)) +
+  scale_size_continuous(name = "Number of respondents") +
+  scale_color_manual(name = "Category", values = got_palette, 
+                     labels = c("Languages", "Platforms", "Web Frameworks Backend", 
+                                "Web Frameworks Frontend"))+
+  coord_fixed()+
+  theme_graph()+
+  theme(legend.position = "none")
+backbone_all
 
-#### --------------- OLD CODE BELOW
-
-### do not use
-  ungroup() %>%
-  left_join(nodes, by = c("tool" = "label")) %>% 
-  rename(from = id) #%>%
- # left_join(nodes, by = c("tool_2" = "label")) %>% 
-  #rename(to = id)
-
-edges <- select(edges, from, to, weight)
-
-
-library(igraph)
-
-routes_igraph <- graph_from_data_frame(d = edges, 
-                                       vertices = nodes, 
-                                       directed = FALSE)
-plot(routes_igraph, edge.arrow.size = 0.2)
-
-
-
-
-skill_count <- skills %>% group_by(tool) %>% count()
-nodes <- skills %>%
-  left_join(skill_count, by = 'tool') %>%
-  select(tool, weight = n) %>%
-  unique()
-# build edge list:
-edges <- skills %>%
-  mutate(to = paste(nodes$tool, collapse = ',')) %>%
-  separate_rows(to, sep = ',') %>%
-  select(from = tool, to) %>%
-  filter(from != to) # we are only interested in drawing edges between cities
-# create graph from edges, add nodes info:
-graph <- graph_from_data_frame(edges, directed = FALSE, vertices = nodes$tool)
-graph
+ggsave("backbone_all.png", plot = backbone_all, width = 12, height = 8)
