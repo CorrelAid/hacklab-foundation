@@ -251,7 +251,7 @@ graph_simple <- simplify(graph, remove.multiple = TRUE, remove.loops = TRUE)
 is_simple(graph_simple)
 
 backbone_all <- ggraph(graph_simple,layout = "backbone")+
-  geom_edge_link(alpha = 0.05,edge_colour = "black")+
+  geom_edge_link(alpha = 0.1,edge_colour = "black")+
   geom_node_point(aes(color=nodes_filter$category,size=nodes_filter$weight),shape = 19)+
   geom_node_text(aes(label = nodes_filter$tool), repel = TRUE)+
   scale_edge_width_continuous(range = c(0.2,0.9)) +
@@ -261,7 +261,7 @@ backbone_all <- ggraph(graph_simple,layout = "backbone")+
                                 "Web Frameworks Frontend"))+
   coord_fixed()+
   theme_graph()+
-  theme(legend.position = "none")
+  theme(legend.position = "right")
 backbone_all
 
-ggsave("backbone_all.png", plot = backbone_all, width = 12, height = 8)
+ggsave("backbone_all.png", plot = backbone_all, width = 14, height = 8)
