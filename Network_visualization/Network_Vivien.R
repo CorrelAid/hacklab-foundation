@@ -145,8 +145,7 @@ nodes_filter <- nodes_filter %>%
   filter(is.element(tool, edges_filter$target) |
            is.element(tool, edges_filter$source)) 
 
-##to do: Use hacklab foundation colors!
-got_palette <- c("#1A5878", "#C44237", "#AD8941", "#E99093")
+got_palette <- c("#E04B4F", "#B36C80", "#858EB1", "#58AFE2")
 
 graph <- as_tbl_graph(edges_filter, directed = FALSE, vertices = nodes_filter) 
 # create the layout for the graph:
@@ -220,8 +219,6 @@ nodes_filter <- nodes_filter %>%
            is.element(tool, edges_filter_without_threshold$source)) 
 
 ##to do: Use hacklab foundation colors!
-got_palette <- c("#1A5878", "#C44237", "#AD8941", "#E99093")
-
 graph <- as_tbl_graph(edges_filter_without_threshold, directed = FALSE, vertices = nodes_filter) 
 # create the layout for the graph:
 lay <- ggraph::create_layout(graph, layout = "dh") %>%
