@@ -14,7 +14,6 @@ output:
 
 
 
-
 ```{r setup, include = FALSE}
 
 knitr::opts_chunk$set(echo = FALSE) # we do not want to display the code
@@ -36,6 +35,7 @@ library(tidyr) # for Q30 and Q31
 library(ggiraph) # for responsive bubble plots
 library(plotly) # for interactive bubble plots
 
+library(ggplot2)
 library(ggExtra) # for interactive Heatmaps
 library (ggiraphExtra) # for interactive Heatmaps
 library(moonBook) # for interactive Heatmaps
@@ -46,9 +46,8 @@ library(sjmisc) # for interactive Heatmaps
 ```{r}
 
 # Data:
-
-Qs <- rio::import("data/clean/clean_all_Qs.rds") %>%
   # reodering certain factors for the plots: (use barplot_ordered() for plotting)
+Qs <- rio::import("data/clean/clean_all_Qs.rds") %>%
   mutate(
     purch_influence_16 = fct_relevel(purch_influence_16,
                                      "I have little or no influence",
@@ -81,6 +80,12 @@ Qs <- rio::import("data/clean/clean_all_Qs.rds") %>%
                                    "Occasionally: 1-2 days per quarter but less than monthly",
                                    "Rarely: 1-2 days per year or less",
                                    "Never"),
+    overtime_work_25 = recode(overtime_work_25,
+                                   "Often: 1-2 days per week" = "1-2 days per week",
+                                   "Sometimes: 1-2 days per month but less than weekly" = "1-2 days per month",
+                                   "Rarely: 1-2 days per year or less" = "<1-2 days per year",
+                                   "Occasionally: 1-2 days per quarter but less than monthly" = "1-2 days per quarter",
+                                   "Frequently: 3 or more days per week" = ">3 days per week"),
     monthly_salary_28 = fct_relevel(monthly_salary_28,
                                     "Greater than GHS 25,000",
                                     "GHS 20,000 - GHS 25,000",
@@ -143,8 +148,92 @@ Qs <- rio::import("data/clean/clean_all_Qs.rds") %>%
                                  "Professional Diploma",
                                  "Higher National Diploma",
                                  "Bachelor",
-                                 "Master")
-  )
+                                 "Master"),
+    improve_onboarding_27 = recode(improve_onboarding_27, 
+                       "I don't know" = "NA",
+                       "I’m not sure"= "NA",  
+                         "more"= "NA",
+                         "N/A"= "NA",
+                        "No idea"= "NA" ,
+                        "Not working in a company"= "NA" ,
+                        "I am quitting after nss"= "NA" ,
+                       "With some experience"= "NA",
+                       "I think just keep doing what they're doing will suffice."= "I am happy"  ,
+                       "It's great. Nothing comes to mind"= "I am happy"  ,
+                       "It’s fine"= "I am happy",
+                        "It’s the best"= "I am happy", 
+                       "There is no nee for any improvement"= "I am happy", 
+                       "None"= "I am happy",
+                       "The best I have encounter, won't change a thing."= "I am happy",
+
+                        "Communication"=  "Better documentation of infrastructure and work material",
+                       "More documentation of code"=  "Better documentation of infrastructure and work material",
+                       "Documenting a structure"= "Better documentation of infrastructure and work material",
+                       "Proper documentation of existing softwares"= "Better documentation of infrastructure and work material",
+                       "Proper documentation of infrastructure"= "Better documentation of infrastructure and work material",
+                        "Scripts to set up devices, documentation of help new team members familiarize themselves with the different projects" ="Better documentation of infrastructure and work material",
+                       "set up a tutorial on the stack being used, architecture and how the development cycle goes"= "Better documentation of infrastructure and work material",
+
+                       "Roles could be properly defined and documented"= "Clearly defined roles",
+                       "By clearly defining the core functions of the various units/departments"= "Clearly defined roles",
+                       "Company needs to allow the organisational structures to work without interference and clear task to be assigned to new hires"= "Clearly defined roles",
+                       "Roles need to be well spelt out and every necessary document handed before start of work."= "Clearly defined roles",
+                       "Set the expectations on the role earlier"= "Clearly defined roles",
+ 
+                         "Through orientation"= "Better orientation for new workers",
+                       "Could have someone to take me through the code instead of having to understand it myself"= "Better orientation for new workers",
+                         "Assign mentors to newly assigned employees"= "Better orientation for new workers",
+                         "Have orientation sessions before on-boarding"= "Better orientation for new workers",
+                         "Orientation for new employees"= "Better orientation for new workers",
+                         "Providing mentorship and an enabling environment for learning"= "Better orientation for new workers",
+                         "Pair a new developer with developer skilled in his art within the organization and is willing to help"= "Better orientation for new workers",
+                         "Slower rollout. Everything happens too fast, so it doesn't stick"= "Better orientation for new workers",
+
+                         "A standardized structure for onboard ding"= "Clearer structure and standardisation",
+                       "Having a standard onboarding process"= "Clearer structure and standardisation",
+                          "By defining a structure in the first place"= "Clearer structure and standardisation",
+                       "By defining a structure in the first place"= "Clearer structure and standardisation",
+                         "Structured Onboarding program"= "Clearer structure and standardisation",
+                         "By establishing an HR Department"= "Clearer structure and standardisation",
+                         "Dedicated staff to handle on boarding process"= "Clearer structure and standardisation",
+                         "By improving the organisational structure to facilitate the work flow"= "Clearer structure and standardisation",
+                         "Improve the organizational structure" = "Clearer structure and standardisation", 
+                         "Let IT help desk raise tickets for each unit responsible for delivering into the process" ="Clearer structure and standardisation",
+                       
+                       "Through IT skills" ="Better/more training",
+                       "More specific training to understand fully the role as opposed to general orientation." ="Better/more training",
+                       "Training in specific fields should be better encouraged" ="Better/more training",
+                       "External trainings" ="Better/more training",
+                       "Developing better internship systems for prospective workers" ="Better/more training",
+                       "More coding workshops" ="Better/more training",
+                       "By applying more practical tests for the individual" ="Better/more training",
+                       
+                       "More employment" ="Employing more people",
+                       "to employee more workers" ="Employing more people",
+                       
+                       "Adequate funds for the right role" ="Other",
+                       "A little interview on the chosen choice of language" ="Other",
+                       "Capacity building" ="Other",
+                       "inclusiveness" ="Other",
+                       "Job positions should be made known" ="Other",
+                       "More focus on developers" ="Other",
+                       "More innovation and creativity" ="Other",
+                       "Retention of talents.." ="Other",
+                       "Observation through hard work" ="Other",
+                       "Better background check" ="Other",
+                       "Need new machines" ="Other",
+                       "More interaction with leads" ="Other"
+  ),
+  improve_onboarding_27 = fct_relevel(improve_onboarding_27,
+                                      "Other",
+                                      "Employing more people",
+                                      "Clearly defined roles",
+                                      "Better documentation of infrastructure and work material",
+                                      "Better/more training",
+                                      "Better orientation for new workers",
+                                      "Clearer structure and standardisation",
+                                      "I am happy"))
+                                      
 
 skills <- rio::import("data/clean/skills_final.csv") %>% 
   select(-V1) %>%  # artifact due to a save as .csv to remove (at least on a Mac?)
@@ -156,7 +245,6 @@ skills_with_characteristics <- skills %>% left_join(select(Qs, ID, profession_1,
 number_of_respondents = dim(Qs)[1] # number of respondents (272) used to compute percentages.
 number_of_prof_dev = dim(Qs %>% filter(profession_1 == "I am a developer by profession"))[1]
 number_of_students = dim(Qs %>% filter(profession_1 == "I am a student who is learning to code"))[1]
-
 
 ```
 
@@ -1478,6 +1566,7 @@ Most participants study or studied Computer Science or Computer Engineering, fol
 
 ::::: {.panelset}
 ::: {.panel}
+
 ### All Respondents {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
@@ -1509,6 +1598,133 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 :::
 :::::
 
+## Does the primary field of study matter for the salary as a professional developer?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3, warning=FALSE, message=FALSE}
+
+# Responsive Bubble Chart for Relationship between Job Satisfaction and Overtime Work
+
+prim_study_19_28_prof <- Qs %>%
+  filter(profession_1 == "I am a developer by profession") %>%
+  mutate(monthly_salary_28_7 = recode(monthly_salary_28,
+                                    "Greater than GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
+                                    "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
+                                    "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000"))  
+                                     
+
+runningcounts.df <- as.data.frame(table(prim_study_19_28_prof$prim_study_19, prim_study_19_28_prof$monthly_salary_28_7))
+
+relation_ordinal_Q19_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
+                                               prim_study_19 = Var1)
+
+levels(relation_ordinal_Q19_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q19_28$monthly_salary_28))
+levels(relation_ordinal_Q19_28$prim_study_19) <- sub(" ", "\n", levels(relation_ordinal_Q19_28$prim_study_19))
+levels(relation_ordinal_Q19_28$prim_study_19) <- sub("/", "\n", levels(relation_ordinal_Q19_28$prim_study_19))
+
+relation_ordinal_Q19_28 <- relation_ordinal_Q19_28 %>%
+  # prepare text for tooltip
+  mutate(text = paste(Freq, "respondent/s")) %>%
+  filter(Freq > 0)
+  
+# # Heatmap as an alternative
+# ggHeatmap(relation_ordinal_Q19_28,
+#           aes(x = monthly_salary_28,
+#               y = prim_study_19,
+#               fill = Freq),
+#           addlabel=FALSE,
+#           interactive=TRUE,
+#           tooltip = text)
+
+colours_8 = c( "#E04B4F", "#C55F6C", "#AA738A", "#8E87A7", "#739BC5", "#58AFE2", "#000000", "#000001")
+
+names(colours_8) <- levels(relation_ordinal_Q19_28$monthly_salary_28)
+colScale <- scale_colour_manual(name = "monthly_salary_28",values = colours_8)
+
+bubble_Q19_28_resp = ggplot(data = relation_ordinal_Q19_28, 
+                            aes(x=monthly_salary_28, y=prim_study_19, color=monthly_salary_28)) +
+    geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
+                           tooltip = text)) +
+colScale +
+  labs(x = "", y = "") +
+    bubble_plotly_theme()
+
+girafe(ggobj = bubble_Q19_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 7, 
+       height_svg = 4,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
+
+```
+
+## How do Study Field, Degree and Salary relate to each other?
+
+```{r, fig.align='center', out.width = '100%', fig.height=3, warning=FALSE}
+prim_study_19_28_prof <- Qs %>%
+    filter(profession_1 == "I am a developer by profession",
+         highest_edu_18 == "Bachelor" | 
+           highest_edu_18 == "Master" |
+           highest_edu_18 == "Secondary High School" |
+           highest_edu_18 == "Higher National Diploma") %>%
+  filter(profession_1 == "I am a developer by profession") %>%
+  mutate(monthly_salary_28_7 = recode(monthly_salary_28,
+                                    "Greater than GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
+                                    "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
+                                    "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000"))
+# drop Education Levels that have 0 respondents
+prim_study_19_28_prof$highest_edu_18<- droplevels(prim_study_19_28_prof$highest_edu_18)
+
+runningcounts.df <- as.data.frame(table(prim_study_19_28_prof$prim_study_19, prim_study_19_28_prof$monthly_salary_28_7, prim_study_19_28_prof$highest_edu_18))
+
+prim_study_19_28_prof <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
+                                               prim_study_19 = Var1,
+                                               highest_edu_18 = Var3)
+
+# prepare text for tooltip
+prim_study_19_28_prof <- prim_study_19_28_prof %>%
+  mutate(text = paste("study field: ", prim_study_19,"\n", Freq, "respondent/s"))
+
+# Assign colors to study fields
+colours_11 = c( "#E04B4F", "#D4545C", "#C75D6A", "#C55F6C", "#AA738A", "#BB6677", "#AF6F84", "#8E87A7", "#739BC5", "#58AFE2", "#000000", "#000001", "pink", "green", "blue", "grey", "red", "steelblue", "orange", "purple")
+
+names(colours_11) <- levels(prim_study_19_28_prof$prim_study_19)
+colScale <- scale_colour_manual(name = "prim_study_19",values = colours_11)
+
+
+levels(prim_study_19_28_prof$monthly_salary_28) <- gsub(" - ", "\n", levels(prim_study_19_28_prof$monthly_salary_28))
+levels(prim_study_19_28_prof$highest_edu_18) <- gsub(" ", "\n", levels(prim_study_19_28_prof$highest_edu_18))
+
+bubble_Q19_28_resp = ggplot(data = prim_study_19_28_prof, 
+                            aes(x=highest_edu_18, y=monthly_salary_28, color= prim_study_19)) +
+    geom_jitter_interactive(width = 0.3, height = 0.3, aes(size=ifelse(Freq==0, NA, Freq),
+                           tooltip = text)) +
+colScale +
+  labs(x = "", y = "") +
+    bubble_plotly_theme()+
+  theme_bw() +
+  theme(legend.position="none")
+
+
+girafe(ggobj = bubble_Q19_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 6, 
+       height_svg = 4,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
+
+```
 
 ## Q20. How important is a formal education, such as a university degree in computer science, to your career?
 
@@ -1574,54 +1790,59 @@ barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ),
 
 Interestingly, people who work more than 3 times a week overtime are satisfied with their job. There seems no relationship that the more overtime the less job satisfaction. The tendency is rather the opposite. 
 
-OLD Plot - non-responsive
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 # Bubble chart: Relationship between job satisfaction and overtime work
+
+
+# bubble_Q22_25<-bubble_plot(df = relation_ordinal_Q22_25,
+#                            x_value = overtime_work_25,
+#                            y_value = job_satisfaction_22, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
+#
+# # ggplotly(bubble_Q22_25, tooltip="text", width = 800, height = 600)
+```
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+# Responsive Bubble Chart for Relationship between Job Satisfaction and Overtime Work
+
 runningcounts.df <- as.data.frame(table(Qs$job_satisfaction_22, Qs$overtime_work_25))
 
 relation_ordinal_Q22_25 <- runningcounts.df %>% rename(overtime_work_25 = Var2,
                                                job_satisfaction_22 = Var1) %>%
-  mutate(overtime_work_25 = recode(overtime_work_25, 
+  mutate(overtime_work_25 = recode(overtime_work_25,
                                                 "Often: 1-2 days per week" = "1-2 days per week",
                                                 "Sometimes: 1-2 days per month but less than weekly" = "1-2 days per month",
                                       "Rarely: 1-2 days per year or less" = "<1-2 days per year",
                                    "Occasionally: 1-2 days per quarter but less than monthly" = "1-2 days per quarter",
                                    "Frequently: 3 or more days per week" = ">3 days per week"))
-                                      
+
 levels(relation_ordinal_Q22_25$overtime_work_25) <- gsub(" ", "\n", levels(relation_ordinal_Q22_25$overtime_work_25))
 levels(relation_ordinal_Q22_25$job_satisfaction_22) <- gsub(" ", "\n", levels(relation_ordinal_Q22_25$job_satisfaction_22))
 
-colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001")
+
 
 relation_ordinal_Q22_25 <- relation_ordinal_Q22_25 %>%
   # prepare text for tooltip
-  mutate(text = paste(Freq, "respondent/s")) 
-  
-bubble_Q22_25<-bubble_plot(df = relation_ordinal_Q22_25, x_value = overtime_work_25, y_value = job_satisfaction_22, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
-  
-ggplotly(bubble_Q22_25, tooltip="text", width = 800, height = 600)
-```
+  mutate(text = paste(Freq, "respondent/s"))
 
-NEW Plot - responsive
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+colours_6 = c( "#E04B4F", "#C55F6C", "#AA738A", "#8E87A7", "#739BC5", "#58AFE2")
 
-bubble_Q22_25_resp = ggplot(data = relation_ordinal_Q22_25) +
-    geom_point_interactive(aes(x = overtime_work_25, 
-                               y = job_satisfaction_22, 
-                               color = overtime_work_25,
-                               tooltip = text, 
-                               size = Freq),
-                           shape = 19) + 
-scale_fill_manual(values = colours) +
+names(colours) <- levels(relation_ordinal_Q22_25$overtime_work_25)
+colScale <- scale_colour_manual(name = "overtime_work_25",values = colours_6)
+
+bubble_Q22_25_resp = ggplot(data = relation_ordinal_Q22_25, aes(x=overtime_work_25, y=job_satisfaction_22, color=overtime_work_25)) +
+    geom_point_interactive(aes(size = Freq,
+                           tooltip = text)) +
+colScale +
   labs(x = "", y = "") +
     bubble_plotly_theme()
 
 
 girafe(ggobj = bubble_Q22_25_resp, 
        fonts = list(sans = "Arial"),
-       width_svg = 4.5, 
-       height_svg = 4.5,
+       width_svg = 6, 
+       height_svg = 4,
        options = list(
          opts_tooltip(use_fill = TRUE)))
 ```
@@ -1640,7 +1861,6 @@ company_size_23_NA_remov <- Qs %>%
 barplot_ordered(my_df = compute_perc(company_size_23_NA_remov, company_size_23 ), 
               a_factor = company_size_23 , its_values = perc, labels = perc_label, 
               title = "Q23. Approximately how many people are employed by the company or organization you currently work for?")
-
 ```
 
 ## Q24. On average, how many hours per week do you work? Please enter a whole number in the box.
@@ -1686,6 +1906,69 @@ barplot_ordered(my_df = compute_perc(Qs, overtime_work_25 ),
 
 ```
 
+### Relationship between Overtime Work and Salary of Professional Developers
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+  overtime_work_25_28_prof <- Qs %>%
+  filter(profession_1 == "I am a developer by profession") %>%
+  mutate(monthly_salary_28_7 = recode(monthly_salary_28,
+                                    "Greater than GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
+                                    "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
+                                    "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000"))  
+                                     
+
+runningcounts.df <- as.data.frame(table(overtime_work_25_28_prof$overtime_work_25, overtime_work_25_28_prof$monthly_salary_28_7))
+
+relation_ordinal_Q25_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
+                                               overtime_work_25 = Var1)
+
+levels(relation_ordinal_Q25_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q25_28$monthly_salary_28))
+levels(relation_ordinal_Q25_28$overtime_work_25) <- sub("days", "days \n", levels(relation_ordinal_Q25_28$overtime_work_25))
+
+
+relation_ordinal_Q25_28 <- relation_ordinal_Q25_28 %>%
+  # prepare text for tooltip
+  mutate(text = paste(Freq, "respondent/s")) 
+  
+
+# Heatmap as an alternative
+# ggHeatmap(relation_ordinal_Q23_28,
+#           aes(x = company_size_23,
+#               y = monthly_salary_28,
+#               fill = Freq),
+#           addlabel=FALSE,
+#           interactive=TRUE,
+#           tooltip = text)
+
+colours_6 = c( "#E04B4F", "#C55F6C", "#AA738A", "#8E87A7", "#739BC5", "#58AFE2")
+
+names(colours_6) <- levels(relation_ordinal_Q25_28$overtime_work_25)
+colScale <- scale_colour_manual(name = "overtime_work_25",values = colours_6)
+
+bubble_Q25_28_resp = ggplot(data = relation_ordinal_Q25_28, aes(x=overtime_work_25, y=monthly_salary_28, color=overtime_work_25)) +
+    geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
+                           tooltip = text)) +
+colScale +
+  labs(x = "", y = "") +
+    bubble_plotly_theme()
+
+
+
+girafe(ggobj = bubble_Q25_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 6, 
+       height_svg = 4,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
+
+```
+
 ## Q26. Do you think your company has a good on-boarding process? (By on-boarding, we mean the structured process of getting you settled in to your new role at a company)
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
@@ -1700,7 +1983,12 @@ basic_barplot(my_df = compute_perc(Qs, company_onboarding_process_26 ),
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-compute_perc(Qs, improve_onboarding_27 )
+improve_onboarding_27_filt <- Qs %>%
+  filter(improve_onboarding_27 != "NA")
+
+barplot_ordered(my_df = compute_perc(improve_onboarding_27_filt, improve_onboarding_27), 
+              a_factor = improve_onboarding_27 , its_values = perc, labels = perc_label, 
+              title = "27. How could on-boarding at your company be improved?")
 
 ```
 
@@ -1759,7 +2047,8 @@ barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 ==
 
 ::::
 
-## Relationship between Size of company and Salary
+## Relationship between Size of Company and Salary
+The student respondents don't earn more than 2000 GHS but do work in various sizes of companies. Professional Developers earn more salary and the most developers work in companies with less than 100 employees.There seems no clear relationship between the company size and the salary. 
 
 ::::: {.panelset}
 
@@ -1767,11 +2056,29 @@ barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 ==
 
 ### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}}
-company_size_23_NA_remov <- Qs %>%
-  filter(company_size_23 != "NA")
+```{r, fig.align='center', out.width = '100%', fig.height=3, warning=FALSE}
+company_size_23_NA_remov <- Qs  %>%
+  mutate(company_size_23_binned = recode(company_size_23, 
+                       "I don't know" = "NA",
+                       "I’m not sure"= "NA",  
+                         "more"= "NA",
+                         "N/A"= "NA"),
+             monthly_salary_28_6 = recode(monthly_salary_28,
+                                    "Greater than GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
+                                    "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
+                                    "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000")) %>%
+  filter(company_size_23_binned != "NA") 
 
-runningcounts.df <- as.data.frame(table(company_size_23_NA_remov$company_size_23, company_size_23_NA_remov$monthly_salary_28))
+company_size_23_NA_remov$company_size_23_binned<- droplevels(company_size_23_NA_remov$company_size_23_binned)
+                                     
+
+runningcounts.df <- as.data.frame(table(company_size_23_NA_remov$company_size_23_binned, company_size_23_NA_remov$monthly_salary_28_6))
 
 relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
                                                company_size_23 = Var1)
@@ -1779,7 +2086,7 @@ relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
 levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
 
 
-colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001",  "black")
+
 
 relation_ordinal_Q23_28 <- relation_ordinal_Q23_28 %>%
   # prepare text for tooltip
@@ -1787,19 +2094,38 @@ relation_ordinal_Q23_28 <- relation_ordinal_Q23_28 %>%
   
 
 # Heatmap as an alternative
-ggHeatmap(relation_ordinal_Q23_28, 
-          aes(x = company_size_23, 
-              y = monthly_salary_28, 
-              fill = Freq), 
-          addlabel=FALSE,
-          interactive=TRUE,
-          tooltip = text)
+# ggHeatmap(relation_ordinal_Q23_28,
+#           aes(x = company_size_23,
+#               y = monthly_salary_28,
+#               fill = Freq),
+#           addlabel=FALSE,
+#           interactive=TRUE,
+#           tooltip = text)
+
+colours_6 = c( "#E04B4F", "#C55F6C", "#AA738A", "#8E87A7", "#739BC5", "#58AFE2")
+
+names(colours_6) <- levels(relation_ordinal_Q23_28$company_size_23)
+colScale <- scale_colour_manual(name = "company_size_23",values = colours_6)
+
+bubble_Q23_28_resp = ggplot(data = relation_ordinal_Q23_28, aes(x=company_size_23, y=monthly_salary_28, color=company_size_23)) +
+    geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
+                           tooltip = text)) +
+colScale +
+  labs(x = "", y = "") +
+    bubble_plotly_theme()
 
 
 
+girafe(ggobj = bubble_Q23_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 6, 
+       height_svg = 4,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
 
 
-# non responsive plotly
+
+# plot responsive plotly
 # bubble_Q23_28<-bubble_plot(df = relation_ordinal_Q23_28, x_value = company_size_23, y_value = monthly_salary_28, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
 # ggplotly(bubble_Q23_28, tooltip="text", width = 800, height = 600)
 ```
@@ -1809,11 +2135,30 @@ ggHeatmap(relation_ordinal_Q23_28,
 ::: {.panel}
 
 ### Only Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}}
-company_size_23_NA_remov_prof <- Qs %>%
-  filter(company_size_23 != "NA" & profession_1 == "I am a developer by profession")
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+company_size_23_NA_remov <- Qs  %>%
+  filter(profession_1 == "I am a developer by profession") %>%
+  mutate(company_size_23_binned = recode(company_size_23, 
+                       "I don't know" = "NA",
+                       "I’m not sure"= "NA",  
+                         "more"= "NA",
+                         "N/A"= "NA"),
+             monthly_salary_28_6 = recode(monthly_salary_28,
+                                    "Greater than GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
+                                    "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
+                                    "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000")) %>%
+  filter(company_size_23_binned != "NA") 
 
-runningcounts.df <- as.data.frame(table(company_size_23_NA_remov_prof$company_size_23, company_size_23_NA_remov_prof$monthly_salary_28))
+company_size_23_NA_remov$company_size_23_binned<- droplevels(company_size_23_NA_remov$company_size_23_binned)
+                                     
+
+runningcounts.df <- as.data.frame(table(company_size_23_NA_remov$company_size_23_binned, company_size_23_NA_remov$monthly_salary_28_6))
 
 relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
                                                company_size_23 = Var1)
@@ -1821,28 +2166,33 @@ relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
 levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
 
 
-colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001",  "black")
+
 
 relation_ordinal_Q23_28 <- relation_ordinal_Q23_28 %>%
   # prepare text for tooltip
   mutate(text = paste(Freq, "respondent/s")) 
   
 
-# Heatmap as an alternative
-ggHeatmap(relation_ordinal_Q23_28, 
-          aes(x = company_size_23, 
-              y = monthly_salary_28, 
-              fill = Freq), 
-          addlabel=FALSE,
-          interactive=TRUE,
-          tooltip = text,
-          color = "#D4145A")
+colours_6 = c( "#E04B4F", "#C55F6C", "#AA738A", "#8E87A7", "#739BC5", "#58AFE2")
+
+names(colours_6) <- levels(relation_ordinal_Q23_28$company_size_23)
+colScale <- scale_colour_manual(name = "company_size_23",values = colours_6)
+
+bubble_Q23_28_resp = ggplot(data = relation_ordinal_Q23_28, aes(x=company_size_23, y=monthly_salary_28, color=company_size_23)) +
+    geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
+                           tooltip = text)) +
+colScale +
+  labs(x = "", y = "") +
+    bubble_plotly_theme()
 
 
 
-# non responsive plotly 
-# bubble_Q23_28<-bubble_plot(df = relation_ordinal_Q23_28, x_value = company_size_23, y_value = monthly_salary_28, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
-# ggplotly(bubble_Q23_28, tooltip="text", width = 800, height = 600)
+girafe(ggobj = bubble_Q23_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 6, 
+       height_svg = 4,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
 ```
 
 :::
@@ -1851,11 +2201,30 @@ ggHeatmap(relation_ordinal_Q23_28,
 
 ### Only Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}}
-company_size_23_NA_remov_stud <- Qs %>%
-  filter(company_size_23 != "NA" & profession_1 == "I am a student who is learning to code")
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+company_size_23_NA_remov <- Qs  %>%
+  filter(profession_1 == "I am a student who is learning to code") %>%
+  mutate(company_size_23_binned = recode(company_size_23, 
+                       "I don't know" = "NA",
+                       "I’m not sure"= "NA",  
+                         "more"= "NA",
+                         "N/A"= "NA"),
+             monthly_salary_28_6 = recode(monthly_salary_28,
+                                    "Greater than GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
+                                    "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
+                                    "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000")) %>%
+  filter(company_size_23_binned != "NA") 
 
-runningcounts.df <- as.data.frame(table(company_size_23_NA_remov_stud$company_size_23, company_size_23_NA_remov_stud$monthly_salary_28))
+company_size_23_NA_remov$company_size_23_binned<- droplevels(company_size_23_NA_remov$company_size_23_binned)
+                                     
+
+runningcounts.df <- as.data.frame(table(company_size_23_NA_remov$company_size_23_binned, company_size_23_NA_remov$monthly_salary_28_6))
 
 relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
                                                company_size_23 = Var1)
@@ -1863,59 +2232,118 @@ relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
 levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
 
 
-colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001",  "black")
+
 
 relation_ordinal_Q23_28 <- relation_ordinal_Q23_28 %>%
   # prepare text for tooltip
   mutate(text = paste(Freq, "respondent/s")) 
+  
+
+# Heatmap as an alternative
+# ggHeatmap(relation_ordinal_Q23_28,
+#           aes(x = company_size_23,
+#               y = monthly_salary_28,
+#               fill = Freq),
+#           addlabel=FALSE,
+#           interactive=TRUE,
+#           tooltip = text)
+
+colours_6 = c( "#E04B4F", "#C55F6C", "#AA738A", "#8E87A7", "#739BC5", "#58AFE2")
+
+names(colours_6) <- levels(relation_ordinal_Q23_28$company_size_23)
+colScale <- scale_colour_manual(name = "company_size_23",values = colours_6)
+
+bubble_Q23_28_resp = ggplot(data = relation_ordinal_Q23_28, aes(x=company_size_23, y=monthly_salary_28, color=company_size_23)) +
+    geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
+                           tooltip = text)) +
+colScale +
+  labs(x = "", y = "") +
+    bubble_plotly_theme()
 
 
-ggHeatmap(relation_ordinal_Q23_28, 
-          aes(x = company_size_23, 
-              y = monthly_salary_28, 
-              fill = Freq), 
-          addlabel=FALSE,
-          interactive=TRUE,
-          tooltip = text,
-          color = "#D4145A")
 
-# non responsive Plotly
-# bubble_Q23_28<-bubble_plot(df = relation_ordinal_Q23_28, x_value = company_size_23, y_value = monthly_salary_28, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
-#   
-# ggplotly(bubble_Q23_28, tooltip="text", width = 800, height = 600)
+girafe(ggobj = bubble_Q23_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 6, 
+       height_svg = 4,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
 ```
 :::
 
 ::::
 
-## Relationship between Highest Education and Salary
+## Relationship between Highest Education and Salary of Professional Developers
+A Bachelor's degree is associated with broad range of salary options. There are respondents With a Bachelors degree who receieve salaries as high as respondents with Master's degree. However, people with a Master's degree tend to have higher salaries than others on average.
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
 # Variables: highest_edu_18, monthly_salary_28
 
-runningcounts.df <- as.data.frame(table(Qs$highest_edu_18, Qs$monthly_salary_28))
+monthly_salary_28_Prof <- Qs  %>%
+  filter(profession_1 == "I am a developer by profession",
+         highest_edu_18 == "Bachelor" | 
+           highest_edu_18 == "Master" |
+           highest_edu_18 == "Secondary High School" |
+           highest_edu_18 == "Higher National Diploma") %>%
+  mutate(monthly_salary_28_6 = recode(monthly_salary_28,
+                                    "Greater than GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
+                                    "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
+                                    "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000"))
+
+
+monthly_salary_28_Prof$highest_edu_18<- droplevels(monthly_salary_28_Prof$highest_edu_18)
+levels(monthly_salary_28_Prof$highest_edu_18)
+
+runningcounts.df <- as.data.frame(table(monthly_salary_28_Prof$highest_edu_18, monthly_salary_28_Prof$monthly_salary_28_6))
 
 relation_ordinal_Q18_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
                                                highest_edu_18 = Var1)
 
-levels(relation_ordinal_Q18_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
+levels(relation_ordinal_Q18_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q18_28$monthly_salary_28))
 levels(relation_ordinal_Q18_28$highest_edu_18) <- gsub(" ", "\n", levels(relation_ordinal_Q18_28$highest_edu_18))
 
 
-colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001",  "black")
 
 relation_ordinal_Q18_28 <- relation_ordinal_Q18_28 %>%
   # prepare text for tooltip
   mutate(text = paste(Freq, "respondent/s")) 
   
-bubble_Q18_28<-bubble_plot(df = relation_ordinal_Q18_28, x_value = highest_edu_18, y_value = monthly_salary_28, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
+
+colours_6 = c( "#E04B4F", "#C55F6C", "#AA738A", "#8E87A7", "#739BC5", "#58AFE2", "#000000")
+
+names(colours_6) <- levels(relation_ordinal_Q18_28$highest_edu_18)
+colScale <- scale_colour_manual(name = "highest_edu_18",values = colours_6)
+
+bubble_Q18_28_resp = ggplot(data = relation_ordinal_Q18_28, aes(x=highest_edu_18, y=monthly_salary_28, color=highest_edu_18)) +
+    geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
+                           tooltip = text)) +
+colScale +
+  labs(x = "", y = "") +
+    bubble_plotly_theme()
+
+
+
+girafe(ggobj = bubble_Q18_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 6, 
+       height_svg = 4,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
   
-ggplotly(bubble_Q18_28, tooltip="text", width = 800, height = 600)
+# ggplotly(bubble_Q18_28, tooltip="text", width = 800, height = 600)
 
 ```
+
+
 ## Q29. Which of the following best describes your current job-seeking status?
 
-60% of the respondents are open for new job oppourtunities and one in three respondents is even actively looking for a job.
+60% of the respondents are open for new job opportunities and one in three respondents is even actively looking for a job.
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 

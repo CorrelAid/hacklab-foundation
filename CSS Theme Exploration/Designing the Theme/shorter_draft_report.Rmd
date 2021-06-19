@@ -48,6 +48,11 @@ library(ggiraph) # for "interactive" plots
 
 library(ggchicklet) # to round edges of barplots. install.packages("ggchicklet", repos = "https://cinc.rud.is")
 
+library(ggplot2)
+library(ggExtra) # for interactive Heatmaps
+library (ggiraphExtra) # for interactive Heatmaps
+library(moonBook) # for interactive Heatmaps
+library(sjmisc) # for interactive Heatmaps
 ```
 
 ```{r}
@@ -340,7 +345,13 @@ compute_perc_future_skills <- function(the_skills, skillset, number_of_resp){
 
 fig_height_factor = 2
 
-
+bubble_plotly_theme <- function(){
+  theme_minimal() +
+  theme(legend.position="none",
+        panel.grid.major.y = element_blank(),
+        panel.grid.major.x = element_blank()
+        )
+}
 ```
 
 
@@ -753,7 +764,72 @@ girafe(ggobj = p,
 :::::
 
 
+```{r, fig.align='center', out.width = '100%', fig.height=3, warning=FALSE}
+company_size_23_NA_remov <- Qs  %>%
+  mutate(company_size_23_binned = recode(company_size_23, 
+                       "I don't know" = "NA",
+                       "I’m not sure"= "NA",  
+                         "more"= "NA",
+                         "N/A"= "NA"),
+             monthly_salary_28_6 = recode(monthly_salary_28,
+                                    "Greater than GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
+                                    "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
+                                    "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
+                                    "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
+                                    "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
+                                    "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000")) %>%
+  filter(company_size_23_binned != "NA") 
+
+company_size_23_NA_remov$company_size_23_binned<- droplevels(company_size_23_NA_remov$company_size_23_binned)
+                                     
+
+runningcounts.df <- as.data.frame(table(company_size_23_NA_remov$company_size_23_binned, company_size_23_NA_remov$monthly_salary_28_6))
+
+relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
+                                               company_size_23 = Var1)
+
+levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
 
 
+
+
+relation_ordinal_Q23_28 <- relation_ordinal_Q23_28 %>%
+  # prepare text for tooltip
+  mutate(text = paste(Freq, "respondent/s")) 
+  
+
+# # Heatmap as an alternative
+# ggHeatmap(relation_ordinal_Q23_28,
+#           aes(x = company_size_23,
+#               y = monthly_salary_28,
+#               fill = Freq),
+#           addlabel=FALSE,
+#           interactive=TRUE,
+#           tooltip = text)
+
+colours_7 = c( "#E04B4F", "#C55F6C", "#AA738A", "#8E87A7", "#739BC5", "#58AFE2", "#000000")
+
+names(colours_7) <- levels(relation_ordinal_Q23_28$company_size_23)
+colScale <- scale_colour_manual(name = "company_size_23",values = colours_7)
+
+bubble_Q23_28_resp = ggplot(data = relation_ordinal_Q23_28, aes(x=company_size_23, y=monthly_salary_28, color=company_size_23)) +
+    geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
+                           tooltip = text)) +
+colScale +
+  labs(x = "", y = "") +
+    bubble_plotly_theme()
+
+
+girafe(ggobj = bubble_Q23_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 6, 
+       height_svg = 4,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
+
+```
 
 
