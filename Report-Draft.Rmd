@@ -2481,7 +2481,7 @@ wordcloud(words = counted_communities$which_dev_community_33, freq = counted_com
           max.words = 122, random.order = TRUE, rot.per = 0, scale = c(2.2,0.5),
           colors = HL_colors)
 
-```
+``` 
 
 
 
