@@ -371,13 +371,13 @@ b10 <- 3
 
 # Overview
 
-Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana. In 2020, the Hacklab Foundation fielded a survey covering everything from developers’ favorite technologies to their job preferences. This marks the first of annual surveys to be published. This maiden edition witnessed the participation of 272 developers who took the 20-minute survey earlier between November - December 2020.  
+Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana. In 2020, the Hacklab Foundation fielded a survey covering everything from developers’ favorite technologies to their job preferences. This marks the first of annual surveys to be published. This maiden edition witnessed the participation of 266 developers who took the 20-minute survey earlier between November - December 2020.   
 
-Despite our survey’s reach and capacity for informing valuable conclusions, we acknowledge that our results don’t represent everyone in the Ghana developer community evenly. We have further work to do to make the Hacklab Ghana Developer Census 2020 a more inclusive, diverse platform, and a reflection in the community at large.  
+Despite our survey’s reach and capacity for informing valuable conclusions, we acknowledge that our results don’t represent everyone in the Ghana developer community evenly. We have further work to do to make the Hacklab Ghana Developer Census 2020 a more inclusive, diverse platform, and a reflection in the community at large.   
 
-We are committed to building on steps we have taken and improving the coverage, insights and beyond in the coming years to better improve the support and interventions needed to give developers a more enabling ecosystem to thrive. Some of these survey results directly guide those efforts. To address the characteristics of our data, be sure to check out where we summarize results by developer persona (Professional, Student, Hobbyists) or gender, highlight results for underrepresented racial/ethnic groups, or use survey weighting to correct for demographic skew.  
+We are committed to building on steps we have taken and improving the coverage, insights and beyond in the coming years to better improve the support and interventions needed to give developers a more enabling ecosystem to thrive. Some of these survey results directly guide those efforts. To address the characteristics of our data, be sure to check out where we summarize results by developer persona (Professional, Student, Hobbyists) or gender, highlight results for underrepresented racial/ethnic groups, or use survey weighting to correct for demographic skew.   
 
-We looked at breakdowns by demographics throughout our analysis and its reflection of the distribution of talents.  
+We looked at breakdowns by demographics throughout our analysis and its reflection of the distribution of talents.    
 
 Want to dive into the results yourself? The anonymized results of the survey are [available for download]() under the [Open Database License (ODbL)](https://opendatacommons.org/licenses/odbl/1-0/). We look forward to seeing what you find!  
 
