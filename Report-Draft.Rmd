@@ -48,7 +48,7 @@ library(ggiraphExtra) # for interactive Heatmaps
 library(moonBook) # for interactive Heatmaps
 library(sjmisc) # for interactive Heatmaps
 
-library(ggchicklet) # to round edges of barplots. install.packages("ggchicklet", repos = "https://cinc.rud.is")
+# library(ggchicklet) # to round edges of barplots. install.packages("ggchicklet", repos = "https://cinc.rud.is")
 
 
 ```
@@ -238,10 +238,16 @@ basic_barplot <- function(my_df, a_factor, its_values, labels, title){
   current_plot <- ggplot(data = my_df, 
                          aes(x = fct_reorder({{a_factor}}, {{its_values}}), 
                              y = {{its_values}})) + 
-    # rounding the edges of the bars: 
-    geom_chicklet(radius = grid::unit(1, 'mm'), fill = highlight_col) + 
+    # LOLLIPOP:
+    geom_point(color = highlight_col, size = 5) +
+    geom_segment(aes(x={{a_factor}}, xend={{a_factor}},
+                     y=0, yend={{its_values}}),
+                 color = highlight_col,
+                 size = 1) +
+    # # rounding the edges of the bars: 
+    # geom_chicklet(radius = grid::unit(1, 'mm'), fill = highlight_col) + 
     geom_text(
-      aes(label = {{labels}}, y = {{its_values}} + (0.06*max({{its_values}}))),
+      aes(label = {{labels}}, y = {{its_values}} + (0.07*max({{its_values}}))),
       size = geom_text_size
     ) +
     scale_y_continuous(labels = scales::percent) +
@@ -262,31 +268,18 @@ barplot_ordered <- function(my_df, a_factor, its_values, labels, title){
   current_plot <- ggplot(data = my_df, 
                          aes(x = {{a_factor}},
                              y = {{its_values}})) + 
-    # CHICKLET
-    geom_chicklet(radius = grid::unit(1, 'mm'), fill = highlight_col) +
-    # FAT LOLLIPOP
-    # geom_point(color = highlight_col, size = 10) + 
-    # geom_segment(aes(x={{a_factor}}, xend={{a_factor}}, 
-    #                  y=0, yend={{its_values}}), 
-    #              color = highlight_col,
-    #              size = 1.5) +
-    # geom_text(
-    #   aes(label = {{labels}}, y = {{its_values}}),
-    #   size = 2.5,
-    #   color = "white",
-    #   fontface = "bold"
-  # ) +
-  # SKINNY LOLLIPOPO:
-  # geom_point(color = highlight_col, size = 5) +
-  #   geom_segment(aes(x={{a_factor}}, xend={{a_factor}},
-  #                    y=0, yend={{its_values}}),
-  #                color = highlight_col,
-  #                size = 1) +
-  geom_text(
-    aes(label = {{labels}}, y = {{its_values}} + (0.06*max({{its_values}}))),
-    size = 3,
-    color = text_col_in_viz
-  ) +
+    # # CHICKLET
+    # geom_chicklet(radius = grid::unit(1, 'mm'), fill = highlight_col) +
+    # SKINNY LOLLIPOPO:
+    geom_point(color = highlight_col, size = 5) +
+    geom_segment(aes(x={{a_factor}}, xend={{a_factor}},
+                     y=0, yend={{its_values}}),
+                 color = highlight_col,
+                 size = 1) +
+    geom_text(
+      aes(label = {{labels}}, y = {{its_values}} + (0.07*max({{its_values}}))),
+      size = geom_text_size
+    ) +
     scale_y_continuous(labels = scales::percent) +
     barplot_theme() + 
     coord_flip() +
@@ -366,6 +359,14 @@ bubble_plot <- function(df, x_value, y_value, freq, colour_choice, title){
   
 }
 
+
+# Trying to optimize the heights of the plots:
+#   heights depends on number of "bars"
+b2 <- 1
+b4 <- 1.8
+b6 <- 2.5
+b10 <- 3
+
 ```
 
 # Overview
@@ -417,7 +418,7 @@ Here are a few of the top takeaways from this year’s results.  [_add links and
 
 The two biggest subgroups among the respondents are professional developers as well as students. Additionally, there are respondents coding as a part of their work, coding as a hobby, as well as former developers. 
 
-```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+```{r, fig.align='center', out.width = '100%', fig.height = b6}
 
 basic_barplot(my_df = compute_perc(Qs, profession_1), 
               a_factor = profession_1, its_values = perc, labels = perc_label, 
@@ -434,7 +435,7 @@ Most of the respondents code as a hobby. Interestingly, professional developers 
 
 ##### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=1}
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
 
 basic_barplot(my_df = compute_perc(Qs, hobby_coding_2), 
               a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
@@ -448,7 +449,7 @@ basic_barplot(my_df = compute_perc(Qs, hobby_coding_2),
 ::: {.panel}
 
 ##### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=1}
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), hobby_coding_2), 
               a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
@@ -462,7 +463,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
 
 ##### Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=1}
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), hobby_coding_2), 
               a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
@@ -496,7 +497,7 @@ When it comes to gender differences, there is a greater share of students among 
 
 ##### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+```{r, fig.align='center', out.width = '100%', fig.height = b6}
 
 basic_barplot(my_df = compute_perc(employment_data, employment_3), 
               a_factor = employment_3, its_values = perc, labels = perc_label,
@@ -511,7 +512,7 @@ basic_barplot(my_df = compute_perc(employment_data, employment_3),
 
 ##### Men only {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+```{r, fig.align='center', out.width = '100%', fig.height = b6}
 
 barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Man"), employment_3), 
                 a_factor = employment_3, its_values = perc, labels = perc_label,
@@ -525,7 +526,7 @@ barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Ma
 
 ##### Women only {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+```{r, fig.align='center', out.width = '100%', fig.height = b6}
 
 barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Woman"), employment_3), 
                 a_factor = employment_3, its_values = perc, labels = perc_label,
@@ -551,7 +552,7 @@ Most respondents come from the greater Accra region. However, the extent of conc
 
 ##### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height = b10}
 region_data <- Qs %>%
   filter(region_4 != "Not in Ghana")
 
@@ -575,7 +576,7 @@ basic_barplot(my_df = compute_perc(region_data, region_4),
 
 ##### Professional Developers {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height = b10}
 
 basic_barplot(my_df = compute_perc(region_data %>% filter(profession_1 == "I am a developer by profession"), region_4), 
               a_factor = region_4, its_values = perc, labels = perc_label,
@@ -589,7 +590,7 @@ basic_barplot(my_df = compute_perc(region_data %>% filter(profession_1 == "I am 
 
 #####  Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height = b10}
 
 basic_barplot(my_df = compute_perc(region_data %>% filter(profession_1 == "I am a student who is learning to code"), region_4), 
               a_factor = region_4, its_values = perc, labels = perc_label,
@@ -610,7 +611,7 @@ Zoom in to get a more detailed picture.
 
 Hover over the individual markers to see the professional status of the respondents. 
 
-```{r, fig.align= 'center', out.width= '100%', fig.height=6.5}
+```{r, fig.align= 'center', out.width= '100%', fig.height = 6.5}
 
 # the geocoding was done separately in data_cleaning/Geocoding.R
 # (to not lose time everytime we knitr)
@@ -649,7 +650,7 @@ Qs$age_range_6 <- factor(Qs$age_range_6, levels(Qs$age_range_6)[c(6:1)])
 
 #####  All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=2}
+```{r, fig.align='center', out.width = '100%', fig.height = b6}
 
 barplot_ordered(my_df = compute_perc(Qs, age_range_6), 
                 a_factor = age_range_6, its_values = perc, labels = perc_label, 
@@ -663,7 +664,7 @@ barplot_ordered(my_df = compute_perc(Qs, age_range_6),
 ::: {.panel}
 
 ##### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=2}
+```{r, fig.align='center', out.width = '100%', fig.height = b6}
 
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), age_range_6), 
@@ -678,7 +679,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 
 ##### Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=2}
+```{r, fig.align='center', out.width = '100%', fig.height = b6}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), age_range_6), 
                 a_factor = age_range_6, its_values = perc, labels = perc_label,
@@ -715,7 +716,7 @@ gender_data <- Qs %>%
 
 ### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=1}
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
 
 barplot_ordered(my_df = compute_perc(gender_data, gender_35), 
                 a_factor = gender_35, its_values = perc, labels = perc_label, 
@@ -729,7 +730,7 @@ barplot_ordered(my_df = compute_perc(gender_data, gender_35),
 ::: {.panel}
 
 ### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=1}
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
 
 
 barplot_ordered(my_df = compute_perc(gender_data %>% filter(profession_1 == "I am a developer by profession"), gender_35), 
@@ -744,7 +745,7 @@ barplot_ordered(my_df = compute_perc(gender_data %>% filter(profession_1 == "I a
 
 ### Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=1}
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
 
 barplot_ordered(my_df = compute_perc(gender_data %>% filter(profession_1 == "I am a student who is learning to code"), gender_35), 
                 a_factor = gender_35, its_values = perc, labels = perc_label,
@@ -765,7 +766,7 @@ transgender_data <- Qs %>%
 ```
 
 
-```{r, fig.align='center', out.width = '100%', fig.height=1}
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
 
 basic_barplot(my_df = compute_perc(transgender_data, transgender_36), 
               a_factor = transgender_36, its_values = perc, labels = perc_label,
@@ -782,7 +783,7 @@ sexual_orientation_data <- Qs %>%
 
 ```
 
-```{r, fig.align='center', out.width = '100%', fig.height=1.8}
+```{r, fig.align='center', out.width = '100%', fig.height = b4}
 
 basic_barplot(my_df = compute_perc(sexual_orientation_data, sexual_orientation_37), 
               a_factor = sexual_orientation_37, its_values = perc, labels = perc_label,
@@ -792,7 +793,7 @@ basic_barplot(my_df = compute_perc(sexual_orientation_data, sexual_orientation_3
 
 ### Ethnicity 
 
-```{r, fig.align='center', out.width = '100%', fig.height=1}
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(ethnicity_38 != "NA" & ethnicity_38 != "I prefer not to answer"), ethnicity_38), 
               a_factor = ethnicity_38, its_values = perc, labels = perc_label,
@@ -1731,8 +1732,8 @@ Most participants study or studied Computer Science or Computer Engineering, fol
 ```{r, fig.align='center', out.width = '100%', fig.height=4}
 
 basic_barplot(my_df = compute_perc(Qs, prim_study_19), 
-                a_factor = prim_study_19, its_values = perc, labels = perc_label, 
-                title = "")
+              a_factor = prim_study_19, its_values = perc, labels = perc_label, 
+              title = "")
 
 ```
 :::
@@ -1741,8 +1742,8 @@ basic_barplot(my_df = compute_perc(Qs, prim_study_19),
 ```{r, fig.align='center', out.width = '100%', fig.height=4}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), prim_study_19), 
-                a_factor = prim_study_19, its_values = perc, labels = perc_label, 
-                title = "")
+              a_factor = prim_study_19, its_values = perc, labels = perc_label, 
+              title = "")
 
 ```
 :::
@@ -1751,8 +1752,8 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
 ```{r, fig.align='center', out.width = '100%', fig.height=4}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), prim_study_19), 
-                a_factor = prim_study_19, its_values = perc, labels = perc_label, 
-                title = "")
+              a_factor = prim_study_19, its_values = perc, labels = perc_label, 
+              title = "")
 
 ```
 :::
