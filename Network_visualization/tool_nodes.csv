@@ -1,0 +1,81 @@
+tool,weight
+.NET,41
+.NET Core,24
+AI,1
+Android,93
+Angular,47
+Arduino,28
+Asana,1
+ASP.NET,27
+AWS,39
+Bash shell script,1
+Blockchain,1
+C,36
+C#,40
+C++,56
+Deno.js,4
+Django,55
+Docker,37
+Elixir,1
+Express,71
+Facebook Workplace,16
+FastAPI,1
+Firebase,1
+Flask,5
+Flutter,63
+GitHub,220
+GitLab,71
+Golang,9
+Google Cloud Platform,51
+"Google Suite (Docs, Meet, etc)",98
+Haskell,1
+Heroku,75
+HTML/CSS,188
+IBM Cloud or Watson,21
+Internet-of-Things,1
+iOS,16
+Java,84
+JavaScript,167
+Jira,44
+jQuery,79
+Kotlin,19
+Laravel,58
+Linux,81
+Lua,2
+MacOS,35
+MATLAB,1
+Microsoft Azure,27
+Microsoft Azure2,30
+Microsoft Teams,74
+ML/AI,1
+Node.js,103
+Ocaml,2
+PHP,96
+Puppet,2
+Python,137
+Qt,1
+R,2
+Raspberry Pi,18
+React Native,47
+React.js,101
+Ruby,14
+Ruby on Rails,13
+Rust,2
+Sails.js,1
+Scala,1
+Sckit-learn,1
+Selenium,1
+Slack,158
+Solidity,1
+Spring,18
+SQL,121
+Stack Overflow for Teams,45
+Swift,8
+Trello,107
+TypeScript,48
+Unity,1
+Unity3D,1
+Vue.js,44
+Windows,129
+WordPress,98
+XD,1
