@@ -126,25 +126,29 @@ edges <- skills %>%
 #Only the interesting tools
 nodes_filter <- nodes_new %>%
   filter(category != "other") %>%
-  filter(weight > 1)
+  filter(weight > 20)
+
+# edges_filter <- edges %>%
+#   filter(is.element(source, languages) |
+#            is.element(source, platforms) | 
+#            is.element(source, web_frameworks) |
+#            is.element(source, web_frameworks_frontend)) %>%
+#   filter(is.element(target, languages) |
+#            is.element(target, platforms) |
+#            is.element(target, web_frameworks) |
+#            is.element(target, web_frameworks_frontend)) %>%
+#   filter(source != target) %>% # not needed, just in precaution
+#   ##Including a threshold for connection strength
+#   filter(weight > 100)
 
 edges_filter <- edges %>%
-  filter(is.element(source, languages) |
-           is.element(source, platforms) | 
-           is.element(source, web_frameworks) |
-           is.element(source, web_frameworks_frontend)) %>%
-  filter(is.element(target, languages) |
-           is.element(target, platforms) |
-           is.element(target, web_frameworks) |
-           is.element(target, web_frameworks_frontend)) %>%
-  filter(source != target) %>% # not needed, just in precaution
-  ##Including a threshold for connection strength
-  filter(weight > 1)
+  filter(source %in% nodes_filter$tool,
+         target %in% nodes_filter$tool)
 
-#Excluding the tools that no longer have any connections
-nodes_filter <- nodes_filter %>%
-  filter(is.element(tool, edges_filter$target) |
-           is.element(tool, edges_filter$source)) 
+# #Excluding the tools that no longer have any connections
+# nodes_filter <- nodes_filter %>%
+#   filter(is.element(tool, edges_filter$target) |
+#            is.element(tool, edges_filter$source)) 
 
 got_palette <- c("#E04B4F", "#B36C80", "#858EB1", "#58AFE2")
 
@@ -164,8 +168,8 @@ ggnet <- ggraph(lay) +
   geom_node_text(aes(label = name), repel = TRUE) + # remove the labels if want to plot faster (comment this line)
   theme_graph() + 
   scale_color_manual(name = "Category", values = got_palette, 
-                     labels = c("Languages", "Platforms", "Web Frameworks Backend", 
-                                "Web Frameworks Frontend")) +
+                     labels = c("Languages", "Platforms", "Other Frameworks", 
+                                "Web Frameworks")) +
   scale_size_continuous(name = "Number of respondents") +
   scale_edge_width(range = c(0.2,3))
 ggnet
@@ -176,7 +180,9 @@ ggsave("dh_threshold.png", plot = ggnet, width = 12, height = 8, dpi = 720)
 ## Backbone layout
 # graph_simple <- simplify(graph, remove.multiple = TRUE, remove.loops = TRUE)
 # is_simple(graph_simple)
-simpler_graph <- delete.edges(graph, which(E(graph)$weight < 100))
+
+# not used: delete edges
+# simpler_graph <- delete.edges(graph, which(E(graph)$weight < 100))
 
 
 net_backbone <- ggraph(graph, layout = "backbone")+
@@ -185,27 +191,27 @@ net_backbone <- ggraph(graph, layout = "backbone")+
   geom_node_point(aes(color = nodes_filter$category, size=nodes_filter$weight),shape = 19)+
   geom_node_text(aes(label = nodes_filter$tool), repel = TRUE)+
   # scale_edge_width_continuous(range = c(0.2,0.9)) +
-  scale_edge_width_continuous(range = c(0.1, 5)) + # control size
+  scale_edge_width_continuous(range = c(0.1, 5), name = "Co-mentions") + # control size
   scale_edge_colour_continuous(
     low = "#ffffff",
     # low = "#d3d3d3",
     high = "#000000",
     space = "Lab",
     na.value = "grey50",
-    guide = "edge_colourbar"
+    guide = NULL
   ) +
-  scale_size_continuous(name = "Number of respondents") +
+  scale_size_continuous(name = "Number of respondents", range = c(1, 10)) +
   scale_color_manual(name = "Category", values = got_palette, 
-                     labels = c("Languages", "Platforms", "Web Frameworks Backend", 
-                                "Web Frameworks Frontend"))+
+                     labels = c("Languages", "Platforms", "Web Frameworks", 
+                                "Other Frameworks"))+
   coord_fixed()+
   theme_graph() +
   theme(legend.position = "right")
 
 net_backbone
 
-# ggsave(filename = "backbone-weighted.png", plot = net_backbone, width = 12, height = 6, dpi=720)
-# ggsave(filename = "backbone-weighted.svg", plot = net_backbone, width = 12, height = 6)
+ggsave(filename = "backbone-weighted.png", plot = net_backbone, width = 12, height = 6, dpi=720)
+ggsave(filename = "backbone-weighted.svg", plot = net_backbone, width = 12, height = 6)
 
 ### Just for comparison: 
 ##Plots without threshold ----
