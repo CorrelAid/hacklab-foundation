@@ -8,7 +8,7 @@ library(igraph)
 library(graphlayouts)
 # library(network)
 
-skills <- rio::import("./data/clean/skills_final.csv") %>% 
+skills <- rio::import("../data/clean/skills_final.csv") %>% 
   select(-V1) %>%  # artifact due to a save as .csv to remove (at least on a Mac?)
   mutate_all(na_if,"") %>%
   drop_na(level) %>%
@@ -102,13 +102,16 @@ edges <- skills %>%
   ) %>%
   # we stop the rowwise:
   ungroup() %>%
+  count(source_target, name = "weight") %>% # get the weights
+  separate(source_target, into = c("source", "target"), sep = "_", ) # re-create source/target
+# not used:  
   # we remove all the rows with duplicates "source_target":
-#  distinct(source_target, .keep_all = TRUE) %>% # keep_all to keep all columns
+  # distinct(source_target, .keep_all = TRUE) %>% # keep_all to keep all columns
   # IT WORKS! woot woot!
   # we can now keep only what we need: source and target:
-  select(source, target)
-  # FIN.
-  
+  # select(source, target)
+# FIN.
+
 
 
 # hard thing to do now: find a nice combination of technology (ggraph or other),
@@ -134,11 +137,9 @@ edges_filter <- edges %>%
            is.element(target, platforms) |
            is.element(target, web_frameworks) |
            is.element(target, web_frameworks_frontend)) %>%
-  group_by(source, target) %>%
-  count() %>%
-  filter(source != target) %>%
+  filter(source != target) %>% # not needed, just in precaution
   ##Including a threshold for connection strength
-  filter(n > 20)
+  filter(weight > 1)
 
 #Excluding the tools that no longer have any connections
 nodes_filter <- nodes_filter %>%
@@ -169,18 +170,30 @@ ggnet <- ggraph(lay) +
   scale_edge_width(range = c(0.2,3))
 ggnet
 
-ggsave("dh_threshold.png", plot = ggnet, width = 12, height = 8)
+ggsave("dh_threshold.png", plot = ggnet, width = 12, height = 8, dpi = 720)
 
 #### Some ideas from tutorials ----
 ## Backbone layout
-graph_simple <- simplify(graph, remove.multiple = TRUE, remove.loops = TRUE)
-is_simple(graph_simple)
+# graph_simple <- simplify(graph, remove.multiple = TRUE, remove.loops = TRUE)
+# is_simple(graph_simple)
+simpler_graph <- delete.edges(graph, which(E(graph)$weight < 100))
 
-net_backbone <- ggraph(graph_simple,layout = "backbone")+
-  geom_edge_link(alpha = 0.10,edge_colour = "black")+
-  geom_node_point(aes(color=nodes_filter$category,size=nodes_filter$weight),shape = 19)+
+
+net_backbone <- ggraph(graph, layout = "backbone")+
+  # geom_edge_link(aes(width = edges_filter$weight), alpha = 0.05, edge_colour = "black")+
+  geom_edge_link(aes(width = edges_filter$weight, color = edges_filter$weight), alpha = 0.2)+
+  geom_node_point(aes(color = nodes_filter$category, size=nodes_filter$weight),shape = 19)+
   geom_node_text(aes(label = nodes_filter$tool), repel = TRUE)+
-  scale_edge_width_continuous(range = c(0.2,0.9)) + 
+  # scale_edge_width_continuous(range = c(0.2,0.9)) +
+  scale_edge_width_continuous(range = c(0.1, 5)) + # control size
+  scale_edge_colour_continuous(
+    low = "#ffffff",
+    # low = "#d3d3d3",
+    high = "#000000",
+    space = "Lab",
+    na.value = "grey50",
+    guide = "edge_colourbar"
+  ) +
   scale_size_continuous(name = "Number of respondents") +
   scale_color_manual(name = "Category", values = got_palette, 
                      labels = c("Languages", "Platforms", "Web Frameworks Backend", 
@@ -191,7 +204,8 @@ net_backbone <- ggraph(graph_simple,layout = "backbone")+
 
 net_backbone
 
-ggsave(filename = "backbone_threshold.png", plot = net_backbone, width = 12, height = 6)
+# ggsave(filename = "backbone-weighted.png", plot = net_backbone, width = 12, height = 6, dpi=720)
+# ggsave(filename = "backbone-weighted.svg", plot = net_backbone, width = 12, height = 6)
 
 ### Just for comparison: 
 ##Plots without threshold ----
