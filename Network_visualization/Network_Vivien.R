@@ -150,7 +150,7 @@ edges_filter <- edges %>%
 #   filter(is.element(tool, edges_filter$target) |
 #            is.element(tool, edges_filter$source)) 
 
-got_palette <- c("#E04B4F", "#B36C80", "#858EB1", "#58AFE2")
+HL_colors = c("#DF4B4F", "#AF8CDE", "#59B0E3","#E3E19A")
 
 graph <- as_tbl_graph(edges_filter, directed = FALSE, vertices = nodes_filter) 
 # create the layout for the graph:
@@ -185,7 +185,7 @@ ggsave("dh_threshold.png", plot = ggnet, width = 12, height = 8, dpi = 720)
 # simpler_graph <- delete.edges(graph, which(E(graph)$weight < 100))
 
 
-net_backbone <- ggraph(graph, layout = "backbone")+
+net_backbone <- ggraph(graph, layout = "dh")+
   # geom_edge_link(aes(width = edges_filter$weight), alpha = 0.05, edge_colour = "black")+
   geom_edge_link(aes(width = edges_filter$weight, color = edges_filter$weight), alpha = 0.2)+
   geom_node_point(aes(color = nodes_filter$category, size=nodes_filter$weight),shape = 19)+
@@ -201,7 +201,7 @@ net_backbone <- ggraph(graph, layout = "backbone")+
     guide = NULL
   ) +
   scale_size_continuous(name = "Number of respondents", range = c(1, 10)) +
-  scale_color_manual(name = "Category", values = got_palette, 
+  scale_color_manual(name = "Category", values = HL_colors, 
                      labels = c("Languages", "Platforms", "Web Frameworks", 
                                 "Other Frameworks"))+
   coord_fixed()+
