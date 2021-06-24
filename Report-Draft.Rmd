@@ -263,7 +263,46 @@ Qs <- rio::import("data/clean/clean_all_Qs.rds") %>%
                                         "Better/more training",
                                         "Better orientation for new workers",
                                         "Clearer structure and standardisation",
-                                        "I am happy"))
+                                        "I am happy"
+                                        ),
+    change_edu_21 = recode(change_edu_21, 
+                           "The program of study. I would probably take a computer science course" = "I would study Computer Science",
+                                   "Yes" = "NA",
+                           "In the university at the moment" = "NA",
+                                   "Business or graphic design"= "Field of Study",
+                           "I would select information technology"= "Field of Study",
+                                   "field of study"= "Field of Study",
+                           "Would do computer engineering"= "Field of Study",
+                           "I will change the course I chose."= "Field of Study",
+                           "Material engineering"= "Field of Study",
+                           "My Choice of university of study"= "Field of Study",
+                           "I'll do electronic and electrical engineering instead of computer science"= "Field of Study",
+                           "I would change my programme of study to computer science, or software engineering."= "Field of Study",
+                                   "I'd probably have studied general arts in senior high, then turned the Computer Science department ict labs into my playground in University." = "Field of Study",
+                           "My choice of course in high school because i was a visual arts student"= "Courses during High School",
+                           "My final year elective courses"= "Courses during High School" ,
+                           "The business course in secondary school"= "Courses during High School",
+                           "Combination of modules I select for the course"= "Courses during High School",
+                           "Curriculum"= "Courses during High School",
+                           "change my school"= "School/University",
+                           "My Education"= "School/University",
+                           "My tertiary institution"= "School/University",
+                           "Approach to learning"= "Learning Approach/Methods",
+                           "How I learned programming"= "Learning Approach/Methods",
+                           "How the courses are taught"= "Learning Approach/Methods",
+                           "The learning platforms used"= "Learning Approach/Methods",
+                           "Will advocate for modern trends to be taught"= "Learning Approach/Methods",
+                           "Tech entrepreneurship should be a course to understand the business of tech."= "Other",
+                           "The non practical aspects of studies"= "Other",
+                           "Master degree"= "Other",
+                           "learn more independently"= "Learn more independently",
+                           "learn programming earlier"= "Learn programming earlier",
+                           "more practical work"= "More practical work",
+                           "I woud have added something else to my studies"= "Adding additional things to studies"),
+    change_edu_21 = fct_relevel(change_edu_21,       
+                                "Nothing",
+                                "Other"))
+                           
 
 
 skills <- rio::import("data/clean/skills_final.csv") %>% 
@@ -2027,6 +2066,14 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 
 compute_perc(Qs, change_edu_21 )
 
+change_edu_filt <- Qs %>%
+  filter(change_edu_21 != "NA")
+
+barplot_ordered(my_df = compute_perc(change_edu_filt, change_edu_21 ), 
+                a_factor = change_edu_21 , its_values = perc, labels = perc_label, 
+                title = "")
+
+table(Qs$change_edu_21)
 ```
 
 
