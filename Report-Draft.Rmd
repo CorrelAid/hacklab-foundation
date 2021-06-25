@@ -25,8 +25,10 @@ output:
 ```{r setup, include = FALSE}
 
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
-                      warnings = FALSE,  # we do not want to display the code or warnings
-                      dev = "svg")
+                      warning = FALSE, # we do not want to display the code or warnings
+                      message = FALSE,
+                      dev = "svg" # figures are SVGs
+                      )
 
 # Environment:
 
@@ -497,6 +499,7 @@ b2 <- 1
 b3 <- 1.5
 b4 <- 1.8
 b6 <- 2.5
+b8 <- 2.8
 b10 <- 3
 b18 <- 4
 
@@ -620,7 +623,7 @@ employment_data <- Qs %>%
   )
 ```
 
-Most of the respondents full-time employees. There is also a great share of students. Sadly, there is also a significant share of unemployed developers looking for work. 
+Most of the respondents are full-time employees. There is also a great share of students. Sadly, there is also a significant share of unemployed developers looking for work. 
 
 When it comes to gender differences, there is a greater share of students among the female respondents. In addition, women seem to be self-employed less often when compared with men. 
 
@@ -740,7 +743,7 @@ basic_barplot(my_df = compute_perc(region_data %>% filter(profession_1 == "I am 
 
 ### City
 
-Zoom in to get a more detailed picture. 
+City of the respondents. Zoom in to get a more detailed picture. 
 
 Hover over the individual markers to see the professional status of the respondents. 
 
@@ -1085,7 +1088,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 
 ### Platforms
 
-A comment here...  
+Windows is the most widely used development platform; thanks, notably, to its success among students. WordPress, Android, Linux, and Heroku are also widely used.  
 
 ```{r}
 
@@ -1213,7 +1216,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 
 ### Other frameworks, libraries and tools
 
-_Node.js_ is also a popular back-end environment.    
+_Node.js_ is a popular "back-end" environment.    
 
 ```{r}
 
@@ -1337,9 +1340,9 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 
 These are the technologies that the respondents are currently not using but want to work in over the next year.  
 
-### Programming, scripting and markup languages
+### Wanted Programming, Scripting and Markup Languages
 
-_TypeScript_, followed by _Python_ and _Swift_ are the technologies that professional developers do not use but want to learn. Students are interested in "the classics": _Python_, _SQ_, and _JavaScript_.
+_TypeScript_, followed by _Python_ and _Swift_ are the technologies that professional developers do not use but want to learn. Students are interested in "the classics": _Python_, _SQL_, and _JavaScript_.
 
 
 ::::: {.panelset}
@@ -1383,9 +1386,9 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 :::::
 
 
-### Platforms
+### Wanted Platforms
 
-Respondents want to learn working with cloud platforms, in particular _AWS_ for the professional developers and _Microsoft Azure_ for the students. Almost 20% of professional developers indicated wanting to learn _Docker_. _iOS_ is the mobile developing system that most want to work with nextt year.        
+Respondents want to learn working with cloud platforms, in particular _AWS_ for the professional developers and _Microsoft Azure_ for the students. Almost 20% of professional developers indicated wanting to learn _Docker_. _iOS_ is the mobile developing system that most want to work with next year.        
 
 ::::: {.panelset}
 ::: {.panel}
@@ -1429,7 +1432,7 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 :::::
 
 
-### Web frameworks
+### Wanted Web Frameworks
 
 If _React.js_ was [the most popular web framework](web-frameworks), it seems that _Django_ and _Vue.js_ are attractive.      
 
@@ -1491,7 +1494,7 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 :::::
 
 
-### Other frameworks, libraries and tools
+### Wannted Other Frameworks, Libraries and Tools
 
 A quarter of the respondents indicated wanting to work with _Flutter_ next year. Many also want to work with _React Native_ and _Node.js_.  
 
@@ -1550,9 +1553,9 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 :::::
 
 
-### Collaborative tools
+### Wanted Collaborative Tools
 
-_Microsoft Azure_ and _Stack Overflow for Teams_ are tools who might become more popular. Many students also indicate wanting to learn _GitHub_.  
+_Microsoft Azure_ and _Stack Overflow for Teams_ are tools who might become more popular. Many students also indicated wanting to learn _GitHub_.  
 
 ```{r}
 
@@ -1623,7 +1626,7 @@ Windows in the most used operating system. Professional developers use MacOS and
 ::: {.panel}
 ##### All Respondents {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=2}
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
 
 basic_barplot(my_df = compute_perc(Qs, prim_opsyst_14), 
               a_factor = prim_opsyst_14, its_values = perc, labels = perc_label, 
@@ -1634,7 +1637,7 @@ basic_barplot(my_df = compute_perc(Qs, prim_opsyst_14),
 ::: {.panel}
 ##### Professional Developers {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=2}
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), prim_opsyst_14), 
               a_factor = prim_opsyst_14, its_values = perc, labels = perc_label, 
@@ -1645,7 +1648,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
 ::: {.panel}
 ##### Students {.panel-name}
 
-```{r, fig.align='center', out.width = '100%', fig.height=2}
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), prim_opsyst_14), 
               a_factor = prim_opsyst_14, its_values = perc, labels = perc_label, 
@@ -1663,7 +1666,7 @@ MacOS, Linux and Windows are practically tied as preferred systems. Professional
 ::::: {.panelset}
 ::: {.panel}
 ##### All Respondents {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=2}
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
 
 basic_barplot(my_df = compute_perc(Qs, rather_opsyst_15), 
               a_factor = rather_opsyst_15, its_values = perc, labels = perc_label, 
@@ -1673,7 +1676,7 @@ basic_barplot(my_df = compute_perc(Qs, rather_opsyst_15),
 :::
 ::: {.panel}
 ##### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=2}
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), rather_opsyst_15), 
               a_factor = rather_opsyst_15, its_values = perc, labels = perc_label, 
@@ -1683,7 +1686,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a develop
 :::
 ::: {.panel}
 ##### Students {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=2}
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
 
 basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), rather_opsyst_15), 
               a_factor = rather_opsyst_15, its_values = perc, labels = perc_label, 
@@ -1702,7 +1705,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
 ::::: {.panelset}
 ::: {.panel}
 ##### All Respondents {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+```{r, fig.align='center', out.width = '100%', fig.height=b6}
 
 barplot_ordered(my_df = compute_perc(Qs, new_tool_7), 
                 a_factor = new_tool_7, its_values = perc, labels = perc_label, 
@@ -1712,7 +1715,7 @@ barplot_ordered(my_df = compute_perc(Qs, new_tool_7),
 :::
 ::: {.panel}
 ##### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+```{r, fig.align='center', out.width = '100%', fig.height=b6}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), new_tool_7), 
                 a_factor = new_tool_7, its_values = perc, labels = perc_label, 
@@ -1722,7 +1725,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 :::
 ::: {.panel}
 ##### Students {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+```{r, fig.align='center', out.width = '100%', fig.height=b6}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), new_tool_7), 
                 a_factor = new_tool_7, its_values = perc, labels = perc_label, 
@@ -1740,7 +1743,7 @@ Unsurprisingly, professional developers are more likely to have influence over n
 ::::: {.panelset}
 ::: {.panel}
 ##### All Respondents {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=2}
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
 
 barplot_ordered(my_df = compute_perc(Qs, purch_influence_16), 
                 a_factor = purch_influence_16, its_values = perc, labels = perc_label, 
@@ -1750,7 +1753,7 @@ barplot_ordered(my_df = compute_perc(Qs, purch_influence_16),
 :::
 ::: {.panel}
 ##### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
 
 barplot_ordered(my_df = compute_perc(Qs %>% 
                                        filter(profession_1 == "I am a developer by profession"),
@@ -1762,11 +1765,11 @@ barplot_ordered(my_df = compute_perc(Qs %>%
 :::
 :::::
 
-### When buying a new tool or software, how do you discover and research available solutions? Select all that apply.
+### When buying a new tool or software, how do you discover and research available solutions? 
 
 Most of the respondents declared relying on free trials and colleagues.  
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=b8}
 
 # multiple choice question: we separate the different answers (separate_rows),
 #   and compute the % according to the total number of respondents
@@ -1827,7 +1830,7 @@ Most of the survey participants have at least a secondary high-school degree whe
 ::::: {.panelset}
 ::: {.panel}
 ##### All Respondents {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=b8}
 
 barplot_ordered(my_df = compute_perc(Qs, highest_edu_18), 
                 a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
@@ -1837,7 +1840,7 @@ barplot_ordered(my_df = compute_perc(Qs, highest_edu_18),
 :::
 ::: {.panel}
 ##### Professional Developers {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=b8}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), highest_edu_18), 
                 a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
@@ -1847,7 +1850,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a devel
 :::
 ::: {.panel}
 ##### Students {.panel-name}
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '100%', fig.height=b8}
 
 barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), highest_edu_18), 
                 a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
@@ -1898,7 +1901,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
 
 #### Does the primary field of study matter for the salary as a professional developer?
 
-```{r, fig.align='center', out.width = '100%', fig.height=3, warning=FALSE, message=FALSE}
+```{r, fig.align='center', out.width = '100%', fig.height=4, warning=FALSE, message=FALSE}
 
 # Responsive Bubble Chart for Relationship between Job Satisfaction and Overtime Work
 
@@ -1922,6 +1925,8 @@ relation_ordinal_Q19_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
                                                        prim_study_19 = Var1)
 
 levels(relation_ordinal_Q19_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q19_28$monthly_salary_28))
+levels(relation_ordinal_Q19_28$monthly_salary_28) <- gsub("than ", "than\n", 
+                                                          levels(relation_ordinal_Q19_28$monthly_salary_28))
 levels(relation_ordinal_Q19_28$prim_study_19) <- sub(" ", "\n", levels(relation_ordinal_Q19_28$prim_study_19))
 levels(relation_ordinal_Q19_28$prim_study_19) <- sub("/", "\n", levels(relation_ordinal_Q19_28$prim_study_19))
 
@@ -1949,12 +1954,13 @@ bubble_Q19_28_resp = ggplot(data = relation_ordinal_Q19_28,
                              tooltip = text)) +
   colScale +
   labs(x = "", y = "") +
-  bubble_plotly_theme()
+  bubble_plotly_theme() +
+  theme(axis.text.x = element_text(angle = 20))
 
 girafe(ggobj = bubble_Q19_28_resp, 
        fonts = list(sans = "Arial"),
        width_svg = 7, 
-       height_svg = 4,
+       height_svg = 4.5,
        options = list(
          opts_tooltip(use_fill = TRUE)))
 
@@ -2000,7 +2006,11 @@ colScale <- scale_colour_manual(name = "prim_study_19",values = colours_11)
 
 
 levels(prim_study_19_28_prof$monthly_salary_28) <- gsub(" - ", "\n", levels(prim_study_19_28_prof$monthly_salary_28))
+levels(prim_study_19_28_prof$monthly_salary_28) <- gsub("than ", "than\n", 
+                                                          levels(prim_study_19_28_prof$monthly_salary_28))
 levels(prim_study_19_28_prof$highest_edu_18) <- gsub(" ", "\n", levels(prim_study_19_28_prof$highest_edu_18))
+
+
 
 bubble_Q19_28_resp = ggplot(data = prim_study_19_28_prof, 
                             aes(x=highest_edu_18, y=monthly_salary_28, color= prim_study_19)) +
@@ -2060,7 +2070,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 :::::
 
 
-#### If you could go back and change your educational path (but end up in the same career), what would you change?
+### If you could go back and change your educational path (but end up in the same career), what would you change?
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
@@ -2073,7 +2083,7 @@ barplot_ordered(my_df = compute_perc(change_edu_filt, change_edu_21 ),
                 a_factor = change_edu_21 , its_values = perc, labels = perc_label, 
                 title = "")
 
-table(Qs$change_edu_21)
+# table(Qs$change_edu_21)
 ```
 
 
@@ -2088,8 +2098,10 @@ Whereas 20% are slightly dissatisfied or dissatisfied.
 ```{r, fig.align='center', out.width = '100%', fig.height=2}
 
 barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ), 
-                a_factor = job_satisfaction_22 , its_values = perc, labels = perc_label, 
-                title = "Q22. How satisfied are you with your current job?")
+                a_factor = job_satisfaction_22 , 
+                its_values = perc, 
+                labels = perc_label, 
+                title = "")
 
 
 ```
@@ -2174,7 +2186,7 @@ barplot_ordered(my_df = compute_perc(company_size_23_NA_remov, company_size_23 )
 
 Working hours are quite evenly scattered across the scale from 0-80 hours a week.
 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
+```{r, fig.align='center', out.width = '80%', fig.height=2.5}
 
 ggplot(compute_perc(Qs,weekly_work_hours_24), aes(x=weekly_work_hours_24)) + 
   geom_histogram(color = "white", fill= highlight_col, binwidth = 10) + 
@@ -2203,6 +2215,8 @@ barplot_ordered(my_df = compute_perc(Qs, overtime_work_25 ),
 
 #### Relationship between Overtime Work and Salary of Professional Developers
 
+Only respondents who indicated being professional developers are included in the chart.  
+
 ```{r, fig.align='center', out.width = '100%', fig.height=3, warnings = FALSE}
 overtime_work_25_28_prof <- Qs %>%
   filter(profession_1 == "I am a developer by profession") %>%
@@ -2224,6 +2238,8 @@ relation_ordinal_Q25_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
                                                        overtime_work_25 = Var1)
 
 levels(relation_ordinal_Q25_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q25_28$monthly_salary_28))
+levels(relation_ordinal_Q25_28$monthly_salary_28) <- gsub("than ", "than\n", 
+                                                          levels(relation_ordinal_Q25_28$monthly_salary_28))
 levels(relation_ordinal_Q25_28$overtime_work_25) <- sub("days", "days \n", levels(relation_ordinal_Q25_28$overtime_work_25))
 
 
@@ -2381,7 +2397,7 @@ relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
                                                        company_size_23 = Var1)
 
 levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
-
+levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub("than ", "than\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
 
 
 
@@ -2569,7 +2585,7 @@ girafe(ggobj = bubble_Q23_28_resp,
 
 #### Relationship between Highest Education and Salary of Professional Developers
 
-A Bachelor's degree is associated with broad range of salary options. There are respondents With a Bachelors degree who receieve salaries as high as respondents with Master's degree. However, people with a Master's degree tend to have higher salaries than others on average.
+A Bachelor's degree is associated with broad range of salary options. There are respondents with a Bachelors degree who receive salaries as high as respondents with Master's degree. However, people with a Master's degree tend to have higher salaries than others on average. Only respondents who indicated being professional developers are included. 
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3, warnings = FALSE}
 # Variables: highest_edu_18, monthly_salary_28
@@ -2601,6 +2617,7 @@ relation_ordinal_Q18_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
                                                        highest_edu_18 = Var1)
 
 levels(relation_ordinal_Q18_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q18_28$monthly_salary_28))
+levels(relation_ordinal_Q18_28$monthly_salary_28) <- gsub("than ", "than\n", levels(relation_ordinal_Q18_28$monthly_salary_28))
 levels(relation_ordinal_Q18_28$highest_edu_18) <- gsub(" ", "\n", levels(relation_ordinal_Q18_28$highest_edu_18))
 
 
