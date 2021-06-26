@@ -81,19 +81,23 @@ Qs <- rio::import("data/clean/clean_all_Qs.rds") %>%
                                     "Very important",
                                     "Critically important"),
     company_size_23 = fct_relevel(company_size_23,
-                                  "Over 500",
-                                  "Over 100",
-                                  "Below 100",
-                                  "Below 20",
+                                  "1",
                                   "Below 10",
-                                  "1"),
+                                  "Below 20",
+                                  "Below 100",
+                                  "Over 100",
+                                  "Over 500" 
+                                  ),
+        company_size_23 = recode(company_size_23,
+                              "1" = "One Person Company"),
     overtime_work_25 = fct_relevel(overtime_work_25,
+                                   "Never",
+                                   "Rarely: 1-2 days per year or less",
+                                   "Occasionally: 1-2 days per quarter but less than monthly",
+                                   "Sometimes: 1-2 days per month but less than weekly",
                                    "Often: 1-2 days per week",
                                    "Frequently: 3 or more days per week",
-                                   "Sometimes: 1-2 days per month but less than weekly",
-                                   "Occasionally: 1-2 days per quarter but less than monthly",
-                                   "Rarely: 1-2 days per year or less",
-                                   "Never"),
+                                   ),
     overtime_work_25 = recode(overtime_work_25,
                               "Often: 1-2 days per week" = "1-2 days per week",
                               "Sometimes: 1-2 days per month but less than weekly" = "1-2 days per month",
@@ -303,7 +307,27 @@ Qs <- rio::import("data/clean/clean_all_Qs.rds") %>%
                            "I woud have added something else to my studies"= "Adding additional things to studies"),
     change_edu_21 = fct_relevel(change_edu_21,       
                                 "Nothing",
-                                "Other"))
+                                "Other"),
+        monthly_salary_28_7 = recode(monthly_salary_28,
+                                      "Greater than GHS 25,000" = "Greater than GHS 15,000",
+                                      "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
+                                      "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
+                                      "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
+                                      "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
+                                      "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
+                                      "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
+                                      "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
+                                      "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000"),
+         monthly_salary_28_7 = fct_relevel(monthly_salary_28_7,
+                                           "Less than GHS 1,500",
+                                           "GHS 1,500 - GHS 2,000",
+                                           "GHS 2,000 - GHS 2,500",
+                                           "GHS 2,500 - GHS 3,000",
+                                           "GHS 3,000 - GHS 3,500",
+                                           "GHS 3,500 - GHS 8,000",
+                                           "GHS 8,000 - GHS 15,000",
+                                     "Greater than GHS 15,000"
+                                     ))
                            
 
 
@@ -1907,17 +1931,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
 # Responsive Bubble Chart for Relationship between Job Satisfaction and Overtime Work
 
 prim_study_19_28_prof <- Qs %>%
-  filter(profession_1 == "I am a developer by profession") %>%
-  mutate(monthly_salary_28_7 = recode(monthly_salary_28,
-                                      "Greater than GHS 25,000" = "Greater than GHS 15,000",
-                                      "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
-                                      "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
-                                      "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
-                                      "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
-                                      "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
-                                      "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
-                                      "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
-                                      "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000"))  
+  filter(profession_1 == "I am a developer by profession") 
 
 
 runningcounts.df <- as.data.frame(table(prim_study_19_28_prof$prim_study_19, prim_study_19_28_prof$monthly_salary_28_7))
@@ -1926,7 +1940,9 @@ relation_ordinal_Q19_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
                                                        prim_study_19 = Var1)
 
 levels(relation_ordinal_Q19_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q19_28$monthly_salary_28))
-levels(relation_ordinal_Q19_28$monthly_salary_28) <- gsub("than ", "than\n", 
+levels(relation_ordinal_Q19_28$monthly_salary_28) <- sub("Less than GHS 1,500", "<GHS 1,500", 
+                                                          levels(relation_ordinal_Q19_28$monthly_salary_28))
+levels(relation_ordinal_Q19_28$monthly_salary_28) <- sub("Greater than GHS 15,000", ">GHS 15,000", 
                                                           levels(relation_ordinal_Q19_28$monthly_salary_28))
 levels(relation_ordinal_Q19_28$prim_study_19) <- sub(" ", "\n", levels(relation_ordinal_Q19_28$prim_study_19))
 levels(relation_ordinal_Q19_28$prim_study_19) <- sub("/", "\n", levels(relation_ordinal_Q19_28$prim_study_19))
@@ -1968,7 +1984,7 @@ girafe(ggobj = bubble_Q19_28_resp,
 ```
 
 
-#### How do Study Field, Degree and Salary relate to each other?
+#### How do Study Field, Degree and Salary Relate to Each Other for Professional Developers?
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3, warning=FALSE}
 prim_study_19_28_prof <- Qs %>%
@@ -1977,17 +1993,7 @@ prim_study_19_28_prof <- Qs %>%
            highest_edu_18 == "Master" |
            highest_edu_18 == "Secondary High School" |
            highest_edu_18 == "Higher National Diploma") %>%
-  filter(profession_1 == "I am a developer by profession") %>%
-  mutate(monthly_salary_28_7 = recode(monthly_salary_28,
-                                      "Greater than GHS 25,000" = "Greater than GHS 15,000",
-                                      "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
-                                      "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
-                                      "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
-                                      "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
-                                      "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
-                                      "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
-                                      "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
-                                      "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000"))
+  filter(profession_1 == "I am a developer by profession")
 # drop Education Levels that have 0 respondents
 prim_study_19_28_prof$highest_edu_18<- droplevels(prim_study_19_28_prof$highest_edu_18)
 
@@ -1999,38 +2005,41 @@ prim_study_19_28_prof <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
 
 # prepare text for tooltip
 prim_study_19_28_prof <- prim_study_19_28_prof %>%
-  mutate(text = paste("study field: ", prim_study_19,"\n", Freq, "respondent/s"))
+  mutate(text = paste("Highest Education: ", highest_edu_18,"\n", Freq, "respondent/s"))
 
 
-names(colours_11) <- levels(prim_study_19_28_prof$prim_study_19)
-colScale <- scale_colour_manual(name = "prim_study_19",values = colours_11)
+
+names(colours_4) <- levels(prim_study_19_28_prof$highest_edu_18)
+colScale <- scale_colour_manual(name = "highest_edu_18",values = colours_4)
 
 
 levels(prim_study_19_28_prof$monthly_salary_28) <- gsub(" - ", "\n", levels(prim_study_19_28_prof$monthly_salary_28))
-levels(prim_study_19_28_prof$monthly_salary_28) <- gsub("than ", "than\n", 
-                                                          levels(prim_study_19_28_prof$monthly_salary_28))
+levels(prim_study_19_28_prof$monthly_salary_28) <- sub("Greater than GHS 15,000", ">GHS\n15,000", levels(prim_study_19_28_prof$monthly_salary_28))
+levels(prim_study_19_28_prof$monthly_salary_28) <- sub("Less than GHS 1,500", "<GHS\n1,500", levels(prim_study_19_28_prof$monthly_salary_28))
+
 levels(prim_study_19_28_prof$highest_edu_18) <- gsub(" ", "\n", levels(prim_study_19_28_prof$highest_edu_18))
 
-
-
 bubble_Q19_28_resp = ggplot(data = prim_study_19_28_prof, 
-                            aes(x=highest_edu_18, y=monthly_salary_28, color= prim_study_19)) +
+                            aes(x=monthly_salary_28, y=prim_study_19, color= highest_edu_18,
+                                alpha = 0.8)) +
   geom_jitter_interactive(width = 0.3, height = 0.3, aes(size=ifelse(Freq==0, NA, Freq),
                                                          tooltip = text)) +
   colScale +
   labs(x = "", y = "") +
   bubble_plotly_theme()+
   theme_bw() +
-  theme(legend.position="none")
+  theme(legend.position="none")+
+  theme(axis.text.x = element_text(angle = 20))+ 
+  theme(axis.text.x = element_text(vjust=0.5))
 
 
 girafe(ggobj = bubble_Q19_28_resp, 
        fonts = list(sans = "Arial"),
-       width_svg = 6, 
+       width_svg = 8, 
        height_svg = 4,
+       pointsize = 12,
        options = list(
          opts_tooltip(use_fill = TRUE)))
-
 ```
 
 ### How important is a formal education, such as a university degree in computer science, to your career?
@@ -2138,7 +2147,7 @@ relation_ordinal_Q22_25 <- runningcounts.df %>% rename(overtime_work_25 = Var2,
                                    "Occasionally: 1-2 days per quarter but less than monthly" = "1-2 days per quarter",
                                    "Frequently: 3 or more days per week" = ">3 days per week"))
 
-levels(relation_ordinal_Q22_25$overtime_work_25) <- gsub(" ", "\n", levels(relation_ordinal_Q22_25$overtime_work_25))
+levels(relation_ordinal_Q22_25$overtime_work_25) <- gsub("days", "days\n", levels(relation_ordinal_Q22_25$overtime_work_25))
 levels(relation_ordinal_Q22_25$job_satisfaction_22) <- gsub(" ", "\n", levels(relation_ordinal_Q22_25$job_satisfaction_22))
 
 
@@ -2156,7 +2165,8 @@ bubble_Q22_25_resp = ggplot(data = relation_ordinal_Q22_25, aes(x=overtime_work_
                              tooltip = text)) +
   colScale +
   labs(x = "", y = "") +
-  bubble_plotly_theme()
+  bubble_plotly_theme()+
+  theme(axis.text.x = element_text(angle = 20))
 
 
 girafe(ggobj = bubble_Q22_25_resp, 
@@ -2220,17 +2230,7 @@ Only respondents who indicated being professional developers are included in the
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3, warnings = FALSE}
 overtime_work_25_28_prof <- Qs %>%
-  filter(profession_1 == "I am a developer by profession") %>%
-  mutate(monthly_salary_28_7 = recode(monthly_salary_28,
-                                      "Greater than GHS 25,000" = "Greater than GHS 15,000",
-                                      "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
-                                      "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
-                                      "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
-                                      "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
-                                      "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
-                                      "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
-                                      "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
-                                      "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000"))  
+  filter(profession_1 == "I am a developer by profession") 
 
 
 runningcounts.df <- as.data.frame(table(overtime_work_25_28_prof$overtime_work_25, overtime_work_25_28_prof$monthly_salary_28_7))
@@ -2267,7 +2267,8 @@ bubble_Q25_28_resp = ggplot(data = relation_ordinal_Q25_28, aes(x=overtime_work_
                              tooltip = text)) +
   colScale +
   labs(x = "", y = "") +
-  bubble_plotly_theme()
+  bubble_plotly_theme()+
+  theme(axis.text.x = element_text(angle = 20))
 
 
 
@@ -2360,7 +2361,7 @@ barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 ==
 
 ::::
 
-#### Relationship between Size of company and Salary
+#### Relationship between Size of Company and Salary
 
 The student respondents don't earn more than 2000 GHS but do work in various sizes of companies. Professional Developers earn more salary and the most developers work in companies with less than 100 employees.There seems no clear relationship between the company size and the salary. 
 
@@ -2376,23 +2377,13 @@ company_size_23_NA_remov <- Qs  %>%
                                          "I don't know" = "NA",
                                          "I’m not sure"= "NA",  
                                          "more"= "NA",
-                                         "N/A"= "NA"),
-         monthly_salary_28_6 = recode(monthly_salary_28,
-                                      "Greater than GHS 25,000" = "Greater than GHS 15,000",
-                                      "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
-                                      "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
-                                      "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
-                                      "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
-                                      "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
-                                      "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
-                                      "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
-                                      "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000")) %>%
+                                         "N/A"= "NA")) %>%
   filter(company_size_23_binned != "NA") 
 
 company_size_23_NA_remov$company_size_23_binned<- droplevels(company_size_23_NA_remov$company_size_23_binned)
 
 
-runningcounts.df <- as.data.frame(table(company_size_23_NA_remov$company_size_23_binned, company_size_23_NA_remov$monthly_salary_28_6))
+runningcounts.df <- as.data.frame(table(company_size_23_NA_remov$company_size_23_binned, company_size_23_NA_remov$monthly_salary_28_7))
 
 relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
                                                        company_size_23 = Var1)
@@ -2400,7 +2391,7 @@ relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
 levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
 levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub("than ", "than\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
 
-
+levels(relation_ordinal_Q23_28$company_size_23) <- sub("One Person Company", "One Person\nCompany", levels(relation_ordinal_Q23_28$company_size_23))
 
 relation_ordinal_Q23_28 <- relation_ordinal_Q23_28 %>%
   # prepare text for tooltip
@@ -2425,7 +2416,8 @@ bubble_Q23_28_resp = ggplot(data = relation_ordinal_Q23_28, aes(x=company_size_2
                              tooltip = text)) +
   colScale +
   labs(x = "", y = "") +
-  bubble_plotly_theme()
+  bubble_plotly_theme()+
+  theme(axis.text.x = element_text(angle = 20))
 
 
 
@@ -2455,29 +2447,19 @@ company_size_23_NA_remov <- Qs  %>%
                                          "I don't know" = "NA",
                                          "I’m not sure"= "NA",  
                                          "more"= "NA",
-                                         "N/A"= "NA"),
-         monthly_salary_28_6 = recode(monthly_salary_28,
-                                      "Greater than GHS 25,000" = "Greater than GHS 15,000",
-                                      "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
-                                      "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
-                                      "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
-                                      "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
-                                      "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
-                                      "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
-                                      "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
-                                      "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000")) %>%
+                                         "N/A"= "NA")) %>%
   filter(company_size_23_binned != "NA") 
 
 company_size_23_NA_remov$company_size_23_binned<- droplevels(company_size_23_NA_remov$company_size_23_binned)
 
 
-runningcounts.df <- as.data.frame(table(company_size_23_NA_remov$company_size_23_binned, company_size_23_NA_remov$monthly_salary_28_6))
+runningcounts.df <- as.data.frame(table(company_size_23_NA_remov$company_size_23_binned, company_size_23_NA_remov$monthly_salary_28_7))
 
 relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
                                                        company_size_23 = Var1)
 
 levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
-
+levels(relation_ordinal_Q23_28$company_size_23) <- sub("One Person Company", "One Person\nCompany", levels(relation_ordinal_Q23_28$company_size_23))
 
 
 
@@ -2495,7 +2477,8 @@ bubble_Q23_28_resp = ggplot(data = relation_ordinal_Q23_28, aes(x=company_size_2
                              tooltip = text)) +
   colScale +
   labs(x = "", y = "") +
-  bubble_plotly_theme()
+  bubble_plotly_theme()+
+  theme(axis.text.x = element_text(angle = 20))
 
 
 
@@ -2520,29 +2503,19 @@ company_size_23_NA_remov <- Qs  %>%
                                          "I don't know" = "NA",
                                          "I’m not sure"= "NA",  
                                          "more"= "NA",
-                                         "N/A"= "NA"),
-         monthly_salary_28_6 = recode(monthly_salary_28,
-                                      "Greater than GHS 25,000" = "Greater than GHS 15,000",
-                                      "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
-                                      "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
-                                      "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
-                                      "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
-                                      "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
-                                      "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
-                                      "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
-                                      "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000")) %>%
+                                         "N/A"= "NA")) %>%
   filter(company_size_23_binned != "NA") 
 
 company_size_23_NA_remov$company_size_23_binned<- droplevels(company_size_23_NA_remov$company_size_23_binned)
 
 
-runningcounts.df <- as.data.frame(table(company_size_23_NA_remov$company_size_23_binned, company_size_23_NA_remov$monthly_salary_28_6))
+runningcounts.df <- as.data.frame(table(company_size_23_NA_remov$company_size_23_binned, company_size_23_NA_remov$monthly_salary_28_7))
 
 relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
                                                        company_size_23 = Var1)
 
 levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
-
+levels(relation_ordinal_Q23_28$company_size_23) <- sub("One Person Company", "One Person\nCompany", levels(relation_ordinal_Q23_28$company_size_23))
 
 
 
@@ -2569,7 +2542,8 @@ bubble_Q23_28_resp = ggplot(data = relation_ordinal_Q23_28, aes(x=company_size_2
                              tooltip = text)) +
   colScale +
   labs(x = "", y = "") +
-  bubble_plotly_theme()
+  bubble_plotly_theme()+
+  theme(axis.text.x = element_text(angle = 20))
 
 
 
@@ -2596,23 +2570,13 @@ monthly_salary_28_Prof <- Qs  %>%
          highest_edu_18 == "Bachelor" | 
            highest_edu_18 == "Master" |
            highest_edu_18 == "Secondary High School" |
-           highest_edu_18 == "Higher National Diploma") %>%
-  mutate(monthly_salary_28_6 = recode(monthly_salary_28,
-                                      "Greater than GHS 25,000" = "Greater than GHS 15,000",
-                                      "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
-                                      "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
-                                      "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
-                                      "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
-                                      "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
-                                      "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
-                                      "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
-                                      "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000"))
+           highest_edu_18 == "Higher National Diploma")
 
 
 monthly_salary_28_Prof$highest_edu_18<- droplevels(monthly_salary_28_Prof$highest_edu_18)
 # levels(monthly_salary_28_Prof$highest_edu_18)
 
-runningcounts.df <- as.data.frame(table(monthly_salary_28_Prof$highest_edu_18, monthly_salary_28_Prof$monthly_salary_28_6))
+runningcounts.df <- as.data.frame(table(monthly_salary_28_Prof$highest_edu_18, monthly_salary_28_Prof$monthly_salary_28_7))
 
 relation_ordinal_Q18_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
                                                        highest_edu_18 = Var1)
@@ -2628,8 +2592,8 @@ relation_ordinal_Q18_28 <- relation_ordinal_Q18_28 %>%
   mutate(text = paste(Freq, "respondent/s")) 
 
 
-names(colours_6) <- levels(relation_ordinal_Q18_28$highest_edu_18)
-colScale <- scale_colour_manual(name = "highest_edu_18",values = colours_6)
+names(colours_4) <- levels(relation_ordinal_Q18_28$highest_edu_18)
+colScale <- scale_colour_manual(name = "highest_edu_18",values = colours_4)
 
 bubble_Q18_28_resp = ggplot(data = relation_ordinal_Q18_28, aes(x=highest_edu_18, y=monthly_salary_28, color=highest_edu_18)) +
   geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
