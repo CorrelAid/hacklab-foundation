@@ -1760,6 +1760,12 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 :::
 :::::
 
+## Connections of Technologies 
+
+![](./backbone-weighted.png)
+
+The most popular technologies, such as PHP, SQL, Python, JavaScript, and HTML often seem to be used by the same group of developers. 
+
 
 ### What level of influence do you, personally, have over new technology purchases at your organization?
 
