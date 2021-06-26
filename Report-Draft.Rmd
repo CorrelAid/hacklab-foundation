@@ -334,9 +334,10 @@ text_col_in_viz = header_col
 main_fontsize = 10 # 'default' base size for the plots
 HL_colors = c("#59B0E3","#E3E19A","#6FE38E","#AF8CDE","#DF4B4F")
 colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001",  "black")
-colours_6 = c( "#E04B4F", "#C55F6C", "#AA738A", "#8E87A7", "#739BC5", "#58AFE2")
-colours_8 = c( "#E04B4F", "#C55F6C", "#AA738A", "#8E87A7", "#739BC5", "#58AFE2", "#000000", "#000001")
-colours_11 = c( "#E04B4F", "#D4545C", "#C75D6A", "#C55F6C", "#AA738A", "#BB6677", "#AF6F84", "#8E87A7", "#739BC5", "#58AFE2", "#000000", "#000001", "pink", "green", "blue", "grey", "red", "steelblue", "orange", "purple") # Assign colors to study fields
+colours_4 = c("#58AFE2","#817BB5","#AB4887","#D4145A")
+colours_6 = c("#58AFE2", "#7190C7", "#8A71AC", "#A25290","#BB3375","#D4145A")
+colours_8 = c( "#58AFE2", "#6A99CF", "#7B83BB", "#8D6DA8", "#9F5694", "#B14081", "#C22A6D", "#D4145A")
+
 # HL_colors_sequential = c(text_col, "#610b70","#88b101","#eb1c96","#e98403","#454545")
 geom_text_size = 3.5 # size of text in plots
 
