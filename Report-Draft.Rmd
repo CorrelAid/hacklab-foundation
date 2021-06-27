@@ -532,7 +532,7 @@ b18 <- 4
 
 # Overview
 
-Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana. In 2020, the Hacklab Foundation fielded a survey covering everything from developers’ favorite technologies to their job preferences. This marks the first of annual surveys to be published. This maiden edition witnessed the participation of 266 developers who took the 20-minute survey earlier between November - December 2020.   
+Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana. In 2020, the Hacklab Foundation fielded a survey covering everything from developers’ favorite technologies to their job preferences. This marks the first of annual surveys to be published. This maiden edition witnessed the participation of 272 developers who took the 20-minute survey earlier between November - December 2020.   
 
 Despite our survey’s reach and capacity for informing valuable conclusions, we acknowledge that our results don’t represent everyone in the Ghana developer community evenly. We have further work to do to make the Hacklab Ghana Developer Census 2020 a more inclusive, diverse platform, and a reflection in the community at large.   
 
@@ -547,18 +547,32 @@ This maiden edition could not have been successful without the contributions of 
 
 ## Key Insights
 
-Here are a few of the top takeaways from this year’s results.  [_add links and a few sentences_]
+Here are a few of the top takeaways from this year’s results.   
 
-1.	Gender Representation
-2.	Geographical concentration
-3.	Most known Languages
-4.	Most familiar Frameworks
-5.	Communities
-6.	Highest level of education
-7.	Primary field of study (Business comes 3rd after Computer Engineering/Science and IT )
-8.	Overtime & Compensation
+**1. Low Female Representation:**  
+Of the 272 respondents, 17% indicated being women. Only 10% of the 130 professional developers are women. However, this percentage has the potential to increase in the upcoming years as 24% of the 84 students are women. [Learn more](#gender).
 
+**2.	Geographical Concentration:**  
+70% of the respondents are from the Greater Accra Region. [Explore the map](#geography).
 
+**3. Most known Languages:**  
+HTML/CSS, JavaScript, Python, and SQL are the most used languages by Ghanaian developers. [Learn more](#popu_language) about the popularity of other languages and the preferences of professional developers. 
+
+**4.	Most familiar Frameworks:**
+React.js is the most popular web framework. Node.js is also a widely used framework. [Learn more](#popu_webframework).
+
+**5. Two in three respondents are members of a developer community:**  
+Of the numerous communities listed by the respondents (122), the three largest communities to which they indicated membership were DevCongress (13.6%), Facebook Developer Circle (9.6%), and the Hacklab Foundation (7.4%). [Learn more](#dev_communities).  
+
+**6.	Highest level of education:**   
+The vast majority of the respondents have at least a secondary high school degree, and 70% indicated having a Bachelor's degree. Only 4% indicated having a Master's degree. [Learn more](#highest_education).
+
+**7.	Primary field of study:**    
+Most participants study or studied Computer Science or Computer Engineering (55%), followed by Information Technology (11.6%) and Business (5.4%). [Learn more](#study_field).
+
+**8.	Overtime & Compensation:**  
+62% of the respondents indicated receiving a monthly salary lower than 2000 GHS, this percentage drops to 47.5% for respondents who indicated being professional developers. Around 50% of the respondents work overtime on 3 or more days in a week.  
+Learn more about the [working conditions](#work_cond) and [salaries](#salary) of the respondents.
 
 
 
@@ -701,7 +715,7 @@ barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Wo
 
 
 
-## Geography 
+## Geography <a name="geography"></a>
 
 ### Region
 
@@ -857,7 +871,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 
 
 
-### Gender 
+### Gender <a name="gender"></a>
 
 #### What Gender do you identify with?
 
@@ -1044,7 +1058,7 @@ basic_barplot(my_df = compute_perc(dependents_data %>% filter(gender_35 == "Woma
 These are the technologies with which the respondents have done extensive development work in over the past year.  
 
 
-### Programming, scripting and markup languages
+### Programming, scripting and markup languages <a name="popu_language"></a>
 
 _HTML/CSS_ is the most used language, followed by _JavaScript_, _Python_ and _SQL_. Professional developers are more likely to use _JavaScript_ and _SQL_. _C++_ and _C_ are still widely used to teach coding to students.    
 
@@ -1177,7 +1191,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 :::::
 
 
-### Web frameworks
+### Web frameworks <a name="popu_webframework"></a>
 
 _React.js_ is the most popular web framework.   
 
@@ -1459,7 +1473,7 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 
 ### Wanted Web Frameworks
 
-If _React.js_ was [the most popular web framework](web-frameworks), it seems that _Django_ and _Vue.js_ are attractive.      
+If _React.js_ is currently [the most popular web framework](#popu_webframework), it seems that _Django_ and _Vue.js_ are attractive.      
 
 ```{r}
 
@@ -1519,7 +1533,7 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 :::::
 
 
-### Wannted Other Frameworks, Libraries and Tools
+### Wanted Other Frameworks, Libraries and Tools
 
 A quarter of the respondents indicated wanting to work with _Flutter_ next year. Many also want to work with _React Native_ and _Node.js_.  
 
@@ -1854,7 +1868,7 @@ basic_barplot(my_df = perc_solution_research_17,
 
 ## Education
 
-### Highest level of formal education
+### Highest level of formal education <a name="highest_education"></a>
 
 Most of the survey participants have at least a secondary high-school degree whereas half of the students have a secondary high school degree and every third professional developer has a bachelor's degree
 
@@ -1892,7 +1906,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 :::::
 
 
-### Primary field of study
+### Primary field of study <a name="study_field"></a>
 
 Most participants study or studied Computer Science or Computer Engineering, followed by Information Technology and other Engineering fields as well as Mathematics/Statistics and Business.
 
@@ -1930,7 +1944,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
 :::
 :::::
 
-### Does the primary field of study matter for the salary as a professional developer?
+#### Does the primary field of study matter for the salary as a professional developer?
 There seems no clear primary field of study where a high salary is guaranteed among professional developers.
 
 ```{r, fig.align='center', out.width = '100%', fig.height=4, warning=FALSE, message=FALSE}
@@ -1984,7 +1998,7 @@ girafe(ggobj = bubble_Q19_28_resp,
 ```
 
 
-### How do Primary Study Field, Highest Degree and Salary relate to each other for Professional Developers?
+#### How do Primary Study Field, Highest Degree and Salary relate to each other for Professional Developers?
 Bachelor graduates have various salaries independent of their primary study field. The Master graduates from Computer Science and Engineering as well as Mathematics and Statistics tend to have a higher salary than the rest of the respondents.
 Graduates of Secondary High School tend to have, independent of the study field, salaries in the lower range.
 
@@ -2109,8 +2123,58 @@ barplot_ordered(my_df = compute_perc(change_edu_filt, change_edu_21 ),
 ```
 
 
+## Working Conditions 
+<a name="work_cond"></a>  
 
-## Work
+### How many people are employed by the company or organization you currently work for?  
+
+Half of the respondents work in a small company with less than 10 workers. Only 10% of the respondents work in a big company with more than 100 workers.
+
+```{r, fig.align='center', out.width = '100%', fig.height= 2}
+
+#Removing NA
+
+company_size_23_NA_remov <- Qs %>%
+  filter(company_size_23 != "NA")
+
+barplot_ordered(my_df = compute_perc(company_size_23_NA_remov, company_size_23 ), 
+                a_factor = company_size_23 , its_values = perc, labels = perc_label, 
+                title = "")
+```
+
+### On average, how many hours per week do you work?
+
+Working hours are quite evenly scattered across the scale from 0 to 80 hours a week.
+
+```{r, fig.align='center', out.width = '80%', fig.height=2.5}
+
+ggplot(compute_perc(Qs,weekly_work_hours_24), aes(x=weekly_work_hours_24)) + 
+  geom_histogram(color = "white", fill= highlight_col, binwidth = 10) + 
+  labs(x="Weekly working hours", y = "Number of Respondents") +
+  scale_x_continuous(breaks = seq(0, 120, by=10)) +
+  theme_minimal() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        axis.line = element_line(colour = "black"))
+
+
+```
+
+
+### How often do you work overtime or beyond the formal time expectation of your job?
+
+Around 50% of the respondents work overtime on 3 or more days in a week.
+
+```{r, fig.align='center', out.width = '100%', fig.height= 2.5}
+
+barplot_ordered(my_df = compute_perc(Qs, overtime_work_25 ), 
+                a_factor = overtime_work_25 , its_values = perc, labels = perc_label, 
+                title = "")
+
+```
+
+
+
 
 ### Job satisfaction
 
@@ -2128,7 +2192,7 @@ barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ),
 
 ```
 
-### Relationship between job satisfaction and overtime work
+#### Relationship between job satisfaction and overtime work
 
 Interestingly, people who work more than 3 times a week overtime are satisfied with their job. There seems no relationship that the more overtime the less job satisfaction. The tendency is rather the opposite. 
 
@@ -2190,140 +2254,17 @@ girafe(ggobj = bubble_Q22_25_resp,
          opts_tooltip(use_fill = TRUE)))
 ```
 
-### Approximately how many people are employed by the company or organization you currently work for?
-
-Half of the respondents work in a small company with less than 10 workers. Only 10% of the respondents work in a big company with more than 100 workers.
-
-```{r, fig.align='center', out.width = '100%', fig.height= b6}
-
-#Removing NA
-
-company_size_23_NA_remov <- Qs %>%
-  filter(company_size_23 != "NA")
-
-barplot_ordered(my_df = compute_perc(company_size_23_NA_remov, company_size_23 ), 
-                a_factor = company_size_23 , its_values = perc, labels = perc_label, 
-                title = "")
-```
-
-### On average, how many hours per week do you work?
-
-Working hours are quite evenly scattered across the scale from 0-80 hours a week.
-
-```{r, fig.align='center', out.width = '80%', fig.height=2.5}
-
-ggplot(compute_perc(Qs,weekly_work_hours_24), aes(x=weekly_work_hours_24)) + 
-  geom_histogram(color = "white", fill= highlight_col, binwidth = 10) + 
-  labs(x="Weekly working hours", y = "Number of Respondents") +
-  scale_x_continuous(breaks = seq(0, 120, by=10)) +
-  theme_minimal() + 
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(), 
-        axis.line = element_line(colour = "black"))
-
-
-```
-
-
-### How often do you work overtime or beyond the formal time expectation of your job?
-
-Around 50% of the respondents work overtime on 3 or more days in a week.
-
-```{r, fig.align='center', out.width = '100%', fig.height= 2.5}
-
-barplot_ordered(my_df = compute_perc(Qs, overtime_work_25 ), 
-                a_factor = overtime_work_25 , its_values = perc, labels = perc_label, 
-                title = "")
-
-```
-
-### Relationship between Overtime Work and Salary of Professional Developers
-
-There seems to be a tendency that a higher salary is associated with overtime work, however there a a lot of respondents who have salary in the lower range and still work more than 3 days per week overtime. 
-
-```{r, fig.align='center', out.width = '100%', fig.height=3, warnings = FALSE}
-overtime_work_25_28_prof <- Qs %>%
-  filter(profession_1 == "I am a developer by profession") 
-
-
-runningcounts.df <- as.data.frame(table(overtime_work_25_28_prof$overtime_work_25, overtime_work_25_28_prof$monthly_salary_28_7))
-
-relation_ordinal_Q25_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
-                                                       overtime_work_25 = Var1)
-
-levels(relation_ordinal_Q25_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q25_28$monthly_salary_28))
-levels(relation_ordinal_Q25_28$monthly_salary_28) <- gsub("than ", "than\n", 
-                                                          levels(relation_ordinal_Q25_28$monthly_salary_28))
-levels(relation_ordinal_Q25_28$overtime_work_25) <- sub("days", "days \n", levels(relation_ordinal_Q25_28$overtime_work_25))
-
-
-relation_ordinal_Q25_28 <- relation_ordinal_Q25_28 %>%
-  # prepare text for tooltip
-  mutate(text = paste(Freq, "respondent/s")) 
-
-
-# Heatmap as an alternative
-# ggHeatmap(relation_ordinal_Q23_28,
-#           aes(x = company_size_23,
-#               y = monthly_salary_28,
-#               fill = Freq),
-#           addlabel=FALSE,
-#           interactive=TRUE,
-#           tooltip = text)
-
-
-names(colours_6) <- levels(relation_ordinal_Q25_28$overtime_work_25)
-colScale <- scale_colour_manual(name = "overtime_work_25",values = colours_6)
-
-bubble_Q25_28_resp = ggplot(data = relation_ordinal_Q25_28, aes(x=overtime_work_25, y=monthly_salary_28, color=overtime_work_25)) +
-  geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
-                             tooltip = text)) +
-  colScale +
-  labs(x = "", y = "") +
-  bubble_plotly_theme()+
-  theme(axis.text.x = element_text(angle = 20))+
-  theme(axis.text=element_text(color = "black"))
 
 
 
-girafe(ggobj = bubble_Q25_28_resp, 
-       fonts = list(sans = "Arial"),
-       width_svg = 6, 
-       height_svg = 4,
-       options = list(
-         opts_tooltip(use_fill = TRUE)))
-
-```
 
 
-### Do you think your company has a good on-boarding process?
+## Salary <a name="salary"></a>
 
-
-```{r, fig.align='center', out.width = '100%', fig.height = b2}
-
-basic_barplot(my_df = compute_perc(Qs, company_onboarding_process_26 ), 
-              a_factor = company_onboarding_process_26 , its_values = perc, labels = perc_label, 
-              title = "")
-
-```
-
-### How could on-boarding at your company be improved?
-
-A clearer structure and standardisation at the company was mentioned as a improvement potential as well as providing a better orientation for new workers. 
-```{r, fig.align='center', out.width = '100%', fig.height=3}
-
-improve_onboarding_27_filt <- Qs %>%
-  filter(improve_onboarding_27 != "NA")
-
-barplot_ordered(my_df = compute_perc(improve_onboarding_27_filt, improve_onboarding_27), 
-                a_factor = improve_onboarding_27 , its_values = perc, labels = perc_label, 
-                title = "")
-
-```
 
 ### How much is your monthly salary in Ghana Cedis?
 
-50% of the respondents earn less than 2000 GHS per month whereas 64% of women and 61% of men earn less than GHS 2000 monthly. 2.9% of male and 5.4 % of female respondents earn more than GHS 10,000. 
+64% of women and 61% of men earn less than GHS 2000 monthly. 3.2% of the respondents earn more than GHS 10,000. The majority (52.5%) of the respondents who indicated being professional developers earn more than GHS 2000 monthly.  
 
 ```{r}
 monthly_salary_data <- Qs %>%
@@ -2332,9 +2273,7 @@ monthly_salary_data <- Qs %>%
 ```
 
 ::::: {.panelset}
-
 ::: {.panel}
-
 ##### All Respondents {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
@@ -2344,9 +2283,7 @@ barplot_ordered(my_df = compute_perc(Qs, monthly_salary_28 ),
                 title = "")
 
 ```
-
 :::
-
 ::: {.panel}
 
 ##### Only Women {.panel-name}
@@ -2358,7 +2295,6 @@ barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 ==
                 title = "")
 ```
 :::
-
 ::: {.panel}
 
 ##### Only Men {.panel-name}
@@ -2370,10 +2306,21 @@ barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 ==
                 title = "")
 
 ```
-
 :::
+:::: {.panel}
 
+##### Only Professional Developers {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(profession_1 == "I am a developer by profession"), monthly_salary_28), 
+                a_factor = monthly_salary_28, its_values = perc, labels = perc_label,
+                title = "")
+
+```
+:::
 ::::
+
 
 ### Relationship between Size of Company and Salary
 
@@ -2383,7 +2330,7 @@ The student respondents don't earn more than 2000 GHS but do work in various siz
 
 ::: {.panel}
 
-#### All Respondents {.panel-name}
+##### All Respondents {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3, warning=FALSE}
 company_size_23_NA_remov <- Qs  %>%
@@ -2454,7 +2401,7 @@ girafe(ggobj = bubble_Q23_28_resp,
 
 ::: {.panel}
 
-#### Only Professional Developers {.panel-name}
+##### Only Professional Developers {.panel-name}
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 company_size_23_NA_remov <- Qs  %>%
   filter(profession_1 == "I am a developer by profession") %>%
@@ -2510,7 +2457,7 @@ girafe(ggobj = bubble_Q23_28_resp,
 
 ::: {.panel}
 
-#### Only Students {.panel-name}
+##### Only Students {.panel-name}
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 company_size_23_NA_remov <- Qs  %>%
@@ -2575,7 +2522,7 @@ girafe(ggobj = bubble_Q23_28_resp,
 
 ::::
 
-### Relationship between Highest Education and Salary of Professional Developers
+#### Relationship between Highest Education and Salary of Professional Developers
 
 A Bachelor's degree is associated with broad range of salary options. There are respondents with a Bachelors degree who receive salaries as high as respondents with Master's degree. However, people with a Master's degree tend to have higher salaries than others on average. Only respondents who indicated being professional developers are included. 
 
@@ -2633,6 +2580,96 @@ girafe(ggobj = bubble_Q18_28_resp,
 
 ```
 
+#### Relationship between Overtime Work and Salary of Professional Developers
+
+There seems to be a tendency that a higher salary is associated with overtime work, however there a a lot of respondents who have salary in the lower range and still work more than 3 days per week overtime. 
+
+```{r, fig.align='center', out.width = '100%', fig.height=3, warnings = FALSE}
+overtime_work_25_28_prof <- Qs %>%
+  filter(profession_1 == "I am a developer by profession") 
+
+
+runningcounts.df <- as.data.frame(table(overtime_work_25_28_prof$overtime_work_25, overtime_work_25_28_prof$monthly_salary_28_7))
+
+relation_ordinal_Q25_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
+                                                       overtime_work_25 = Var1)
+
+levels(relation_ordinal_Q25_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q25_28$monthly_salary_28))
+levels(relation_ordinal_Q25_28$monthly_salary_28) <- gsub("than ", "than\n", 
+                                                          levels(relation_ordinal_Q25_28$monthly_salary_28))
+levels(relation_ordinal_Q25_28$overtime_work_25) <- sub("days", "days \n", levels(relation_ordinal_Q25_28$overtime_work_25))
+
+
+relation_ordinal_Q25_28 <- relation_ordinal_Q25_28 %>%
+  # prepare text for tooltip
+  mutate(text = paste(Freq, "respondent/s")) 
+
+
+# Heatmap as an alternative
+# ggHeatmap(relation_ordinal_Q23_28,
+#           aes(x = company_size_23,
+#               y = monthly_salary_28,
+#               fill = Freq),
+#           addlabel=FALSE,
+#           interactive=TRUE,
+#           tooltip = text)
+
+
+names(colours_6) <- levels(relation_ordinal_Q25_28$overtime_work_25)
+colScale <- scale_colour_manual(name = "overtime_work_25",values = colours_6)
+
+bubble_Q25_28_resp = ggplot(data = relation_ordinal_Q25_28, aes(x=overtime_work_25, y=monthly_salary_28, color=overtime_work_25)) +
+  geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
+                             tooltip = text)) +
+  colScale +
+  labs(x = "", y = "") +
+  bubble_plotly_theme()+
+  theme(axis.text.x = element_text(angle = 20))+
+  theme(axis.text=element_text(color = "black"))
+
+
+
+girafe(ggobj = bubble_Q25_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 6, 
+       height_svg = 4,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
+
+```
+
+
+
+## Employee On-boarding 
+
+### Do you think your company has a good on-boarding process?
+
+
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
+
+basic_barplot(my_df = compute_perc(Qs, company_onboarding_process_26 ), 
+              a_factor = company_onboarding_process_26 , its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+### How could on-boarding at your company be improved?
+
+A clearer structure and standardisation at the company was mentioned as a improvement potential as well as providing a better orientation for new workers. 
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+improve_onboarding_27_filt <- Qs %>%
+  filter(improve_onboarding_27 != "NA")
+
+barplot_ordered(my_df = compute_perc(improve_onboarding_27_filt, improve_onboarding_27), 
+                a_factor = improve_onboarding_27 , its_values = perc, labels = perc_label, 
+                title = "")
+
+```
+
+
+
+## Job Search  
 
 ### Which of the following best describes your current job-seeking status?
 
@@ -2744,8 +2781,9 @@ basic_barplot(my_df = compute_perc(how_learn_about_company_31_split, how_learn_a
 
 
 ## Developer Communities
+<a name="dev_communities"></a>  
 
-2 in 3 respondents are members of a developer community.
+More than two in three respondents are members of a developer community.  
 
 ```{r, fig.align='center', out.width = '100%', fig.height=1}
 
@@ -2756,7 +2794,7 @@ basic_barplot(my_df = compute_perc(Qs, dev_community_member_32 ),
 ```
 
 
-The three largest communities to which respondents indicated membership were DevCongress (13.6%), Facebook Developer Circle (9.6%), and the Hacklab Foundation (7.4%).  
+The 272 respondents listed 122 communities. The three largest communities to which respondents indicated membership were DevCongress (13.6%), Facebook Developer Circle (9.6%), and the Hacklab Foundation (7.4%).  
 
 ```{r, fig.align='center', out.width = '100%', fig.height=5.5}
 # Warning! Check that all communities are in the plot. Depends on size (height) of figure and scale. Wordcloud excludes if names are too large (typically Facebook Developer Circle or DevCongress)
