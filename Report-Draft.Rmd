@@ -714,7 +714,7 @@ basic_barplot(my_df = compute_perc(employment_data, employment_3),
 barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Man"), employment_3), 
                 a_factor = employment_3, its_values = perc, labels = perc_label,
                 title = "",
-                label_spacing = 0.1) + 
+                label_spacing = 0.12) + 
   scale_y_continuous(expand = c(0, .03)) # avoid cut off of label
 
 ```
@@ -730,7 +730,7 @@ barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Ma
 barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Woman"), employment_3), 
                 a_factor = employment_3, its_values = perc, labels = perc_label,
                 title = "",
-                label_spacing = 0.1) + 
+                label_spacing = 0.12) + 
   scale_y_continuous(expand = c(0, .03)) # avoid cut off of label
 
 ```
@@ -1367,7 +1367,8 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
                                                   skillset = collaborative_tools,
                                                   number_of_resp = number_of_respondents), 
               a_factor = tool, its_values = perc, labels = perc_label, 
-              title = "")
+              title = "",
+              label_spacing = 0.09)
 
 ```
 :::
@@ -1380,7 +1381,8 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
                                                   skillset = collaborative_tools,
                                                   number_of_resp = number_of_prof_dev), 
               a_factor = tool, its_values = perc, labels = perc_label, 
-              title = "")
+              title = "",
+              label_spacing = 0.09)
 
 ```
 :::
@@ -1393,7 +1395,8 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
                                                   skillset = collaborative_tools,
                                                   number_of_resp = number_of_students), 
               a_factor = tool, its_values = perc, labels = perc_label, 
-              title = "")
+              title = "",
+              label_spacing = 0.09)
 
 ```
 :::
@@ -1852,7 +1855,7 @@ barplot_ordered(my_df = compute_perc(Qs %>%
 
 Most of the respondents declared relying on free trials and colleagues.  
 
-```{r, fig.align='center', out.width = '100%', fig.height=b8}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 # multiple choice question: we separate the different answers (separate_rows),
 #   and compute the % according to the total number of respondents
@@ -1870,7 +1873,15 @@ perc_solution_research_17 <- Qs %>%
     perc = n/number_of_respondents,  # % to total number of respondents -> some resp. selected several choices
     perc_label = paste0(as.character(round(perc*100,1)), "%")
   ) %>% 
-  arrange(-perc) 
+  arrange(-perc) %>%
+  # nicer style of text for the plot:
+  mutate(
+    solution_research_17 = case_when(
+      solution_research_17 == "Visit developer communities like Stack Overflow" ~ "Visit developer communities\nlike Stack Overflow",
+      solution_research_17 == "Read ratings or reviews on third party siteslike G2Crowd" ~ "Read ratings or reviews on third party sites\nlike G2Crowd",
+      TRUE ~ solution_research_17
+    )
+  )
 
 basic_barplot(my_df = perc_solution_research_17, 
               a_factor = solution_research_17, its_values = perc, labels = perc_label, 
@@ -2162,7 +2173,7 @@ More than 1/3 of the respondents won't change anything. Studying Computer Scienc
 change_edu_filt <- Qs %>%
   filter(change_edu_21 != "NA")
 
-barplot_ordered(my_df = compute_perc(change_edu_filt, change_edu_21 ), 
+basic_barplot(my_df = compute_perc(change_edu_filt, change_edu_21 ), 
                 a_factor = change_edu_21 , its_values = perc, labels = perc_label, 
                 title = "",
                 label_spacing = 0.09)
@@ -2775,7 +2786,6 @@ basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split, drivers_for_ne
   scale_y_continuous(expand = c(0, .03)) # avoid cut off of label
 
 ```
-``
 
 :::
 
@@ -2811,27 +2821,32 @@ basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split %>% filter(prof
 
 ### When job searching, how do you learn more about a company?
 
-The most popular method to find out more about a company among the respondents is researching company media. There also seem no differences between developers and students.
+The most popular method to find out more about a company among the respondents is researching company media. There also seem to be no differences between developers and students.
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
-how_learn_about_company_31_split<-Qs%>% select(how_learn_about_company_31, profession_1) %>%
-  separate_rows(how_learn_about_company_31, sep = ";")
-
-
-how_learn_about_company_31_split<-how_learn_about_company_31_split[!(is.na(how_learn_about_company_31_split$how_learn_about_company_31) | how_learn_about_company_31_split$how_learn_about_company_31==""), ]
-
-
-how_learn_about_company_31_split <-how_learn_about_company_31_split %>% 
-  mutate(how_learn_about_company_31 = recode(how_learn_about_company_31, 
-                                             "Company website" = "Read company media, such as employees blogs\nor company culture videos",
-                                             "Google & their website" = "Read company media, such as employees blogs\nor company culture videos",
-                                             "linkedin" = "Read company media, such as employees blogs\nor company culture videos",
-                                             "Online (Linkedin" = "Read company media, such as employees blogs\nor company culture videos",
-                                             "Websites " = "Read company media, such as employees blogs\nor company culture videos",
-                                             "Personal assessment.. Occasionally going to the company to see how they cooperate with one another " = "Make personal contact to company",
-                                             "Just going there frequently just access their interpersonal relationships with each other " = "Make personal contact with company"))
-
+how_learn_about_company_31_split <- Qs %>% 
+  select(how_learn_about_company_31, profession_1) %>%
+  separate_rows(how_learn_about_company_31, sep = ";") %>%
+  filter(!(is.na(how_learn_about_company_31)),
+         how_learn_about_company_31 != "") %>%
+  mutate(how_learn_about_company_31  = as_factor(how_learn_about_company_31)) %>%
+  mutate(how_learn_about_company_31 = 
+           recode(how_learn_about_company_31, 
+                  "Company reviews from third party sites (e.g. Glassdoor, Blind)" = "Company reviews from third party sites\n(e.g. Glassdoor, Blind)",
+                  "Publicly available financial information (e.g. Crunchbase)" = "Publicly available financial information\n(e.g. Crunchbase)",
+                  "Personal network - friends or family" = "Personal network - friends or family",
+                  "Online (Linkedin" = "LinkedIn",
+                  "Company website" =  "Read company media, such as employees blogs\nor company culture videos",
+                  "linkedin" = "LinkedIn",
+                  "Websites " = "Company website",
+                  "Google & their website" = "Company website",
+                  "Just going there frequently just access their interpersonal relationships with each other "  = "Make personal contact with company",
+                  "Personal assessment.. Occasionally going to the company to see how they cooperate with one another " = "Make personal contact with company",
+                  "Read company media, such as employees blogs or company culture videos" = "Read company media, such as employees blogs\nor company culture videos"
+           )
+  )
+                  
 basic_barplot(my_df = compute_perc(how_learn_about_company_31_split, how_learn_about_company_31 ), 
               a_factor = how_learn_about_company_31 , its_values = perc, labels = perc_label, 
               title = "",
