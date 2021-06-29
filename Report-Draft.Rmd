@@ -557,7 +557,7 @@ Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey o
 
 Despite our survey’s reach and capacity for informing valuable conclusions, we acknowledge that our results don’t represent everyone in the Ghana developer community evenly. We have further work to do to make the Hacklab Ghana Developer Census 2020 a more inclusive, diverse platform, and a reflection in the community at large.   
 
-We are committed to building on steps we have taken and improving the coverage, insights and beyond in the coming years to better improve the support and interventions needed to give developers a more enabling ecosystem to thrive. Some of these survey's results directly guide those efforts. To address the characteristics of our data, be sure to check out where we summarize results by developer persona (Professional, Student, Hobbyists) or gender, highlight results for underrepresented racial/ethnic groups, or use survey weighting to correct for demographic skew.   
+We are committed to building on steps we have taken and improving the coverage, insights and beyond in the coming years to better improve the support and interventions needed to give developers a more enabling ecosystem to thrive. Some of these survey's results directly guide those efforts. To address the characteristics of our data, be sure to check out where we summarize results by developer persona (Professional Developer, Student) or gender.   
 
 We looked at breakdowns by demographics throughout our analysis and its reflection of the distribution of talents.    
 
@@ -1411,7 +1411,7 @@ This network graph shows which technologies are mostly used together by the resp
 
 ![](Network_visualization/backbone-weighted.png)
 
-The most popular technologies, such as _PHP_, _SQL_, _Python_, _JavaScript_, and _HTML_ are often used together, in the same ecosystem, used by the same developers. We note that many of the respondents of the 2020 Developer Census seem to be active in web development.    
+The most popular technologies, such as _PHP_, _SQL_, _Python_, _JavaScript_, and _HTML_, are often used together, in the same ecosystem. We note that many of the respondents of the 2020 Developer Census seem to be active in web development.    
 
 
 ## Wanted Technologies 
