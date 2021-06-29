@@ -1,5 +1,7 @@
 ---
-title: "Hacklab Ghana Developer Census 2020"
+title: |
+  | Hacklab Ghana
+  | Developer Census 2020
 subtitle: "Published by the Hacklab Foundation"
 output: 
   html_document:  
@@ -574,19 +576,19 @@ Of the 272 respondents, 17% indicated being women. Only 10% of the 130 professio
 **2.	Geographical Concentration:**  
 70% of the respondents are from the Greater Accra Region. [Explore the map](#geography).
 
-**3. Most known Languages:**  
+**3. Most Used Languages:**  
 HTML/CSS, JavaScript, Python, and SQL are the most used languages by Ghanaian developers. Learn more about the popularity of other languages and the preferences of professional developers [here](#popu_language). 
 
-**4.	Most familiar Frameworks:**  
-React.js is the most popular web framework. Node.js is also a widely used framework. [Learn more](#popu_webframework).
+**4.	Most Familiar Frameworks:**  
+React.js is the most used web framework. Node.js is also a widely used framework. [Learn more](#popu_webframework).
 
-**5. more than two in three respondents are members of a developer community:**  
+**5. Strong Developers' Communities:**  
 Of the numerous communities listed by the respondents (122), the three largest communities to which they indicated membership were DevCongress (13.6%), Facebook Developer Circle (9.6%), and the Hacklab Foundation (7.4%). [See all the communities](#dev_communities).  
 
-**6.	Highest level of education:**   
+**6.	Highest Level of Education:**   
 The vast majority of the respondents have at least a secondary high school degree, and 70% indicated having a Bachelor's degree. Only 4% indicated having a Master's degree. [Learn more](#highest_education).
 
-**7.	Primary field of study:**    
+**7.	Primary Field of Study:**    
 Most participants study or studied Computer Science or Computer Engineering (55%), followed by Information Technology (11.6%) and Business (5.4%). [Learn more](#study_field).
 
 **8.	Overtime & Compensation:**  
@@ -610,7 +612,7 @@ Learn more about the [working conditions](#work_cond) and [salaries](#salary) of
 
 ### What describes you best?
 
-The two biggest subgroups among the respondents are professional developers as well as students. Additionally, there are respondents coding as a part of their work, coding as a hobby, as well as former developers.   
+The two largest subgroups among the respondents are professional developers and students. Additionally, there are respondents coding as a part of their work, coding as a hobby, as well as former developers.   
 For the remainder of this report, we use these categories, specifically students and professional developers, to highlight particular differences between participants.
 
 ```{r, fig.align='center', out.width = '100%', fig.height = b6}
@@ -683,9 +685,9 @@ employment_data <- Qs %>%
   )
 ```
 
-Most of the respondents are full-time employees. There is also a great share of students. Sadly, there is also a significant share of unemployed developers looking for work. 
+Most of the respondents are full-time employees and there is also a great share of students. A significant share of the respondents are unemployed and looking for work. 
 
-When it comes to gender differences, there is a greater share of students among the female respondents. In addition, women seem to be self-employed less often when compared with men. 
+When it comes to gender differences, there is a greater share of students among the female respondents. In addition, women seem to be less often self-employed than men. 
 
 ::::: {.panelset}
 
@@ -745,7 +747,7 @@ barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Wo
 
 ### Region
 
-Most respondents come from the greater Accra region. However, the extent of concentration in Accra seems to be larger for professional developers than for students. 
+Most respondents come from the Greater Accra Region. The extent of this concentration in Accra seems to be larger for professional developers than for students. 
 
 ::::: {.panelset}
 
@@ -903,7 +905,7 @@ barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a stude
 
 There is a  greater share of women among the students than among the professional developers. 
 
-Ghana's developer community may become more representative in the upcoming years. 
+Ghana's developer community may thus become more representative in the upcoming years. 
 
 ```{r}
 
@@ -1081,12 +1083,12 @@ basic_barplot(my_df = compute_perc(dependents_data %>% filter(gender_35 == "Woma
 
 ## Most Popular Technologies
 
-These are the technologies with which the respondents have done extensive development work in over the past year.  
+These are the technologies with which the respondents have done extensive development work over the past year.  
 
 
 ### Programming, scripting and markup languages <a name="popu_language"></a>
 
-_HTML/CSS_ is the most used language, followed by _JavaScript_, _Python_ and _SQL_. Professional developers are more likely to use _JavaScript_ and _SQL_. _C++_ and _C_ are still widely used to teach coding to students.    
+_HTML/CSS_ is the most used language, followed by _JavaScript_, _Python_, and _SQL_. Professional developers are more likely to use _JavaScript_ and _SQL_. _C++_ and _C_ are still widely used to teach coding to students.    
 
 
 ```{r}
@@ -1153,7 +1155,7 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 
 ### Platforms
 
-Windows is the most widely used development platform; thanks, notably, to its success among students. WordPress, Android, Linux, and Heroku are also widely used.  
+_Windows_ is the most widely used development platform; thanks, notably, to its success among students. _WordPress_, _Android_, _Linux_, and _Heroku_ are also widely used.  
 
 ```{r}
 
@@ -1405,11 +1407,11 @@ basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_chara
 
 ### Connections of Technologies 
 
-This network graph shows which technologies are mostly used together by the respondents. Every time a respondent mentioned using technologies, a link is drawn between them on the graph. Well connected technologies, having many "co-mentions", are thus often used together.  
+This network graph shows which technologies are mostly used together by the respondents. Every time a respondent mentioned using technologies, a link is drawn between them on the graph. Well-connected technologies on the graph, having many "co-uses", are thus technologies frequently used together by the respondents. The size of the nodes (bubbles) shows the number of respondents using each technology.  
 
-![](./backbone-weighted.png)
+![](Network_visualization/backbone-weighted.png)
 
-The most popular technologies, such as PHP, SQL, Python, JavaScript, and HTML are often used together, in the same ecosystem, used by the same developers.   
+The most popular technologies, such as _PHP_, _SQL_, _Python_, _JavaScript_, and _HTML_ are often used together, in the same ecosystem, used by the same developers. We note that many of the respondents of the 2020 Developer Census seem to be active in web development.    
 
 
 ## Wanted Technologies 
@@ -1418,7 +1420,7 @@ These are the technologies that the respondents are currently not using but want
 
 ### Wanted Programming, Scripting and Markup Languages
 
-_TypeScript_, followed by _Python_ and _Swift_ are the technologies that professional developers do not use but want to learn. Students are interested in "the classics": _Python_, _SQL_, and _JavaScript_.
+_TypeScript_, followed by _Python_ and _Swift_ are the technologies that many professional developers do not use but want to learn. Students are interested in "the classics": _Python_, _SQL_, and _JavaScript_.
 
 
 ::::: {.panelset}
@@ -1464,7 +1466,7 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 
 ### Wanted Platforms
 
-Respondents want to learn working with cloud platforms, in particular _AWS_ for the professional developers and _Microsoft Azure_ for the students. Almost 20% of professional developers indicated wanting to learn _Docker_. _iOS_ is the mobile developing system that most want to work with next year.        
+Respondents want to learn to work with cloud platforms, in particular, _AWS_ for the professional developers and _Microsoft Azure_ for the students. Almost 20% of professional developers indicated wanting to learn _Docker_. _iOS_ is the mobile developing system that most want to work with next year.        
 
 ::::: {.panelset}
 ::: {.panel}
@@ -1631,7 +1633,7 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 
 ### Wanted Collaborative Tools
 
-_Microsoft Azure_ and _Stack Overflow for Teams_ are tools who might become more popular. Many students also indicated wanting to learn _GitHub_.  
+_Microsoft Azure_ and _Stack Overflow for Teams_ are tools that might become more popular. Many students also indicated wanting to learn _GitHub_.  
 
 ```{r}
 
@@ -1696,7 +1698,7 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 
 ### What is the primary operating system in which you work?
 
-Windows in the most used operating system. Professional developers use MacOS and Linux more often than other respondents. Students are overwhelmingly on Windows.  
+Windows is the most used operating system. Professional developers use MacOS and Linux more often than other respondents. Students are overwhelmingly on Windows.  
 
 ::::: {.panelset}
 ::: {.panel}
@@ -1737,7 +1739,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
 
 ### In which operating system would you rather work?
 
-MacOS, Linux and Windows are practically tied as preferred systems. Professional developers have a preference for MacOS, then Linux. Students prefer Windows.  
+MacOS, Linux, and Windows are practically tied as preferred systems. Professional developers have a preference for MacOS, then Linux. Students prefer Windows.  
 
 ::::: {.panelset}
 ::: {.panel}
@@ -2040,7 +2042,7 @@ bubble_Q19_28_resp = ggplot(data = relation_ordinal_Q19_28,
   bubble_plotly_theme() +
   theme(axis.text.x = element_text(angle = 20))+
   theme(axis.text=element_text(color = "black")) +
-  scale_size(range = c(1, 12))
+  scale_size_area(max_size = 12) # to scale by area and not radius! 
 
 girafe(ggobj = bubble_Q19_28_resp, 
        fonts = list(sans = "Arial"),
@@ -2124,7 +2126,7 @@ girafe(ggobj = bubble_Q19_28_resp,
 
 ```
 
-### How important is a formal education, such as a university degree in computer science, to your career?
+### How important is formal education, such as a university degree in computer science, to your career?
 
 Half of the respondents find a formal education very or even critically important for their career.
 
@@ -2237,7 +2239,7 @@ barplot_ordered(my_df = compute_perc(Qs, overtime_work_25 ),
 
 ### Job satisfaction
 
-A little bit than more of 50% of the respondents are slightly satisfied or satisfied with their current jobs.
+A little bit more than 50% of the respondents are slightly satisfied or satisfied with their current jobs.
 Whereas 20% are slightly dissatisfied or dissatisfied.
 
 ```{r, fig.align='center', out.width = '100%', fig.height=2}
@@ -2253,7 +2255,7 @@ barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ),
 
 #### Relationship between job satisfaction and overtime work
 
-Interestingly, people who work more than 3 times a week overtime are satisfied with their job. There seems no relationship that the more overtime the less job satisfaction. The tendency is rather the opposite. 
+Interestingly, people who work overtime more than three times a week are satisfied with their job. There seems no relationship that the more overtime the less job satisfaction. The tendency is rather the opposite. 
 
 ```{r, include = FALSE, fig.align='center', out.width = '100%', fig.height=3}
 
@@ -2296,14 +2298,13 @@ names(colours) <- levels(relation_ordinal_Q22_25$overtime_work_25)
 colScale <- scale_colour_manual(name = "overtime_work_25",values = colours_6)
 
 bubble_Q22_25_resp = ggplot(data = relation_ordinal_Q22_25, aes(x=overtime_work_25, y=job_satisfaction_22, color=overtime_work_25)) +
-  geom_point_interactive(aes(size = Freq,
-                             tooltip = text)) +
+  geom_point_interactive(aes(size = Freq, tooltip = text)) +
   colScale +
   labs(x = "", y = "") +
   bubble_plotly_theme()+
   theme(axis.text.x = element_text(angle = 20))+
   theme(axis.text=element_text(color = "black")) +
-  scale_size(range = c(1, 20))
+  scale_size_area(max_size = 20) # to scale by area and not radius! 
 
 girafe(ggobj = bubble_Q22_25_resp, 
        fonts = list(sans = "Arial"),
@@ -2383,7 +2384,8 @@ barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(profession_1
 
 #### Relationship between Size of Company and Salary
 
-The student respondents don't earn more than 2000 GHS but do work in various sizes of companies. Professional Developers earn more salary and the most developers work in companies with less than 100 employees.There seems no clear relationship between the company size and the salary. 
+The student respondents don't earn more than 2000 GHS but do work in companies of various sizes. Professional Developers earn larger salaries. Most developers work in companies with less than 100 employees.   
+There seems no clear relationship between the company size and the salary.  
 
 ::::: {.panelset}
 
@@ -2439,8 +2441,7 @@ bubble_Q23_28_resp = ggplot(data = relation_ordinal_Q23_28, aes(x=company_size_2
   bubble_plotly_theme()+
   theme(axis.text.x = element_text(angle = 20))+
   theme(axis.text=element_text(color = "black")) +
-  scale_size(range = c(1, 12))
-
+  scale_size_area(max_size = 13) # to scale by area and not radius! 
 
 
 girafe(ggobj = bubble_Q23_28_resp, 
@@ -2502,8 +2503,7 @@ bubble_Q23_28_resp = ggplot(data = relation_ordinal_Q23_28, aes(x=company_size_2
   bubble_plotly_theme()+
   theme(axis.text.x = element_text(angle = 20))+
   theme(axis.text=element_text(color = "black")) +
-  scale_size(range = c(1, 12))
-
+  scale_size_area(max_size = 13) # to scale by area and not radius! 
 
 
 girafe(ggobj = bubble_Q23_28_resp, 
@@ -2569,7 +2569,7 @@ bubble_Q23_28_resp = ggplot(data = relation_ordinal_Q23_28, aes(x=company_size_2
   bubble_plotly_theme()+
   theme(axis.text.x = element_text(angle = 20))+
   theme(axis.text=element_text(color = "black")) +
-  scale_size(range = c(1, 12))
+  scale_size_area(max_size = 13) # to scale by area and not radius! 
 
 
 
@@ -2586,7 +2586,7 @@ girafe(ggobj = bubble_Q23_28_resp,
 
 #### Relationship between Highest Education and Salary of Professional Developers
 
-A Bachelor's degree is associated with broad range of salary options. There are respondents with a Bachelors degree who receive salaries as high as respondents with Master's degree. However, people with a Master's degree tend to have higher salaries than others on average. Only respondents who indicated being professional developers are included in the plot. 
+A Bachelor's degree is associated with a broad range of salary options. There are respondents with a Bachelors's degree who receive salaries as high as respondents with a Master's degree. However, people with a Master's degree tend to have higher salaries than others on average. Only respondents who indicated being professional developers are included in the plot. 
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3, warnings = FALSE}
 # Variables: highest_edu_18, monthly_salary_28
@@ -2628,7 +2628,7 @@ bubble_Q18_28_resp = ggplot(data = relation_ordinal_Q18_28, aes(x=highest_edu_18
   labs(x = "", y = "") +
   bubble_plotly_theme()+
   theme(axis.text=element_text(color = "black"))+
-  scale_size(range = c(1, 12))
+  scale_size_area(max_size = 13) # to scale by area and not radius! 
 
 
 
@@ -2645,7 +2645,7 @@ girafe(ggobj = bubble_Q18_28_resp,
 
 #### Relationship between Overtime Work and Salary of Professional Developers
 
-There seems to be a tendency that a higher salary is associated with overtime work, however there a a lot of respondents who have salary in the lower range and still work more than 3 days per week overtime. Only respondents who indicated being professional developers are included in the plot. 
+There seems to be a tendency that a higher salary is associated with overtime work. However, there a lot of respondents who have a salary in the lower range and still work more than 3 days per week overtime. Only respondents who indicated being professional developers are included in the plot.  
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3, warnings = FALSE}
 overtime_work_25_28_prof <- Qs %>%
@@ -2689,7 +2689,7 @@ bubble_Q25_28_resp = ggplot(data = relation_ordinal_Q25_28, aes(x=overtime_work_
   bubble_plotly_theme()+
   theme(axis.text.x = element_text(angle = 20))+
   theme(axis.text=element_text(color = "black"))+
-  scale_size(range = c(1, 12))
+  scale_size_area(max_size = 13) # to scale by area and not radius! 
 
 
 
@@ -2706,7 +2706,7 @@ girafe(ggobj = bubble_Q25_28_resp,
 
 ## Employee On-boarding 
 
-### Do you think your company has a good on-boarding process?
+### Do you think your company has a good onboarding process?
 
 
 ```{r, fig.align='center', out.width = '100%', fig.height = b2}
@@ -2717,9 +2717,10 @@ basic_barplot(my_df = compute_perc(Qs, company_onboarding_process_26 ),
 
 ```
 
-### How could on-boarding at your company be improved?
+### How could onboarding at your company be improved?
 
-A clearer structure and standardisation at the company was mentioned as a improvement potential as well as providing a better orientation for new workers. 
+A clearer structure and standardization at the company was mentioned as an improvement potential as well as providing a better orientation for new workers.  
+
 ```{r, fig.align='center', out.width = '100%', fig.height=3}
 
 improve_onboarding_27_filt <- Qs %>%
@@ -2738,7 +2739,7 @@ barplot_ordered(my_df = compute_perc(improve_onboarding_27_filt, improve_onboard
 
 ### Which of the following best describes your current job-seeking status?
 
-60% of the respondents are open for new job opportunities and one in three respondents is even actively looking for a job.
+60% of the respondents are open to new job opportunities and one in three respondents is even actively looking for a job.
 
 ```{r, fig.align='center', out.width = '100%', fig.height=b3}
 
@@ -2833,7 +2834,7 @@ how_learn_about_company_31_split <- Qs %>%
   mutate(how_learn_about_company_31  = as_factor(how_learn_about_company_31)) %>%
   mutate(how_learn_about_company_31 = 
            recode(how_learn_about_company_31, 
-                  "Company reviews from third party sites (e.g. Glassdoor, Blind)" = "Company reviews from third party sites\n(e.g. Glassdoor, Blind)",
+                  "Company reviews from third party sites (e.g. Glassdoor, Blind)" = "Company reviews from third-party sites\n(e.g. Glassdoor, Blind)",
                   "Publicly available financial information (e.g. Crunchbase)" = "Publicly available financial information\n(e.g. Crunchbase)",
                   "Personal network - friends or family" = "Personal network - friends or family",
                   "Online (Linkedin" = "LinkedIn",
@@ -2850,7 +2851,8 @@ how_learn_about_company_31_split <- Qs %>%
 basic_barplot(my_df = compute_perc(how_learn_about_company_31_split, how_learn_about_company_31 ), 
               a_factor = how_learn_about_company_31 , its_values = perc, labels = perc_label, 
               title = "",
-              label_spacing = 0.08)
+              label_spacing = 0.1) + 
+  scale_y_continuous(expand = c(0, .03)) # avoid cut off of label
 
 
 ```
@@ -2874,8 +2876,9 @@ basic_barplot(my_df = compute_perc(Qs, dev_community_member_32 ),
 The 272 respondents listed 122 communities. The three largest communities to which respondents indicated membership were DevCongress (13.6%), Facebook Developer Circle (9.6%), and the Hacklab Foundation (7.4%).  
 
 ```{r, fig.align='center', out.width = '100%', fig.height=5.5}
-# Warning! Check that all communities are in the plot. Depends on size (height) of figure and scale. Wordcloud excludes if names are too large (typically Facebook Developer Circle or DevCongress)
-# I tried to pick a scale where the smallest were still legible.
+# Warning! Check that all communities are in the plot. Depends on the size (height) of the figure and scale. 
+# Wordcloud excludes if names are too large (typically Facebook Developer Circle or DevCongress)
+# I tried to pick a scale where the smallest was still legible.
 
 # note: respondents can be members of several communities,
 # we just count them all.

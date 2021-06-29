@@ -59,7 +59,8 @@ nodes_new <- nodes %>%
                                     ifelse(is.element(tool, web_frameworks_frontend), 
                                            "web_frameworks_frontend", "other")))
     )) %>%
-  filter(weight > 1)
+  filter(weight > 1) %>%
+  mutate(tool = ifelse(tool == "IBM Cloud or Watson", "IBM Cloud/Watson", tool))
 
 
 
@@ -114,32 +115,14 @@ edges <- skills %>%
 
 
 
-# hard thing to do now: find a nice combination of technology (ggraph or other),
-# layout, arguments of the layout function, and how to label nicely...
-# possibly, thinking "theoretically" what the best layout would be, is a good idea? or too hard?
-# Maybe we should remove all non-programming languages/technologies
-# (e.g. Slack, Asana, Windows, GitHub, Trello, AI, Internet-of-Things, ML/AI, ...)
-# they clutter the graph and are not really interesting? 
-
 ####Plotting the network ----
 
 #Only the interesting tools
+# we apply a filter on the nodes to keep only the tools 
+#   that were mentioned by more than 20 respodents.
 nodes_filter <- nodes_new %>%
   filter(category != "other") %>%
   filter(weight > 20)
-
-# edges_filter <- edges %>%
-#   filter(is.element(source, languages) |
-#            is.element(source, platforms) | 
-#            is.element(source, web_frameworks) |
-#            is.element(source, web_frameworks_frontend)) %>%
-#   filter(is.element(target, languages) |
-#            is.element(target, platforms) |
-#            is.element(target, web_frameworks) |
-#            is.element(target, web_frameworks_frontend)) %>%
-#   filter(source != target) %>% # not needed, just in precaution
-#   ##Including a threshold for connection strength
-#   filter(weight > 100)
 
 edges_filter <- edges %>%
   filter(source %in% nodes_filter$tool,
@@ -150,7 +133,7 @@ edges_filter <- edges %>%
 #   filter(is.element(tool, edges_filter$target) |
 #            is.element(tool, edges_filter$source)) 
 
-HL_colors = c("#DF4B4F", "#AF8CDE", "#59B0E3","#E3E19A")
+HL_colors = c("#DF4B4F", "#AF8CDE", "#59B0E3","#6fe38e") # green instead of yellow, easier to see
 
 graph <- as_tbl_graph(edges_filter, directed = FALSE, vertices = nodes_filter) 
 # create the layout for the graph:
@@ -184,14 +167,14 @@ ggsave("dh_threshold.png", plot = ggnet, width = 12, height = 8, dpi = 720)
 # not used: delete edges
 # simpler_graph <- delete.edges(graph, which(E(graph)$weight < 100))
 
-
+set.seed(4)
 net_backbone <- ggraph(graph, layout = "dh")+
   # geom_edge_link(aes(width = edges_filter$weight), alpha = 0.05, edge_colour = "black")+
   geom_edge_link(aes(width = edges_filter$weight, color = edges_filter$weight), alpha = 0.2)+
-  geom_node_point(aes(color = nodes_filter$category, size=nodes_filter$weight),shape = 19)+
-  geom_node_text(aes(label = nodes_filter$tool), repel = TRUE)+
+  geom_node_point(aes(color = nodes_filter$category, size=nodes_filter$weight), shape = 19)+
+  geom_node_text(aes(label = nodes_filter$tool), repel = TRUE, size = 5)+
   # scale_edge_width_continuous(range = c(0.2,0.9)) +
-  scale_edge_width_continuous(range = c(0.1, 5), name = "Co-mentions") + # control size
+  scale_edge_width_continuous(range = c(0.1, 5), name = "Co-uses") + # control size
   scale_edge_colour_continuous(
     low = "#ffffff",
     # low = "#d3d3d3",
@@ -206,12 +189,17 @@ net_backbone <- ggraph(graph, layout = "dh")+
                                 "Other Frameworks"))+
   coord_fixed()+
   theme_graph() +
-  theme(legend.position = "right")
+  theme(legend.position = "right", 
+        legend.text = element_text(size = 15),
+        legend.title = element_text(size = 17)
+        # legend.key = element_rect(size = 5)
+        ) + 
+  guides(colour = guide_legend(override.aes = list(size=8)))
 
 net_backbone
 
-ggsave(filename = "backbone-weighted.png", plot = net_backbone, width = 12, height = 6, dpi=720)
-ggsave(filename = "backbone-weighted.svg", plot = net_backbone, width = 12, height = 6)
+ggsave(filename = "backbone-weighted.png", plot = net_backbone, width = 12, height = 10, dpi=720)
+ggsave(filename = "backbone-weighted.svg", plot = net_backbone, width = 15, height = 8)
 
 ### Just for comparison: 
 ##Plots without threshold ----
