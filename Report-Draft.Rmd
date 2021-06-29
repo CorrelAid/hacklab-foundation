@@ -557,7 +557,7 @@ Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey o
 
 Despite our survey’s reach and capacity for informing valuable conclusions, we acknowledge that our results don’t represent everyone in the Ghana developer community evenly. We have further work to do to make the Hacklab Ghana Developer Census 2020 a more inclusive, diverse platform, and a reflection in the community at large.   
 
-We are committed to building on steps we have taken and improving the coverage, insights and beyond in the coming years to better improve the support and interventions needed to give developers a more enabling ecosystem to thrive. Some of these survey results directly guide those efforts. To address the characteristics of our data, be sure to check out where we summarize results by developer persona (Professional, Student, Hobbyists) or gender, highlight results for underrepresented racial/ethnic groups, or use survey weighting to correct for demographic skew.   
+We are committed to building on steps we have taken and improving the coverage, insights and beyond in the coming years to better improve the support and interventions needed to give developers a more enabling ecosystem to thrive. Some of these survey's results directly guide those efforts. To address the characteristics of our data, be sure to check out where we summarize results by developer persona (Professional, Student, Hobbyists) or gender, highlight results for underrepresented racial/ethnic groups, or use survey weighting to correct for demographic skew.   
 
 We looked at breakdowns by demographics throughout our analysis and its reflection of the distribution of talents.    
 
@@ -613,7 +613,7 @@ Learn more about the [working conditions](#work_cond) and [salaries](#salary) of
 ### What describes you best?
 
 The two largest subgroups among the respondents are professional developers and students. Additionally, there are respondents coding as a part of their work, coding as a hobby, as well as former developers.   
-For the remainder of this report, we use these categories, specifically students and professional developers, to highlight particular differences between participants.
+For the remainder of this report we use these categories, specifically students and professional developers, to highlight particular differences between participants.
 
 ```{r, fig.align='center', out.width = '100%', fig.height = b6}
 
@@ -1009,7 +1009,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(ethnicity_38 != "NA" & ethnicit
 
 ### Do you have any dependents you care for? 
 
-Among our respondents, women seem to have dependents they care for less often than men do. This may partly be due to the fact, that more women are still in their studies and that the women in our sample may be younger than the men. 
+Among our respondents, women seem to have dependents they care for less often than men do. This may partly be due to the fact that more women are still in their studies and that the women in our sample may be younger than the men. 
 
 ```{r}
 dependents_data <- Qs %>%
@@ -1420,7 +1420,7 @@ These are the technologies that the respondents are currently not using but want
 
 ### Wanted Programming, Scripting and Markup Languages
 
-_TypeScript_, followed by _Python_ and _Swift_ are the technologies that many professional developers do not use but want to learn. Students are interested in "the classics": _Python_, _SQL_, and _JavaScript_.
+_TypeScript_, followed by _Python_ and _Swift_, are the technologies that many professional developers do not use but want to learn. Students are interested in "the classics": _Python_, _SQL_, and _JavaScript_.
 
 
 ::::: {.panelset}
@@ -1466,7 +1466,7 @@ basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_charac
 
 ### Wanted Platforms
 
-Respondents want to learn to work with cloud platforms, in particular, _AWS_ for the professional developers and _Microsoft Azure_ for the students. Almost 20% of professional developers indicated wanting to learn _Docker_. _iOS_ is the mobile developing system that most want to work with next year.        
+Respondents want to learn to work with cloud platforms, in particular _AWS_, for the professional developers and _Microsoft Azure_ for the students. Almost 20% of professional developers indicated wanting to learn _Docker_. _iOS_ is the mobile developing system that most want to work with next year.        
 
 ::::: {.panelset}
 ::: {.panel}
@@ -1739,7 +1739,7 @@ basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student
 
 ### In which operating system would you rather work?
 
-MacOS, Linux, and Windows are practically tied as preferred systems. Professional developers have a preference for MacOS, then Linux. Students prefer Windows.  
+MacOS, Linux and Windows are practically tied as preferred systems. Professional developers have a preference for MacOS over Linux. Students prefer Windows.  
 
 ::::: {.panelset}
 ::: {.panel}
@@ -2054,9 +2054,9 @@ girafe(ggobj = bubble_Q19_28_resp,
 ```
 
 
-#### How do Primary Study Field, Highest Degree and Salary relate to each other for Professional Developers?
-<span style="color:#af8cde;">Bachelor graduates</span> have various salaries independent of their primary study field. The <span style="color:#df4b4f;">Master graduates</span> from Computer Science and Engineering as well as Mathematics and Statistics tend to have a higher salary than the rest of the respondents.
-<span style="color:#59b0e3;">Graduates of Secondary High School</span> tend to have, independent of the study field, salaries in the lower range. Only respondents who indicated being professional developers are included in the plot.
+#### How do primary study field, highest degree and salary relate to each other among professional developers?
+<span style="color:#af8cde;">Bachelor graduates</span> have various salaries independent of their primary study field. The <span style="color:#df4b4f;">Master graduates</span> from computer science and engineering as well as mathematics and statistics tend to have a higher salary than the rest of the respondents.
+<span style="color:#59b0e3;">Graduates of secondary high school</span> tend to have, independent of the study field, salaries in the lower range. Only respondents who indicated being professional developers are included in the plot.
 
 ```{r, fig.align='center', out.width = '100%', fig.height=3, warning=FALSE}
 prim_study_19_28_prof <- Qs %>%
@@ -2255,7 +2255,7 @@ barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ),
 
 #### Relationship between job satisfaction and overtime work
 
-Interestingly, people who work overtime more than three times a week are satisfied with their job. There seems no relationship that the more overtime the less job satisfaction. The tendency is rather the opposite. 
+Interestingly, people who work overtime more than three times a week are satisfied with their job. It seems that there is no relationship that indicates less job satisfaction with more overtime work. The tendency is rather the opposite. 
 
 ```{r, include = FALSE, fig.align='center', out.width = '100%', fig.height=3}
 
@@ -2384,8 +2384,8 @@ barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(profession_1
 
 #### Relationship between Size of Company and Salary
 
-The student respondents don't earn more than 2000 GHS but do work in companies of various sizes. Professional Developers earn larger salaries. Most developers work in companies with less than 100 employees.   
-There seems no clear relationship between the company size and the salary.  
+The student respondents don't earn more than 2000 GHS but do work in companies of various sizes. Professional developers earn larger salaries. Most developers work in companies with less than 100 employees.   
+It seems that there is no clear relationship between the company size and the salary.  
 
 ::::: {.panelset}
 
@@ -2584,7 +2584,7 @@ girafe(ggobj = bubble_Q23_28_resp,
 
 ::::
 
-#### Relationship between Highest Education and Salary of Professional Developers
+#### Relationship between Highest Education and Salary among Professional Developers
 
 A Bachelor's degree is associated with a broad range of salary options. There are respondents with a Bachelors's degree who receive salaries as high as respondents with a Master's degree. However, people with a Master's degree tend to have higher salaries than others on average. Only respondents who indicated being professional developers are included in the plot. 
 
@@ -2643,7 +2643,7 @@ girafe(ggobj = bubble_Q18_28_resp,
 
 ```
 
-#### Relationship between Overtime Work and Salary of Professional Developers
+#### Relationship between overtime work and salary among professional developers
 
 There seems to be a tendency that a higher salary is associated with overtime work. However, there a lot of respondents who have a salary in the lower range and still work more than 3 days per week overtime. Only respondents who indicated being professional developers are included in the plot.  
 
