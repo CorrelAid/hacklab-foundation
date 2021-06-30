@@ -167,8 +167,22 @@ hr {
   --panel-tab-active-background: unset;
   --panel-tab-hover-foreground: currentColor;
   --panel-tab-hover-background: unset;
-  --panel-tab-active-border-color: var(--highlight-color); /* was: currentColor; */
-  --panel-tab-hover-border-color: var(--highlight-color); /* was: currentColor; */
+  --panel-tab-active-border-color: var(--highlight-color); 
+  --panel-tab-hover-border-color: var(--highlight-color); 
   --panel-tab-inactive-opacity: 0.5;
   --panel-tab-font-family: inherit;
 }
+
+/* FOR THE COLUMNS IN THE FOOTER: */
+.column {
+  float: left;
+  width: 50%;
+}
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
