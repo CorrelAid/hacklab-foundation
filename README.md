@@ -10,7 +10,7 @@ Repository for the CorrelAid project with the Hacklab Foundation
 * insert linnk to Hacklab Foundation's website
 
 
-## Projects Organization
+## Project Organization
 
 Run [Hacklab_Ghana_Developer_Census_2020.Rmd](https://github.com/CorrelAid/hacklab-foundation/blob/main/Hacklab_Ghana_Developer_Census_2020.Rmd) Rmarkdown to reproduce the HTML [report](https://github.com/CorrelAid/hacklab-foundation/blob/main/Hacklab_Ghana_Developer_Census_2020.html).  
 
