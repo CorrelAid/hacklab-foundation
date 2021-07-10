@@ -1,13 +1,15 @@
-# hacklab-foundation
+# Repository of the Analytical Report of the Hacklab Ghana Developer Census 2020
 
-Repository for the CorrelAid project with the Hacklab Foundation
+This is the repository for the CorrelAid project with the Hacklab Foundation. Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana. This survey was given to 272 participants of the Hackathon 2020 hosted by the Hacklab Foundation and consisted of 41 questisons. CorrelAid created a report of this survey and here you have access to our code to replicate and extend the analyses and insights of the report.
 
-## Summary the Project
-* insert link to the final published report
-* insert link to Correlaid
+## Summary of the [CorrelAid Project](https://correlaid.org/)
+The role of  was to summarize the Census in an insightful, visual report about Ghana’s developer community to gain a better understanding of the developer’s skills and characteristics. The creation of the report included data exploration as well as data analysis and visualization.
 
-## About the Hacklab Foundation
-* insert linnk to Hacklab Foundation's website
+The final report can be found [here](insert link to the final published report]
+
+## About the [Hacklab Foundation](https://hacklabfoundation.org/)
+The Hacklab Foundation is an international nonprofit organization headquartered in Ghana with a focus on preparing the youth for future digital jobs through technology education and skills development. The Hacklab Foundation achieves this through various events such as bootcamps, hackathons, mentorships, skills training and job placement.
+The Foundation is known for its annual Hacklab Hackathon in Ghana that brings 1000+ developers, engineers, designers, entrepreneurs, policymakers, development partners and other stakeholders in technology to meet and discuss critical issues impacting the Global South.
 
 
 ## Project Organization
