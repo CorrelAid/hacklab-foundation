@@ -28,7 +28,7 @@ To compile, the .Rmd needs:
 ### Data Cleaning
 Data Cleaning and wrangling was done with the [raw anonymized data](https://github.com/CorrelAid/hacklab-foundation/blob/main/data/raw/census-base-anonymized-2020_without_parsing_errors.xlsx). The data set went through the following data cleaning and wrangling steps: 
 1. Major data cleaning was done with the scripts in [data_cleaning](https://github.com/CorrelAid/hacklab-foundation/tree/main/data_cleaning)
-2. we joined this cleaned data set together with [Merge_clean_data.R](https://github.com/CorrelAid/hacklab-foundation/blob/main/data_cleaning/Merge_clean_data.R). 
+2. We joined these cleaned data sets together with [Merge_clean_data.R](https://github.com/CorrelAid/hacklab-foundation/blob/main/data_cleaning/Merge_clean_data.R). 
 3. The cleaned output [clean_all_Qs.rds](https://github.com/CorrelAid/hacklab-foundation/blob/main/data/clean/clean_all_Qs.rds) is the dataset used for the analyses and the report. 
 4. The survey questions about the tools and technologies are saved separately in [skills_final.csv](https://github.com/CorrelAid/hacklab-foundation/blob/main/data/clean/skills_final.csv) due to its different data format. ([Data_Cleaning_ST.R](https://github.com/CorrelAid/hacklab-foundation/blob/main/data_cleaning/Data_Cleaning_ST.R) is the script used for this, note that we re-attributed all the answers of the free form question 13 to questions 9-12).  
 
