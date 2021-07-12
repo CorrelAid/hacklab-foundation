@@ -3,13 +3,16 @@
 This is the repository of the CorrelAid project where an an analytical and visual report of the Hacklab Ghana Developer Census 2020 for the the Hacklab Foundation was built. Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana. This survey was given to 272 participants of the Hackathon 2020 hosted by the Hacklab Foundation and consisted of 41 questions. CorrelAid created a report of this survey and here you have access to our code to replicate and extend the analyses and insights of the report.
 
 ## Summary of the [CorrelAid Project](https://correlaid.org/)
-The role of  was to summarize the Census in an insightful, visual report about Ghana’s developer community to gain a better understanding of the developer’s skills and characteristics. The creation of the report included data exploration as well as data analysis and visualization.
+The role of Correlaid was to summarize the Census in an insightful, visual report about Ghana’s developer community to gain a better understanding of the developer’s skills and characteristics. The creation of the report included data exploration as well as data analysis and visualization.
 
 The final report can be found [here](insert link to the final published report]
 
 ## About the [Hacklab Foundation](https://hacklabfoundation.org/)
 The Hacklab Foundation is an international nonprofit organization headquartered in Ghana with a focus on preparing the youth for future digital jobs through technology education and skills development. The Hacklab Foundation achieves this through various events such as bootcamps, hackathons, mentorships, skills training and job placement.
 The Foundation is known for its annual Hacklab Hackathon in Ghana that brings 1000+ developers, engineers, designers, entrepreneurs, policymakers, development partners and other stakeholders in technology to meet and discuss critical issues impacting the Global South.
+
+## About [CorrelAid](https://hacklabfoundation.org/)
+CorrelAid is a non-profit network of data science enthusiasts who want to engage themselves and use their knowledge for common good and to help social organizations on a fully voluntary basis. CorrelAid's work focuses on the social sector and aims to make the world a better place. Furthermore, the volunteers at CorrelAid educate social organizations on data-related topics and emphasizes the dialogue about the importance of data and data analysis for common good.
 
 
 ## Project Organization
