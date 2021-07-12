@@ -11,7 +11,7 @@ The final report can be found [here](insert link to the final published report]
 The Hacklab Foundation is an international nonprofit organization headquartered in Ghana with a focus on preparing the youth for future digital jobs through technology education and skills development. The Hacklab Foundation achieves this through various events such as bootcamps, hackathons, mentorships, skills training and job placement.
 The Foundation is known for its annual Hacklab Hackathon in Ghana that brings 1000+ developers, engineers, designers, entrepreneurs, policymakers, development partners and other stakeholders in technology to meet and discuss critical issues impacting the Global South.
 
-## About [CorrelAid](https://hacklabfoundation.org/)
+## About [CorrelAid](https://correlaid.org/about/)
 CorrelAid is a non-profit network of data science enthusiasts who want to engage themselves and use their knowledge for common good and to help social organizations on a fully voluntary basis. CorrelAid's work focuses on the social sector and aims to make the world a better place. Furthermore, the volunteers at CorrelAid educate social organizations on data-related topics and emphasizes the dialogue about the importance of data and data analysis for common good.
 
 
