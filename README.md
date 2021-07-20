@@ -21,10 +21,9 @@ Run [Hacklab_Ghana_Developer_Census_2020.Rmd](https://github.com/CorrelAid/hackl
 To compile, the .Rmd needs:
 1. the [cleaned data](https://github.com/CorrelAid/hacklab-foundation/blob/main/data/clean/clean_all_Qs.rds), that contains the answers to all the questions except of questions 9-13 (the skills). 
 2. the [cleaned skills](https://github.com/CorrelAid/hacklab-foundation/blob/main/data/clean/skills_final.csv) which contains the answers to the skills (tools and technologies) question 9-13.
-3. a [network visualization](https://github.com/CorrelAid/hacklab-foundation/blob/main/Network_visualization/backbone-weighted.png) in PNG format. It was created with [Network.R](https://github.com/CorrelAid/hacklab-foundation/blob/main/Network_visualization/Network.R) for creating the network of the technologies and tools used (questions 8-13).
-4. a [theme.css](https://github.com/CorrelAid/hacklab-foundation/blob/main/css_theme/theme.css) file where the CSS of the report is defined
-5. a [footer.html](https://github.com/CorrelAid/hacklab-foundation/blob/main/css_theme/footer.html) where the footer of the report is defined
-6. the footer needs the logos of the Hacklab Foundation and of Correlaid, which are located in the same folder
+3. a [theme.css](https://github.com/CorrelAid/hacklab-foundation/blob/main/css_theme/theme.css) file where the CSS of the report is defined
+4. a [footer.html](https://github.com/CorrelAid/hacklab-foundation/blob/main/css_theme/footer.html) where the footer of the report is defined
+5. the footer needs the logos of the Hacklab Foundation and of Correlaid, which are located in the same folder
 
 
 ### Data Cleaning
