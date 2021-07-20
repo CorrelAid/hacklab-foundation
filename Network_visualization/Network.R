@@ -1,13 +1,17 @@
 
+# THIS is not the code use for plotting the network in the report, 
+# but a copy of it. The code for plotting the network is in a 
+# code chunk of the .Rmd
+
 # draw the network of technologies "co-used" together.
-# set working directory to this file
+# set working directory to this file if want to plot it separately of the report by running this file
 
 library(tidyverse)
 library(ggraph)
 library(tidygraph)
 library(graphlayouts)
 
-skills <- rio::import("../data/clean/skills_final.csv") %>% 
+skills <- rio::import("data/clean/skills_final.csv") %>% 
   select(-V1) %>%  # artifact due to a save as .csv to remove (at least on a Mac?)
   mutate_all(na_if,"") %>%
   drop_na(level) %>%
@@ -166,6 +170,6 @@ net <- ggraph(graph, layout = "dh") +
 
 net
 
-ggsave(filename = "backbone-weighted.png", plot = net, width = 12, height = 10, dpi=720)
-ggsave(filename = "backbone-weighted.svg", plot = net, width = 15, height = 8)
+# ggsave(filename = "backbone-weighted_lowerres.png", plot = net, width = 12, height = 10, dpi=250)
+# ggsave(filename = "backbone-weighted.svg", plot = net, width = 15, height = 8)
 
