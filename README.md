@@ -26,19 +26,19 @@ The Foundation is known for its annual Hacklab Hackathon in Ghana that brings 10
 Run [Hacklab_Ghana_Developer_Census_2020.Rmd](https://github.com/CorrelAid/hacklab-foundation/blob/main/Hacklab_Ghana_Developer_Census_2020.Rmd) Rmarkdown to reproduce the HTML [report](https://github.com/CorrelAid/hacklab-foundation/blob/main/Hacklab_Ghana_Developer_Census_2020.html).  
 
 To compile, the .Rmd needs:
-1. the [cleaned data](https://github.com/CorrelAid/hacklab-foundation/blob/main/data/clean/clean_all_Qs.rds), that contains the answers to all the questions except of questions 9-13 (the skills). 
-2. the [cleaned skills](https://github.com/CorrelAid/hacklab-foundation/blob/main/data/clean/skills_final.csv) which contains the answers to the skills (tools and technologies) question 9-13.
+1. the [cleaned data](https://github.com/CorrelAid/hacklab-foundation/blob/main/data/clean/clean_all_Qs.rds), that contains the answers to all the questions except questions 9-13 (the skills). 
+2. the [cleaned skills](https://github.com/CorrelAid/hacklab-foundation/blob/main/data/clean/skills_final.csv) which contain the answers to the skills (tools and technologies) question 9-13.
 3. a [theme.css](https://github.com/CorrelAid/hacklab-foundation/blob/main/css_theme/theme.css) file where the CSS of the report is defined
 4. a [footer.html](https://github.com/CorrelAid/hacklab-foundation/blob/main/css_theme/footer.html) where the footer of the report is defined
 5. the footer needs the logos of the Hacklab Foundation and of Correlaid, which are located in the same folder
 
 
 ### Data Cleaning
-Data Cleaning and wrangling was done with the [raw anonymized data](https://github.com/CorrelAid/hacklab-foundation/blob/main/data/raw/census-base-anonymized-2020_without_parsing_errors.xlsx). The data set went through the following data cleaning and wrangling steps: 
+Data Cleaning and wrangling were done with the [raw anonymized data](https://github.com/CorrelAid/hacklab-foundation/blob/main/data/raw/census-base-anonymized-2020_without_parsing_errors.xlsx). The data set went through the following data cleaning and wrangling steps: 
 1. Major data cleaning was done with the scripts in [data_cleaning](https://github.com/CorrelAid/hacklab-foundation/tree/main/data_cleaning)
 2. We joined these cleaned data sets together with [Merge_clean_data.R](https://github.com/CorrelAid/hacklab-foundation/blob/main/data_cleaning/Merge_clean_data.R). 
 3. The cleaned output [clean_all_Qs.rds](https://github.com/CorrelAid/hacklab-foundation/blob/main/data/clean/clean_all_Qs.rds) is the dataset used for the analyses and the report. 
-4. The survey questions about the tools and technologies are saved separately in [skills_final.csv](https://github.com/CorrelAid/hacklab-foundation/blob/main/data/clean/skills_final.csv) due to its different data format. ([Data_Cleaning_ST.R](https://github.com/CorrelAid/hacklab-foundation/blob/main/data_cleaning/Data_Cleaning_ST.R) is the script used for this, note that we re-attributed all the answers of the free form question 13 to questions 9-12).  
+4. The survey questions about the tools and technologies are saved separately in [skills_final.csv](https://github.com/CorrelAid/hacklab-foundation/blob/main/data/clean/skills_final.csv) due to their different data formats. ([Data_Cleaning_ST.R](https://github.com/CorrelAid/hacklab-foundation/blob/main/data_cleaning/Data_Cleaning_ST.R) is the script used for this, note that we re-attributed all the answers of the free form question 13 to questions 9-12).  
 
 
 
