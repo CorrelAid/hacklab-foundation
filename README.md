@@ -1,6 +1,6 @@
 # Repository of the Analytical Report of the Hacklab Ghana Developer Census 2020
 
-This is the repository of the CorrelAid project where an an analytical and visual report of the Hacklab Ghana Developer Census 2020 for the the Hacklab Foundation was built. Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana. This survey was given to 272 participants of the Hackathon 2020 hosted by the Hacklab Foundation and consisted of 41 questions. CorrelAid created a report of this survey and here you have access to our code to replicate and extend the analyses and insights of the report.
+This is the repository of the CorrelAid project where an an analytical and visual report of the Hacklab Ghana Developer Census 2020 for the the Hacklab Foundation was built. Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana. 272 participant responded to the 41 questions of the survey conducted by Hacklab Research between November and December 2020. CorrelAid created a report of the survey results and here you have access to our code to replicate and extend the analyses and insights of the report.
 
 ## Summary of the [CorrelAid Project](https://correlaid.org/)
 The role of CorrelAid was to summarize the Census in an insightful, visual report about Ghana’s developer community to gain a better understanding of the developer’s skills and characteristics. The creation of the report included data exploration as well as data analysis and visualization.
