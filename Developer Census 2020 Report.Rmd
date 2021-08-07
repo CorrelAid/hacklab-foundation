@@ -2,7 +2,7 @@
 title: |
   | Hacklab Ghana
   | Developer Census 2020
-subtitle: "Published by the Hacklab Foundation"
+subtitle: "Published by Hacklab Research"
 output: 
   html_document:  
     toc: true
