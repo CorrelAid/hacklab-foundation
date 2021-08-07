@@ -11,7 +11,7 @@ output:
     toc_collapsed: true
     css: css_theme/theme.css # where the css theme is defined
     includes:
-      after_body: css_theme/footer_no-icons.html
+      after_body: css_theme/footer_no-icons.html # use footer.html if want fontawesome icons for twitter & email
 ---
 
 ```{css toc-content, echo = FALSE}
