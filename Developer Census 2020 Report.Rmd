@@ -1,0 +1,3075 @@
+---
+title: |
+  | Hacklab Ghana
+  | Developer Census 2020
+subtitle: "Published by the Hacklab Foundation"
+output: 
+  html_document:  
+    toc: true
+    toc_float: true 
+    toc_depth: 2
+    toc_collapsed: true
+    css: css_theme/theme.css # where the css theme is defined
+    includes:
+      after_body: css_theme/footer_no-icons.html
+---
+
+```{css toc-content, echo = FALSE}
+/* add some space before the TOC */
+  /* for no apparent reason, this is working here but not in the .css... */
+  #TOC {
+  margin-top: 5rem;
+}
+```
+
+
+
+```{r setup, include = FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
+                      warning = FALSE, # we do not want to display the code or warnings
+                      message = FALSE,
+                      dev = "svg" # figures are SVGs
+)
+
+# Environment:
+
+library(xaringanExtra) # to be able to have tabs. To install: install 'devtools' package, then run: devtools::install_github("gadenbuie/xaringanExtra")
+xaringanExtra::use_panelset() # allow the creation of tabs in Distill (see https://github.com/rstudio/distill/issues/11)
+
+library(tidyverse) # includes dplyr, tidyr, ggplot2, rio, stringr, ...
+
+library(leaflet) # for the interactive map
+library(tmaptools) # for geocoding
+
+library(wordcloud) # for the wordcloud at Q33
+
+library(tidyr) # for Q30 and Q31
+
+library(ggiraph) # for responsive bubble plots
+library(plotly) # for interactive bubble plots
+
+library(ggExtra) # for interactive Heatmaps
+library(ggiraphExtra) # for interactive Heatmaps
+library(moonBook) # for interactive Heatmaps
+library(sjmisc) # for interactive Heatmaps
+
+# library(ggchicklet) # to round edges of barplots. install.packages("ggchicklet", repos = "https://cinc.rud.is")
+
+
+```
+
+```{r}
+
+# Data:
+# reodering certain factors for the plots: (use barplot_ordered() for plotting)
+Qs <- rio::import("data/clean/clean_all_Qs.rds") %>%
+  mutate(
+    purch_influence_16 = fct_relevel(purch_influence_16,
+                                     "I have little or no influence",
+                                     "I have some influence",
+                                     "I have a great deal of influence"
+    ),    
+    job_satisfaction_22 = fct_relevel(job_satisfaction_22,
+                                      "Very dissatisfied",
+                                      "Slightly dissatisfied",
+                                      "Neither satisfied nor dissatisfied",
+                                      "Slightly satisfied",
+                                      "Very satisfied"),
+    edu_importance_20 = fct_relevel(edu_importance_20,
+                                    "Not at all important/not necessary",
+                                    "Somewhat important",
+                                    "Fairly important",
+                                    "Very important",
+                                    "Critically important"),
+    company_size_23 = fct_relevel(company_size_23,
+                                  "1",
+                                  "Below 10",
+                                  "Below 20",
+                                  "Below 100",
+                                  "Over 100",
+                                  "Over 500" 
+    ),
+    company_size_23 = recode(company_size_23,
+                             "1" = "One Person Company"),
+    overtime_work_25 = fct_relevel(overtime_work_25,
+                                   "Never",
+                                   "Rarely: 1-2 days per year or less",
+                                   "Occasionally: 1-2 days per quarter but less than monthly",
+                                   "Sometimes: 1-2 days per month but less than weekly",
+                                   "Often: 1-2 days per week",
+                                   "Frequently: 3 or more days per week",
+    ),
+    overtime_work_25 = recode(overtime_work_25,
+                              "Often: 1-2 days per week" = "1-2 days per week",
+                              "Sometimes: 1-2 days per month but less than weekly" = "1-2 days per month",
+                              "Rarely: 1-2 days per year or less" = "<1-2 days per year",
+                              "Occasionally: 1-2 days per quarter but less than monthly" = "1-2 days per quarter",
+                              "Frequently: 3 or more days per week" = ">3 days per week"),
+    monthly_salary_28 = fct_relevel(monthly_salary_28,
+                                    "Greater than GHS 25,000",
+                                    "GHS 20,000 - GHS 25,000",
+                                    "GHS 15,000 - GHS 20,000",
+                                    "GHS 10,000 - GHS 15,000",
+                                    "GHS 8,000 - GHS 10,000",
+                                    "GHS 6,000 - GHS 8,000",
+                                    "GHS 5,000 - GHS 6,000",
+                                    "GHS 4,000 - GHS 5,000",
+                                    "GHS 3,500 - GHS 4,000",
+                                    "GHS 3,000 - GHS 3,500",
+                                    "GHS 2,500 - GHS 3,000",
+                                    "GHS 2,000 - GHS 2,500",
+                                    "GHS 1,500 - GHS 2,000",
+                                    "Less than GHS 1,500"),
+    prim_study_19 = recode(prim_study_19, 
+                           "Computer_Science_Engineering" = "Computer Science/Engineering",
+                           "Information_Technology" = "Information Technology",
+                           "Other_Engineering" = "Other Engineering",
+                           "Health_Science" = "Health Science",
+                           "Social_Science" = "Social Science",
+                           "Web_Development_Web_Design" = "Web-Development/Web-Design",
+                           "General_Science" = "General Science",
+                           "Electrical_Engineering" = "Electrical Engineering",
+                           "Visual_Arts" = "Visual Arts",
+                           "Agricultural_Science" = "Agricultural Science",
+                           "Graphic_Design" = "Graphic Design",
+                           "General_Arts" = "General Arts",
+                           "Mathematics_Statistics" = "Mathematics/Statistics"),
+    prim_study_19 = fct_relevel(prim_study_19,
+                                "Education",
+                                "Social Science",
+                                "Graphic Design",
+                                "Architecture",
+                                "Visual Arts",
+                                "Business",
+                                "General Arts",
+                                "General Science",
+                                "Health Science",
+                                "Chemistry",
+                                "Other Engineering",
+                                "Physics",
+                                "Agricultural Science",
+                                "Web-Development/Web-Design",
+                                "Mathematics/Statistics",
+                                "Electrical Engineering",
+                                "Information Technology",
+                                "Computer Science/Engineering"),   
+    highest_edu_18 = recode(highest_edu_18, 
+                            "Secondary_High_School" = "Secondary High School",
+                            "Basic_Education" = "Basic Education",
+                            "Higher_National_Diploma" = "Higher National Diploma",
+                            "Professional_Diploma" = "Professional Diploma",
+                            "Teacher_Diploma" = "Teacher Diploma",
+                            "College" = "Bachelor"),
+    highest_edu_18 = fct_relevel(highest_edu_18,
+                                 "Basic Education",
+                                 "Secondary High School",
+                                 "Teacher Diploma",
+                                 "Professional Diploma",
+                                 "Higher National Diploma",
+                                 "Bachelor",
+                                 "Master"),
+    profession_1 = recode(profession_1,
+                          "I am a developer by profession" = "I am a developer by profession",
+                          "I am not primarily a developer, but I write code sometimes as part of my work" = "I am not primarily a developer,\nbut sometimes write code at work",
+                          "I am a student who is learning to code" = "I am a student who is learning to code",
+                          "I code primarily as a hobby" = "I code primarily as a hobby",
+                          "I used to be a developer by profession, but no longer am" = "I used to be a developer by profession,\nbut no longer am",
+                          "None of these" = "None of these"),
+    job_status_29 = as_factor(job_status_29),
+    job_status_29 = recode(job_status_29,
+                           "I'm not actively looking, but I am open to new opportunities" = "I'm not actively looking,\nbut I am open to new opportunities",
+                           "I am actively looking for a job" = "I am actively looking for a job",
+                           "I am not interested in new job oportunities" = "I am not interested\nin new job oportunities"),
+    overtime_work_25 = recode(overtime_work_25,
+                              "Often: 1-2 days per week" = "Often: 1-2 days per week",
+                              "Frequently: 3 or more days per week" = "Frequently: 3 or more days per week",
+                              "Sometimes: 1-2 days per month but less than weekly" = "Sometimes: 1-2 days per month\nbut less than weekly",
+                              "Occasionally: 1-2 days per quarter but less than monthly" = "Occasionally: 1-2 days per quarter\nbut less than monthly",
+                              "Rarely: 1-2 days per year or less" = "Rarely: 1-2 days per year or less",
+                              "Never" = "Never"),
+    improve_onboarding_27 = recode(improve_onboarding_27, 
+                                   "I don't know" = "NA",
+                                   "I’m not sure"= "NA",  
+                                   "more"= "NA",
+                                   "N/A"= "NA",
+                                   "No idea"= "NA" ,
+                                   "Not working in a company"= "NA" ,
+                                   "I am quitting after nss"= "NA" ,
+                                   "With some experience"= "NA",
+                                   "I think just keep doing what they're doing will suffice."= "I am happy"  ,
+                                   "It's great. Nothing comes to mind"= "I am happy"  ,
+                                   "It’s fine"= "I am happy",
+                                   "It’s the best"= "I am happy", 
+                                   "There is no nee for any improvement"= "I am happy", 
+                                   "None"= "I am happy",
+                                   "The best I have encounter, won't change a thing."= "I am happy",
+                                   
+                                   "Communication"=  "Better documentation of infrastructure and work material",
+                                   "More documentation of code"=  "Better documentation of infrastructure and work material",
+                                   "Documenting a structure"= "Better documentation of infrastructure and work material",
+                                   "Proper documentation of existing softwares"= "Better documentation of infrastructure and work material",
+                                   "Proper documentation of infrastructure"= "Better documentation of infrastructure and work material",
+                                   "Scripts to set up devices, documentation of help new team members familiarize themselves with the different projects" ="Better documentation of infrastructure and work material",
+                                   "set up a tutorial on the stack being used, architecture and how the development cycle goes"= "Better documentation of infrastructure and work material",
+                                   
+                                   "Roles could be properly defined and documented"= "Clearly defined roles",
+                                   "By clearly defining the core functions of the various units/departments"= "Clearly defined roles",
+                                   "Company needs to allow the organisational structures to work without interference and clear task to be assigned to new hires"= "Clearly defined roles",
+                                   "Roles need to be well spelt out and every necessary document handed before start of work."= "Clearly defined roles",
+                                   "Set the expectations on the role earlier"= "Clearly defined roles",
+                                   
+                                   "Through orientation"= "Better orientation for new workers",
+                                   "Could have someone to take me through the code instead of having to understand it myself"= "Better orientation for new workers",
+                                   "Assign mentors to newly assigned employees"= "Better orientation for new workers",
+                                   "Have orientation sessions before on-boarding"= "Better orientation for new workers",
+                                   "Orientation for new employees"= "Better orientation for new workers",
+                                   "Providing mentorship and an enabling environment for learning"= "Better orientation for new workers",
+                                   "Pair a new developer with developer skilled in his art within the organization and is willing to help"= "Better orientation for new workers",
+                                   "Slower rollout. Everything happens too fast, so it doesn't stick"= "Better orientation for new workers",
+                                   
+                                   "A standardized structure for onboard ding"= "Clearer structure and standardisation",
+                                   "Having a standard onboarding process"= "Clearer structure and standardisation",
+                                   "By defining a structure in the first place"= "Clearer structure and standardisation",
+                                   "By defining a structure in the first place"= "Clearer structure and standardisation",
+                                   "Structured Onboarding program"= "Clearer structure and standardisation",
+                                   "By establishing an HR Department"= "Clearer structure and standardisation",
+                                   "Dedicated staff to handle on boarding process"= "Clearer structure and standardisation",
+                                   "By improving the organisational structure to facilitate the work flow"= "Clearer structure and standardisation",
+                                   "Improve the organizational structure" = "Clearer structure and standardisation", 
+                                   "Let IT help desk raise tickets for each unit responsible for delivering into the process" ="Clearer structure and standardisation",
+                                   
+                                   "Through IT skills" ="Better/more training",
+                                   "More specific training to understand fully the role as opposed to general orientation." ="Better/more training",
+                                   "Training in specific fields should be better encouraged" ="Better/more training",
+                                   "External trainings" ="Better/more training",
+                                   "Developing better internship systems for prospective workers" ="Better/more training",
+                                   "More coding workshops" ="Better/more training",
+                                   "By applying more practical tests for the individual" ="Better/more training",
+                                   
+                                   "More employment" ="Employing more people",
+                                   "to employee more workers" ="Employing more people",
+                                   
+                                   "Adequate funds for the right role" ="Other",
+                                   "A little interview on the chosen choice of language" ="Other",
+                                   "Capacity building" ="Other",
+                                   "inclusiveness" ="Other",
+                                   "Job positions should be made known" ="Other",
+                                   "More focus on developers" ="Other",
+                                   "More innovation and creativity" ="Other",
+                                   "Retention of talents.." ="Other",
+                                   "Observation through hard work" ="Other",
+                                   "Better background check" ="Other",
+                                   "Need new machines" ="Other",
+                                   "More interaction with leads" ="Other"
+    ),
+    improve_onboarding_27 = fct_relevel(improve_onboarding_27,
+                                        "Other",
+                                        "Employing more people",
+                                        "Clearly defined roles",
+                                        "Better documentation of infrastructure and work material",
+                                        "Better/more training",
+                                        "Better orientation for new workers",
+                                        "Clearer structure and standardisation",
+                                        "I am happy"
+    ),
+    improve_onboarding_27 = recode(improve_onboarding_27,
+                                        "Other" = "Other",
+                                        "Employing more people" = "Employing more people",
+                                        "Clearly defined roles" = "Clearly defined roles",
+                                        "Better documentation of infrastructure and work material" = "Better documentation of\ninfrastructure and work material",
+                                        "Better/more training" = "Better/more training",
+                                        "Better orientation for new workers" = "Better orientation for new workers",
+                                        "Clearer structure and standardisation" = "Clearer structure and standardisation",
+                                        "I am happy" = "I am happy"
+    ),
+    change_edu_21 = recode(change_edu_21, 
+                           "The program of study. I would probably take a computer science course" = "I would study Computer Science",
+                           "Yes" = "NA",
+                           "In the university at the moment" = "NA",
+                           "Business or graphic design"= "Field of Study",
+                           "I would select information technology"= "Field of Study",
+                           "field of study"= "Field of Study",
+                           "Would do computer engineering"= "Field of Study",
+                           "I will change the course I chose."= "Field of Study",
+                           "Material engineering"= "Field of Study",
+                           "My Choice of university of study"= "Field of Study",
+                           "I'll do electronic and electrical engineering instead of computer science"= "Field of Study",
+                           "I would change my programme of study to computer science, or software engineering."= "Field of Study",
+                           "I'd probably have studied general arts in senior high, then turned the Computer Science department ict labs into my playground in University." = "Field of Study",
+                           "My choice of course in high school because i was a visual arts student"= "Courses during High School",
+                           "My final year elective courses"= "Courses during High School" ,
+                           "The business course in secondary school"= "Courses during High School",
+                           "Combination of modules I select for the course"= "Courses during High School",
+                           "Curriculum"= "Courses during High School",
+                           "change my school"= "School/University",
+                           "My Education"= "School/University",
+                           "My tertiary institution"= "School/University",
+                           "Approach to learning"= "Learning Approach/Methods",
+                           "How I learned programming"= "Learning Approach/Methods",
+                           "How the courses are taught"= "Learning Approach/Methods",
+                           "The learning platforms used"= "Learning Approach/Methods",
+                           "Will advocate for modern trends to be taught"= "Learning Approach/Methods",
+                           "Tech entrepreneurship should be a course to understand the business of tech."= "Other",
+                           "The non practical aspects of studies"= "Other",
+                           "Master degree"= "Other",
+                           "learn more independently"= "Learn more independently",
+                           "learn programming earlier"= "Learn programming earlier",
+                           "more practical work"= "More practical work",
+                           "I woud have added something else to my studies"= "Adding additional things to studies"),
+    change_edu_21 = fct_relevel(change_edu_21,       
+                                "Nothing",
+                                "Other"),
+    monthly_salary_28_7 = recode(monthly_salary_28,
+                                 "Greater than GHS 25,000" = "Greater than GHS 15,000",
+                                 "GHS 20,000 - GHS 25,000" = "Greater than GHS 15,000",
+                                 "GHS 15,000 - GHS 20,000"= "Greater than GHS 15,000",
+                                 "GHS 10,000 - GHS 15,000"= "GHS 8,000 - GHS 15,000",
+                                 "GHS 8,000 - GHS 10,000"= "GHS 8,000 - GHS 15,000",
+                                 "GHS 6,000 - GHS 8,000"=  "GHS 3,500 - GHS 8,000",
+                                 "GHS 5,000 - GHS 6,000"= "GHS 3,500 - GHS 8,000",
+                                 "GHS 4,000 - GHS 5,000"=  "GHS 3,500 - GHS 8,000",
+                                 "GHS 3,500 - GHS 4,000"= "GHS 3,500 - GHS 8,000"),
+    monthly_salary_28_7 = fct_relevel(monthly_salary_28_7,
+                                      "Less than GHS 1,500",
+                                      "GHS 1,500 - GHS 2,000",
+                                      "GHS 2,000 - GHS 2,500",
+                                      "GHS 2,500 - GHS 3,000",
+                                      "GHS 3,000 - GHS 3,500",
+                                      "GHS 3,500 - GHS 8,000",
+                                      "GHS 8,000 - GHS 15,000",
+                                      "Greater than GHS 15,000"
+    ),
+    new_tool_7 = recode(new_tool_7,
+                        "Every few months" = "Every few months",
+                        "Once a year" = "Once a year",
+                        "Once every few years"  = "Once every few years",
+                        "Once a decade" = "Once a decade", 
+                        "This varies depending on work and projects" = "This varies depending on work\nand projects",
+                        "Other" = "Other"
+                        )
+    )
+
+
+
+skills <- rio::import("data/clean/skills_final.csv") %>% 
+  select(-V1) %>%  # artifact due to a save as .csv to remove (at least on a Mac?)
+  mutate_all(na_if,"") # the column 'level' contains blanks ("") instead of NAs -> transform them to NAs.
+# we add characteristics of the respondents to the skills, 
+# so that we can differentiate their popularity by occupation or gender:
+skills_with_characteristics <- skills %>% left_join(select(Qs, ID, profession_1, gender_35), by = c("id" = "ID"))
+
+number_of_respondents = dim(Qs)[1] # number of respondents (272) used to compute percentages.
+number_of_prof_dev = dim(Qs %>% filter(profession_1 == "I am a developer by profession"))[1]
+number_of_students = dim(Qs %>% filter(profession_1 == "I am a student who is learning to code"))[1]
+
+```
+
+```{r}
+
+# Themes and Functions:
+
+# Definition of some styling variables for the plots,
+# they are used in the theme and plotting functions.
+highlight_col = "#d4145a"
+text_col = "#777777"
+header_col = "#222222"
+font_in_viz = "sans" # !!! SHOULD WE CHANGE ????
+text_col_in_viz = header_col
+main_fontsize = 10 # 'default' base size for the plots
+HL_colors = c("#59B0E3","#E3E19A","#6FE38E","#AF8CDE","#DF4B4F")
+colours = c( "#610b70", "#88b101", "#eb1c96", "#e98403", "#45454C", "#000001",  "black")
+colours_4 = c("#58AFE2","#817BB5","#AB4887","#D4145A")
+colours_6 = c("#58AFE2", "#7190C7", "#8A71AC", "#A25290","#BB3375","#D4145A")
+colours_8 = c( "#58AFE2", "#6A99CF", "#7B83BB", "#8D6DA8", "#9F5694", "#B14081", "#C22A6D", "#D4145A")
+
+# HL_colors_sequential = c(text_col, "#610b70","#88b101","#eb1c96","#e98403","#454545")
+geom_text_size = 3.5 # size of text in plots
+
+
+barplot_theme <- function(){
+  # the definition of a custom ggplot theme for our barplots.
+  theme_minimal() + 
+    theme(
+      plot.title = element_text(family = font_in_viz, size = main_fontsize + 2, color = text_col_in_viz),
+      # plot.subtitle = element_text(family = font_in_viz, size = main_fontsize),
+      axis.title = element_text(family = font_in_viz, size = main_fontsize, color = text_col_in_viz),
+      axis.text = element_text(family = font_in_viz, size = main_fontsize, color = text_col_in_viz),
+      # plot.caption = element_text(hjust = 0, family = my_font, 
+      #                             size = main_fontsize, face= "italic"), #Default is hjust=1 / 0
+      plot.title.position = "plot",  # left-align title
+      # plot.caption.position =  "plot", 
+      panel.grid.minor.x = element_blank(),  # remove useless minor grid
+      panel.grid.major.y = element_blank(),  # remove useless major grid in bar charts
+      panel.grid.major.x = element_blank(),  # remove useless major grid in bar charts
+      axis.title.x = element_blank(), # we do not want an y axis for the barplot, we have labels already
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank()
+      # plot.margin = margin(0.1, 0.1, 0.1, 0.1, unit = "cm")
+    )
+}
+
+basic_barplot <- function(my_df, a_factor, its_values, labels, title, label_spacing = 0.07){
+  # a function to plot a standard barplot
+  # uses the barplot_theme defined above
+  # needs an (ordered) factor as input, and its values
+  # returns a ggplot
+  current_plot <- ggplot(data = my_df, 
+                         aes(x = fct_reorder({{a_factor}}, {{its_values}}), 
+                             y = {{its_values}})) + 
+    # LOLLIPOP:
+    geom_point(color = highlight_col, size = 5) +
+    geom_segment(aes(x={{a_factor}}, xend={{a_factor}},
+                     y=0, yend={{its_values}}),
+                 color = highlight_col,
+                 size = 1) +
+    # # rounding the edges of the bars: 
+    # geom_chicklet(radius = grid::unit(1, 'mm'), fill = highlight_col) + 
+    geom_text(
+      aes(label = {{labels}}, y = {{its_values}} + (label_spacing * max({{its_values}}))),
+      size = geom_text_size
+    ) +
+    scale_y_continuous(labels = scales::percent) +
+    barplot_theme() + 
+    coord_flip() +
+    labs(title = stringr::str_wrap(title,100)) + # automated text wrap in title
+    xlab("") +
+    ylab("")
+  return(current_plot)
+}
+
+#Function for barplot that does not override order
+barplot_ordered <- function(my_df, a_factor, its_values, labels, title, label_spacing = 0.07){
+  # a function to plot a standard barplot
+  # uses the barplot_theme defined above
+  # needs an (ordered) factor as input, and its values
+  # returns a ggplot
+  current_plot <- ggplot(data = my_df, 
+                         aes(x = {{a_factor}},
+                             y = {{its_values}})) + 
+    # # CHICKLET
+    # geom_chicklet(radius = grid::unit(1, 'mm'), fill = highlight_col) +
+    # SKINNY LOLLIPOPO:
+    geom_point(color = highlight_col, size = 5) +
+    geom_segment(aes(x={{a_factor}}, xend={{a_factor}},
+                     y=0, yend={{its_values}}),
+                 color = highlight_col,
+                 size = 1) +
+    geom_text(
+      aes(label = {{labels}}, y = {{its_values}} + (label_spacing * max({{its_values}}))),
+      size = geom_text_size
+    ) +
+    scale_y_continuous(labels = scales::percent) +
+    barplot_theme() + 
+    coord_flip() +
+    labs(title = stringr::str_wrap(title,100)) + # automated text wrap in title
+    xlab("") +
+    ylab("")
+  return(current_plot)
+}
+
+compute_perc <- function(my_df, a_factor){
+  # a small function to count a factor and compute the percentages
+  # also return the percentages as char for labelling.
+  # USE THIS FUNCTION IF THE SUM OF THE ANSWERS IS 272! (including NAs) -> not working if several possible choices.
+  my_df %>%
+    count({{a_factor}}) %>%
+    drop_na() %>% # always in percentage of the respondents to the question.
+    mutate(
+      perc = n/sum(n),
+      perc_label = paste0(as.character(round(perc*100,1)), "%")
+    ) %>% return()
+  
+}
+
+compute_perc_popular_skills <- function(the_skills, skillset, number_of_resp){
+  # USE THIS FUNCTION for the popular skills (last year + both)
+  # NOTE: we use all respondents, not only those who responded. -> some respondents did not enter any skills. -> not optimal, but annoying to correct?
+  the_skills %>%
+    filter(tool %in% skillset) %>% # select only the languages from all the tools
+    filter(level == "Worked with in PAST year" | level == "Both") %>%
+    count(tool) %>%
+    mutate(
+      perc = n/number_of_resp, 
+      perc_label = paste0(as.character(round(perc*100,1)), "%")
+    ) %>% 
+    arrange(-perc) %>%  
+    return()
+}
+
+compute_perc_future_skills <- function(the_skills, skillset, number_of_resp){
+  # USE THIS FUNCTION for the future, nexy year, skills (next year only)
+  # NOTE: we use all respondents, not only those who responded. -> some respondents did not enter any skills. -> not optimal, but annoying to correct?
+  the_skills %>%
+    filter(tool %in% skillset) %>% # select only the languages from all the tools
+    filter(level == "Want to work with NEXT year") %>%
+    count(tool) %>%
+    mutate(
+      perc = n/number_of_resp, 
+      perc_label = paste0(as.character(round(perc*100,1)), "%")
+    ) %>% 
+    arrange(-perc) %>%  
+    return()
+}
+
+
+
+bubble_plotly_theme <- function(){
+  theme_minimal() +
+    theme(legend.position="none",
+          panel.grid.major.y = element_blank(),
+          panel.grid.major.x = element_blank()
+    )
+}
+
+
+bubble_plot <- function(df, x_value, y_value, freq, colour_choice, title){
+  ggplot(data = df, aes(x={{x_value}}, y={{y_value}}, 
+                        text=text)) + # text = text that appears when hover over the bubble, needs to be defined beforehand
+    geom_point(aes(size=ifelse({{freq}}==0, NA, {{freq}}),  # bubbles with the size according to how many respondents
+                   fill = {{x_value}}), # bubble color according to x value level
+               alpha = 0.75, 
+               shape = 19, color=NA) + # circles and no border
+    scale_size(range = c(1.4, 15)) + # size of the bubbles
+    labs( x= "", y = "", size = "Number of respondents", fill = "") +
+    scale_fill_manual(values = {{colour_choice}}) +
+    scale_colour_manual(values= "white")
+  
+}
+
+
+# Trying to optimize the heights of the plots:
+#   heights depends on number of "bars"
+#   e.g. b3 means all the plots with 3 bars have an fig.height of 1.5
+b2 <- 1
+b3 <- 1.5
+b4 <- 1.8
+b6 <- 2.5
+b8 <- 2.8
+b10 <- 3
+b18 <- 4
+
+```
+
+# Overview
+
+Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana. In 2020, Hacklab Research fielded a survey covering everything from developers’ favorite technologies to their job preferences. This marks the first of annual surveys to be published. This maiden edition witnessed the participation of 272 developers who took the 20-minute survey earlier between November - December 2020.   
+
+Despite our survey’s reach and capacity for informing valuable conclusions, we acknowledge that our results don’t represent everyone in the Ghana developer community evenly. We have further work to do to make the Hacklab Ghana Developer Census 2020 a more inclusive, diverse platform, and a reflection in the community at large.   
+
+We are committed to building on steps we have taken and improving the coverage, insights and beyond in the coming years to better improve the support and interventions needed to give developers a more enabling ecosystem to thrive. Some of these survey's results directly guide those efforts. To address the characteristics of our data, be sure to check out where we summarize results by developer persona (Professional Developer, Student) or gender.    
+
+We looked at breakdowns by demographics throughout our analysis and its reflection of the distribution of talents.  
+
+Want to dive into the results yourself? The anonymized results of the survey are [available for download](https://github.com/Hacklab-Foundation/Developer-Census-2020) under the [Open Database License (ODbL)](https://opendatacommons.org/licenses/odbl/1-0/). We look forward to seeing what you find!  
+
+This maiden edition could not have been successful without the contributions of [Twitter](https://twitter.com/?lang=en) and [CorrelAid](https://correlaid.org/).  
+
+
+### About The Hacklab Foundation
+
+The Hacklab Foundation is an international nonprofit organization headquartered in Ghana with a focus on preparing the youth for future digital jobs through technology education and skills development. We achieve this through bootcamps, hackathons, mentorship and coaching, internships, digital skills training, and job placement.    
+
+Since our inception in 2015, we have directly impacted over 10,000 people, organized hackathons, robotics, and coding bootcamps for kids between the ages of 7yrs - 13yrs supported 500+ women in tech, 300+ youth were placed in jobs and 250+ youth were placed in internships. Through our partnership with IBM, we launched the Ghana National Digital Skills Training Program in November 2018, with a goal to reach 100,000 people by 2021.  
+
+#### Statement of Inclusion
+
+The Hacklab Foundation believes that creating an equal platform for everyone, irrespective of race, gender, social class, and physical limitations will allow for a fair chance to compete for the same opportunity. This has been at the core of our initiatives.    
+
+
+
+
+## Key Insights
+
+Here are a few of the top takeaways from this year’s results.   
+
+**1. Low Female Representation:**  
+Of the 272 respondents, 17% indicated being women. Only 10% of the 130 professional developers are women. However, this percentage has the potential to increase in the upcoming years as 24% of the 84 students are women. [Learn more](#gender).
+
+**2.	Geographical Concentration:**  
+70% of the respondents are from the Greater Accra Region. [Explore the map](#geography).
+
+**3. Most Used Languages:**  
+HTML/CSS, JavaScript, Python, and SQL are the most used languages by Ghanaian developers. Learn more about the popularity of other languages and the preferences of professional developers [here](#popu_language). 
+
+**4.	Most Familiar Frameworks:**  
+React.js is the most used web framework. Node.js is also a widely used framework. [Learn more](#popu_webframework).
+
+**5. Strong Developers' Communities:**  
+Of the numerous communities listed by the respondents (122), the three largest communities to which they indicated membership were DevCongress (13.6%), Facebook Developer Circle (9.6%), and the Hacklab Foundation (7.4%). [See all the communities](#dev_communities).  
+
+**6.	Highest Level of Education:**   
+The vast majority of the respondents have at least a secondary high school degree, and 70% indicated having a Bachelor's degree. Only 4% indicated having a Master's degree. [Learn more](#highest_education).
+
+**7.	Primary Field of Study:**    
+Most participants study or studied Computer Science or Computer Engineering (55%), followed by Information Technology (11.6%) and Business (5.4%). [Learn more](#study_field).
+
+**8.	Overtime & Compensation:**  
+62% of the respondents indicated receiving a monthly salary lower than 2000 GHS, this percentage drops to 47.5% for respondents who indicated being professional developers. Around 50% of the respondents work overtime on 3 or more days in a week.  
+Learn more about the [working conditions](#work_cond) and [salaries](#salary) of the respondents.
+
+
+
+
+
+<hr>
+
+
+
+
+
+
+# Developer Profile
+
+## Type of Developer
+
+### What describes you best?
+
+The two largest subgroups among the respondents are professional developers and students. Additionally, there are respondents coding as a part of their work, coding as a hobby, as well as former developers.   
+For the remainder of this report we use these categories, specifically students and professional developers, to highlight particular differences between participants.
+
+```{r, fig.align='center', out.width = '100%', fig.height = b6}
+
+basic_barplot(my_df = compute_perc(Qs, profession_1), 
+              a_factor = profession_1, its_values = perc, labels = perc_label, 
+              title = "",
+              label_spacing = 0.1)
+```
+
+### Do you code as a hobby? 
+
+Most of the respondents code as a hobby. Interestingly, professional developers seem to code for a hobby less often than students which may be related to their reduced time availability. 
+
+::::: {.panelset}
+
+::: {.panel}
+
+##### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
+
+basic_barplot(my_df = compute_perc(Qs, hobby_coding_2), 
+              a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+
+:::
+
+::: {.panel}
+
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), hobby_coding_2), 
+              a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+##### Students {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), hobby_coding_2), 
+              a_factor = hobby_coding_2, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::::
+
+## Employment
+
+```{r}
+
+employment_data <- Qs %>%
+  filter(employment_3 != "I prefer not to say") %>%
+  mutate(
+    employment_3 = factor(employment_3, 
+                          levels(employment_3)[c(4,2,3,6,5,1)])
+  )
+```
+
+Most of the respondents are full-time employees and there is also a great share of students. A significant share of the respondents are unemployed and looking for work. 
+
+When it comes to gender differences, there is a greater share of students among the female respondents. In addition, women seem to be less often self-employed than men. 
+
+::::: {.panelset}
+
+::: {.panel}
+
+##### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height = b6}
+
+basic_barplot(my_df = compute_perc(employment_data, employment_3), 
+              a_factor = employment_3, its_values = perc, labels = perc_label,
+              title = "",
+              label_spacing = 0.1)
+
+```
+
+
+:::
+
+::: {.panel}
+
+##### Men only {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height = b6}
+
+barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Man"), employment_3), 
+                a_factor = employment_3, its_values = perc, labels = perc_label,
+                title = "",
+                label_spacing = 0.12) + 
+  scale_y_continuous(expand = c(0, .03)) # avoid cut off of label
+
+```
+
+:::
+
+::: {.panel}
+
+##### Women only {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height = b6}
+
+barplot_ordered(my_df = compute_perc(employment_data %>% filter(gender_35 == "Woman"), employment_3), 
+                a_factor = employment_3, its_values = perc, labels = perc_label,
+                title = "",
+                label_spacing = 0.12) + 
+  scale_y_continuous(expand = c(0, .03)) # avoid cut off of label
+
+```
+
+:::
+
+::::
+
+
+
+## Geography <a name="geography"></a>
+
+### Region
+
+Most respondents come from the Greater Accra Region. The extent of this concentration in Accra seems to be larger for professional developers than for students. 
+
+::::: {.panelset}
+
+::: {.panel}
+
+##### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height = b10}
+region_data <- Qs %>%
+  filter(region_4 != "Not in Ghana")
+
+region_data$region_4 <- recode(region_data$region_4,
+                               "Eastern Region, Ghana" = "Eastern Region", 
+                               "Northern Region, Ghana" = "Northern Region", 
+                               "Central Region, Ghana" = "Central Region", 
+                               "Western Region, Ghana"= "Western Region"
+)
+
+basic_barplot(my_df = compute_perc(region_data, region_4), 
+              a_factor = region_4, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+
+:::
+
+::: {.panel}
+
+##### Professional Developers {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height = b10}
+
+basic_barplot(my_df = compute_perc(region_data %>% filter(profession_1 == "I am a developer by profession"), region_4), 
+              a_factor = region_4, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+#####  Students {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height = b10}
+
+basic_barplot(my_df = compute_perc(region_data %>% filter(profession_1 == "I am a student who is learning to code"), region_4), 
+              a_factor = region_4, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::::
+
+
+
+
+### City
+
+City of the respondents. Zoom in to get a more detailed picture. 
+
+Hover over the individual markers to see the professional status of the respondents. 
+
+```{r, fig.align= 'center', out.width= '100%', fig.height = 6.5}
+
+# the geocoding was done separately in data_cleaning/Geocoding.R
+# (to not lose time everytime we knitr)
+# we load the result:
+data_city_geo <- rio::import("data/clean/data_city_geo.rds") 
+
+#Map for the cities
+violet_icon <- makeIcon(
+  iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png", 
+  iconWidth = 24,
+  iconHeight = 32) 
+
+leaflet(data = data_city_geo) %>%
+  addTiles() %>% 
+  addMarkers(~ geocode$lon, ~ geocode$lat, 
+             clusterOptions = markerClusterOptions(), 
+             icon = violet_icon, label = ~profession_1)
+```
+
+
+
+## Demographics
+
+
+### Age
+
+Most respondents are between 20 and 30 years old. 
+
+While the students are very young in most cases, the professional developers display a little more variance in their ages. However, we have a very young sample at hand.
+
+```{r}
+Qs$age_range_6 <- factor(Qs$age_range_6, levels(Qs$age_range_6)[c(6:1)])
+
+```
+
+::::: {.panelset}
+
+::: {.panel}
+
+#####  All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height = b6}
+
+barplot_ordered(my_df = compute_perc(Qs, age_range_6), 
+                a_factor = age_range_6, its_values = perc, labels = perc_label, 
+                title = "")
+
+```
+
+
+:::
+
+::: {.panel}
+
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height = b6}
+
+
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), age_range_6), 
+                a_factor = age_range_6, its_values = perc, labels = perc_label,
+                title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+##### Students {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height = b6}
+
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), age_range_6), 
+                a_factor = age_range_6, its_values = perc, labels = perc_label,
+                title = "")
+
+```
+
+:::
+
+::::
+
+
+
+### Gender <a name="gender"></a>
+
+#### What Gender do you identify with?
+
+There is a  greater share of women among the students than among the professional developers. 
+
+Ghana's developer community may thus become more representative in the upcoming years. 
+
+```{r}
+
+#Removing NA
+
+gender_data <- Qs %>%
+  filter(gender_35 != "NA")
+```
+
+
+::::: {.panelset}
+
+::: {.panel}
+
+##### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
+
+barplot_ordered(my_df = compute_perc(gender_data, gender_35), 
+                a_factor = gender_35, its_values = perc, labels = perc_label, 
+                title = "")
+
+```
+
+
+:::
+
+::: {.panel}
+
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
+
+
+barplot_ordered(my_df = compute_perc(gender_data %>% filter(profession_1 == "I am a developer by profession"), gender_35), 
+                a_factor = gender_35, its_values = perc, labels = perc_label,
+                title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+##### Students {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
+
+barplot_ordered(my_df = compute_perc(gender_data %>% filter(profession_1 == "I am a student who is learning to code"), gender_35), 
+                a_factor = gender_35, its_values = perc, labels = perc_label,
+                title = "")
+
+```
+
+:::
+
+::::
+
+
+#### Do you identify as transgender? 
+
+```{r}
+transgender_data <- Qs %>%
+  filter(transgender_36 != "NA")
+```
+
+
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
+
+basic_barplot(my_df = compute_perc(transgender_data, transgender_36), 
+              a_factor = transgender_36, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+
+### Sexual orientation
+
+```{r}
+sexual_orientation_data <- Qs %>%
+  filter(sexual_orientation_37 != "NA" & sexual_orientation_37 != "Prefer not to say")
+
+```
+
+```{r, fig.align='center', out.width = '100%', fig.height = b4}
+
+basic_barplot(my_df = compute_perc(sexual_orientation_data, sexual_orientation_37), 
+              a_factor = sexual_orientation_37, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+### Ethnicity 
+
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(ethnicity_38 != "NA" & ethnicity_38 != "I prefer not to answer"), ethnicity_38), 
+              a_factor = ethnicity_38, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+### Do you have any dependents you care for? 
+
+Among our respondents, women seem to have dependents they care for less often than men do. This may partly be due to the fact that more women are still in their studies and that the women in our sample may be younger than the men. 
+
+```{r}
+dependents_data <- Qs %>%
+  filter(dependents_41 != "I prefer not to say" & dependents_41 != "NA")
+```
+
+::::: {.panelset}
+
+::: {.panel}
+
+##### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=1}
+
+basic_barplot(my_df = compute_perc(dependents_data, dependents_41), 
+              a_factor = dependents_41, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+##### Only Men {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=1}
+
+basic_barplot(my_df = compute_perc(dependents_data %>% filter(gender_35 == "Man"), dependents_41), 
+              a_factor = dependents_41, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::: {.panel}
+
+##### Only Women {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=1}
+
+basic_barplot(my_df = compute_perc(dependents_data %>% filter(gender_35 == "Woman"), dependents_41), 
+              a_factor = dependents_41, its_values = perc, labels = perc_label,
+              title = "")
+
+```
+
+:::
+
+::::
+
+
+
+
+
+
+
+
+<hr>
+
+
+
+
+
+
+
+
+
+
+# Technology and Tech Culture 
+
+## Most Popular Technologies
+
+These are the technologies with which the respondents have done extensive development work over the past year.  
+
+
+### Programming, scripting and markup languages <a name="popu_language"></a>
+
+_HTML/CSS_ is the most used language, followed by _JavaScript_, _Python_, and _SQL_. Professional developers are more likely to use _JavaScript_ and _SQL_. _C++_ and _C_ are still widely used to teach coding to students.    
+
+
+```{r}
+
+languages = c(
+  "C",			
+  "C#",			
+  "C++",		
+  "HTML/CSS",			
+  "Java",			
+  "JavaScript",			
+  'Kotlin',			
+  "PHP",			
+  "Python",			
+  "Ruby",			
+  "SQL",			
+  "Swift",			
+  "TypeScript"
+)
+
+
+```
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = languages,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = languages,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = languages,
+                                                  number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+### Platforms
+
+_Windows_ is the most widely used development platform; thanks, notably, to its success among students. _WordPress_, _Android_, _Linux_, and _Heroku_ are also widely used.  
+
+```{r}
+
+platforms = c(
+  "Android",			
+  "Arduino",			
+  "AWS",			
+  "Docker",		
+  "Google Cloud Platform",			
+  "Heroku",			
+  "IBM Cloud or Watson",			
+  "iOS",			
+  "Linux",			
+  "MacOS",		
+  "Microsoft Azure",		
+  "Raspberry Pi", 	
+  "Windows",			
+  "WordPress"
+)
+
+```
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = platforms,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = platforms,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = platforms,
+                                                  number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+### Web frameworks <a name="popu_webframework"></a>
+
+_React.js_ is the most popular web framework.   
+
+```{r}
+
+web_frameworks = c(
+  "Angular",			
+  "ASP.NET",		
+  "Django",			
+  "Express",		
+  "jQuery",			
+  "Laravel",
+  "React.js",
+  "Ruby on Rails",
+  "Vue.js",
+  "Spring"
+)
+
+```
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = web_frameworks,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = web_frameworks,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = web_frameworks,
+                                                  number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+### Other frameworks, libraries and tools
+
+_Node.js_ is a popular "back-end" environment.    
+
+```{r}
+
+other_frameworks = c(
+  ".NET",			
+  ".NET Core",			
+  "Flutter",			
+  "Node.js",			
+  "Puppet",			
+  "React Native",			
+  "Deno.js"
+)
+
+```
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = other_frameworks,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = other_frameworks,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = other_frameworks,
+                                                  number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+### Collaborative tools
+
+_GitHub_ is by far the most popular version control tool. _Slack_ is the most used business communication platform.  
+
+```{r}
+
+collaborative_tools = c(
+  "GitHub",			
+  "GitLab",			
+  "Facebook Workplace",			
+  "Slack",			
+  "Microsoft Teams",			
+  "Microsoft Azure",			
+  "Trello",			
+  "Google Suite (Docs, Meet, etc)",			
+  "Stack Overflow for Teams",			
+  "Jira"
+)
+
+```
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics, 
+                                                  skillset = collaborative_tools,
+                                                  number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "",
+              label_spacing = 0.09)
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a developer by profession"), 
+                                                  skillset = collaborative_tools,
+                                                  number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "",
+              label_spacing = 0.09)
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_popular_skills(the_skills = skills_with_characteristics %>% 
+                                                    filter(profession_1 == "I am a student who is learning to code"), 
+                                                  skillset = collaborative_tools,
+                                                  number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "",
+              label_spacing = 0.09)
+
+```
+:::
+:::::
+
+
+### Connections of Technologies 
+
+This network graph shows which technologies are mostly used together by the respondents. Every time a respondent mentioned using technologies, a link is drawn between them on the graph. Well-connected technologies on the graph, having many "co-uses", are thus technologies frequently used together by the respondents. The size of the nodes (bubbles) shows the number of respondents using each technology.  
+
+```{r, fig.align='center', out.width = '100%', fig.height=5}
+
+library(ggraph)
+library(tidygraph)
+
+skills <- rio::import("data/clean/skills_final.csv") %>% 
+  select(-V1) %>%  # artifact due to a save as .csv to remove (at least on a Mac?)
+  mutate_all(na_if,"") %>%
+  drop_na(level) %>%
+  filter(level != "Want to work with NEXT year") %>%
+  select(-level) %>%
+  mutate( # group those
+    tool = ifelse(tool == "HTML", "HTML/CSS", tool),
+    tool = ifelse(tool == "CSS", "HTML/CSS", tool),
+    # rename this:
+    tool = ifelse(tool == "IBM Cloud or Watson", "IBM Cloud/Watson", tool)
+    )
+
+#Creating a node list, id = tool id 
+# the number of times each tool is mentioned is the weight of the node
+# it will determine the size of the bubbles
+nodes <- skills %>%  
+  group_by(tool) %>%
+  summarise(weight = n()) 
+
+#adding a new column with the category
+languages = c("C", "C#", "C++", "HTML/CSS", "Java", "JavaScript", 
+              "Kotlin", "PHP", "Python", "Ruby", "SQL", "Swift", "TypeScript")
+
+platforms = c("Android", "Arduino", "AWS", "Docker", "Google Cloud Platform", 
+              "Heroku", "IBM Cloud/Watson", "iOS", "Linux", "MacOS", 
+              "Microsoft Azure", "Raspberry Pi", "Windows", "WordPress")
+
+web_frameworks = c("Angular", "ASP.NET", "Django", "Express", "jQuery", 
+                   "Lavarel", "React.js", "Ruby on Rails", "Vue.js", 
+                   "Spring")
+
+web_frameworks_frontend = c(".NET", ".NET Core", "Flutter", "Node.js",
+                            "Puppet", "React Native", "Deno.js")
+
+nodes_new <- nodes %>%
+  mutate(
+    category = ifelse(is.element(tool, languages), "language", 
+                      ifelse(is.element(tool, platforms), "platforms", 
+                             ifelse(is.element(tool, web_frameworks), 
+                                    "web_frameworks_backend",
+                                    ifelse(is.element(tool, web_frameworks_frontend), 
+                                           "web_frameworks_frontend", "other")))
+    )) %>%
+  filter(weight > 1)
+
+# EDGES LIST:
+edges <- skills %>%
+  # we group by respondent
+  group_by(id) %>%
+  # we add a new column with all the tools used by the respondents
+  # we just paste all of them together, separated by a ";"
+  # it works because we grouped by id
+  mutate(target = paste(tool, collapse = ';')) %>%
+  # we do not need to continue working on the grouped dataframe:
+  ungroup() %>%
+  # then we create a new row for all the combinations observed in the data,
+  # by splitting the column added above:
+  separate_rows(target, sep = ';') %>%
+  # not sure why but sometimes they are duplicates, did respondents mention twice the same tool? probably.
+  # we don't want duplicates, we just want a table with all the observed combinations
+  unique() %>%
+  # just to make it clear:
+  select(resp_id = id, source = tool, target) %>%
+  # we do not want "self-references", link from a tool to itself,
+  # so we remove cases where source == target:
+  filter(source != target) %>%
+  # for each respondent, we have the link (edges) twice, in both directions
+  # we do not want this (e.g. source=HTML/CSS, target=JavaScript + source=JavaScript, target=HTML/CSS)
+  # we want to count only one link for these!
+  # first we sort the data (not really useful, just easier to see what's going on:)
+  arrange(resp_id, source, target) %>%
+  # the next operation (mutate) will be performed row by row (and not by column)
+  # more info: https://dplyr.tidyverse.org/articles/rowwise.html
+  rowwise() %>%
+  # what we want to do is "remove unordered combinations".
+  # we add a new column which is the concatenation/contraction of the source and target (paste),
+  # but here is the trick: we sort the source and target alphabetically (str_sort).
+  # (inspired by this: https://stackoverflow.com/questions/32329315/duplicate-combination-of-values-in-columns?rq=1)
+  # Voilà, now we can identify the duplicates!
+  mutate(
+    source_target = paste(str_sort(c(source, target)), collapse = "_")
+  ) %>%
+  # we stop the rowwise:
+  ungroup() %>%
+  count(source_target, name = "weight") %>% # get the weights
+  separate(source_target, into = c("source", "target"), sep = "_", ) # re-create source/target
+# not used:  
+  # we remove all the rows with duplicates "source_target":
+  # distinct(source_target, .keep_all = TRUE) %>% # keep_all to keep all columns
+  # IT WORKS! woot woot!
+  # we can now keep only what we need: source and target:
+  # select(source, target)
+# FIN.
+
+
+
+####Plotting the network ----
+
+#Only the interesting tools
+# we apply a filter on the nodes to keep only the tools 
+#   that were mentioned by more than 20 respodents.
+nodes_filter <- nodes_new %>%
+  filter(category != "other") %>%
+  filter(weight > 20)
+
+edges_filter <- edges %>%
+  filter(source %in% nodes_filter$tool,
+         target %in% nodes_filter$tool)
+
+HL_colors_network = c("#DF4B4F", "#AF8CDE", "#59B0E3","#6fe38e") # green instead of yellow, easier to see
+
+graph <- as_tbl_graph(edges_filter, directed = FALSE, vertices = nodes_filter) 
+# create the layout for the graph:
+set.seed(100)
+lay <- ggraph::create_layout(graph, layout = "dh") %>%
+  left_join(nodes, by = c("name" = "tool"))
+
+
+
+set.seed(4)
+# net_backbone <- ggraph(graph, layout = "backbone")+
+net <- ggraph(graph, layout = "dh") +
+  geom_edge_link(aes(width = edges_filter$weight, color = edges_filter$weight), alpha = 0.2)+
+  geom_node_point(aes(color = nodes_filter$category, size=nodes_filter$weight), shape = 19)+
+  geom_node_text(aes(label = nodes_filter$tool), repel = TRUE, size = 3)+
+  scale_edge_width_continuous(range = c(0.1, 3), name = "Co-uses") + # control size
+  scale_edge_colour_continuous(
+    low = "#ffffff",
+    # low = "#d3d3d3",
+    high = "#000000",
+    space = "Lab",
+    na.value = "grey50",
+    guide = NULL
+  ) +
+  scale_size_continuous(name = "Number of respondents", range = c(1, 6)) +
+  scale_color_manual(name = "Category", values = HL_colors_network, 
+                     labels = c("Languages", "Platforms", "Web Frameworks", 
+                                "Other Frameworks"))+
+  coord_fixed()+
+  theme_graph() +
+  theme(legend.position = "right", 
+        legend.text = element_text(size = 9),
+        legend.title = element_text(size = 10)
+        # legend.key = element_rect(size = 5)
+        ) + 
+  guides(colour = guide_legend(override.aes = list(size=5)))
+
+net
+
+```
+
+
+The most popular technologies, such as _PHP_, _SQL_, _Python_, _JavaScript_, and _HTML_, are often used together, in the same ecosystem. We note that many of the respondents of the 2020 Developer Census seem to be active in web development.    
+
+
+## Interest Areas
+
+These are the technologies that the respondents are currently not using but want to work in over the next year.  
+
+### Interest Areas: Programming, Scripting and Markup Languages
+
+_TypeScript_, followed by _Python_ and _Swift_, are the technologies that many professional developers do not use but want to learn. Students are interested in "the classics": _Python_, _SQL_, and _JavaScript_.
+
+
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
+                                                 skillset = languages,
+                                                 number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                   filter(profession_1 == "I am a developer by profession"), 
+                                                 skillset = languages,
+                                                 number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                   filter(profession_1 == "I am a student who is learning to code"), 
+                                                 skillset = languages,
+                                                 number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+### Interest Areas: Platforms
+
+Respondents want to learn to work with cloud platforms, in particular _AWS_, for the professional developers and _Microsoft Azure_ for the students. Almost 20% of professional developers indicated wanting to learn _Docker_. _iOS_ is the mobile developing system that most want to work with next year.        
+
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
+                                                 skillset = platforms,
+                                                 number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                   filter(profession_1 == "I am a developer by profession"), 
+                                                 skillset = platforms,
+                                                 number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                   filter(profession_1 == "I am a student who is learning to code"), 
+                                                 skillset = platforms,
+                                                 number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+### Interest Areas: Web Frameworks
+
+If _React.js_ is currently [the most popular web framework](#popu_webframework), it seems that _Django_ and _Vue.js_ are attractive.      
+
+```{r}
+
+web_frameworks = c(
+  "Angular",			
+  "ASP.NET",		
+  "Django",			
+  "Express",		
+  "jQuery",			
+  "Laravel",
+  "React.js",
+  "Ruby on Rails",
+  "Vue.js",
+  "Spring"
+)
+
+```
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
+                                                 skillset = web_frameworks,
+                                                 number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                   filter(profession_1 == "I am a developer by profession"), 
+                                                 skillset = web_frameworks,
+                                                 number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                   filter(profession_1 == "I am a student who is learning to code"), 
+                                                 skillset = web_frameworks,
+                                                 number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+### Interest Areas: Other Frameworks, Libraries and Tools
+
+A quarter of the respondents indicated wanting to work with _Flutter_ next year. Many also want to work with _React Native_ and _Node.js_.  
+
+```{r}
+
+other_frameworks = c(
+  ".NET",			
+  ".NET Core",			
+  "Flutter",			
+  "Node.js",			
+  "Puppet",			
+  "React Native",			
+  "Deno.js"
+)
+
+```
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
+                                                 skillset = other_frameworks,
+                                                 number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                   filter(profession_1 == "I am a developer by profession"), 
+                                                 skillset = other_frameworks,
+                                                 number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=2.5}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                   filter(profession_1 == "I am a student who is learning to code"), 
+                                                 skillset = other_frameworks,
+                                                 number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+### Interest Areas: Collaborative Tools
+
+_Microsoft Azure_ and _Stack Overflow for Teams_ are tools that might become more popular. Many students also indicated wanting to learn _GitHub_.  
+
+```{r}
+
+collaborative_tools = c(
+  "GitHub",			
+  "GitLab",			
+  "Facebook Workplace",			
+  "Slack",			
+  "Microsoft Teams",			
+  "Microsoft Azure",			
+  "Trello",			
+  "Google Suite (Docs, Meet, etc)",			
+  "Stack Overflow for Teams",			
+  "Jira"
+)
+
+```
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics, 
+                                                 skillset = collaborative_tools,
+                                                 number_of_resp = number_of_respondents), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                   filter(profession_1 == "I am a developer by profession"), 
+                                                 skillset = collaborative_tools,
+                                                 number_of_resp = number_of_prof_dev), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+basic_barplot(my_df = compute_perc_future_skills(the_skills = skills_with_characteristics %>% 
+                                                   filter(profession_1 == "I am a student who is learning to code"), 
+                                                 skillset = collaborative_tools,
+                                                 number_of_resp = number_of_students), 
+              a_factor = tool, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+
+## Operating System
+
+### What is the primary operating system in which you work?
+
+Windows is the most used operating system. Professional developers use MacOS and Linux more often than other respondents. Students are overwhelmingly on Windows.  
+
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
+
+basic_barplot(my_df = compute_perc(Qs, prim_opsyst_14), 
+              a_factor = prim_opsyst_14, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), prim_opsyst_14), 
+              a_factor = prim_opsyst_14, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), prim_opsyst_14), 
+              a_factor = prim_opsyst_14, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+### In which operating system would you rather work?
+
+MacOS, Linux and Windows are practically tied as preferred systems. Professional developers have a preference for MacOS over Linux. Students prefer Windows.  
+
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
+
+basic_barplot(my_df = compute_perc(Qs, rather_opsyst_15), 
+              a_factor = rather_opsyst_15, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), rather_opsyst_15), 
+              a_factor = rather_opsyst_15, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), rather_opsyst_15), 
+              a_factor = rather_opsyst_15, its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+:::
+:::::
+
+
+
+## New Technologies
+
+### How frequently do you learn a new language or framework?
+
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=b6}
+
+barplot_ordered(my_df = compute_perc(Qs, new_tool_7), 
+                a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+                title = "",
+                label_spacing = 0.1) + 
+  scale_y_continuous(expand = c(0, .03)) + # avoid cut off of label
+  scale_x_discrete(limits=rev)
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=b6}
+
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), new_tool_7), 
+                a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+                title = "",
+                label_spacing = 0.1) + 
+  scale_x_discrete(limits=rev)
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=b6}
+
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), new_tool_7), 
+                a_factor = new_tool_7, its_values = perc, labels = perc_label, 
+                title = "",
+                label_spacing = 0.1) + 
+  scale_x_discrete(limits=rev)
+
+```
+:::
+:::::
+
+
+
+### What level of influence do you, personally, have over new technology purchases at your organization?
+
+Unsurprisingly, professional developers are more likely to have influence over new technology purchases.  
+
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
+
+barplot_ordered(my_df = compute_perc(Qs, purch_influence_16), 
+                a_factor = purch_influence_16, its_values = perc, labels = perc_label, 
+                title = "",
+                label_spacing = 0.09)
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
+
+barplot_ordered(my_df = compute_perc(Qs %>% 
+                                       filter(profession_1 == "I am a developer by profession"),
+                                     purch_influence_16), 
+                a_factor = purch_influence_16, its_values = perc, labels = perc_label, 
+                title = "",
+                label_spacing = 0.09)
+
+```
+:::
+:::::
+
+### When buying a new tool or software, how do you discover and research available solutions? 
+
+Most of the respondents declared relying on free trials and colleagues.  
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+# multiple choice question: we separate the different answers (separate_rows),
+#   and compute the % according to the total number of respondents
+perc_solution_research_17 <- Qs %>% 
+  select(ID, profession_1, solution_research_17) %>% 
+  separate_rows(solution_research_17, sep = ";") %>% 
+  # drop_na(any_of("solution_research_17")) %>% 
+  filter(solution_research_17 != "") %>% 
+  mutate(
+    solution_research_17 = ifelse(solution_research_17 == "YouTube Videos", "YouTube", solution_research_17), # group those
+    solution_research_17 = ifelse(solution_research_17 == "YouTube ", "YouTube", solution_research_17) # group those
+  ) %>%
+  count(solution_research_17) %>% 
+  mutate(
+    perc = n/number_of_respondents,  # % to total number of respondents -> some resp. selected several choices
+    perc_label = paste0(as.character(round(perc*100,1)), "%")
+  ) %>% 
+  arrange(-perc) %>%
+  # nicer style of text for the plot:
+  mutate(
+    solution_research_17 = case_when(
+      solution_research_17 == "Visit developer communities like Stack Overflow" ~ "Visit developer communities\nlike Stack Overflow",
+      solution_research_17 == "Read ratings or reviews on third party siteslike G2Crowd" ~ "Read ratings or reviews on third party sites\nlike G2Crowd",
+      TRUE ~ solution_research_17
+    )
+  )
+
+basic_barplot(my_df = perc_solution_research_17, 
+              a_factor = solution_research_17, its_values = perc, labels = perc_label, 
+              title = "",
+              label_spacing = 0.12) + 
+  scale_y_continuous(expand = c(0, .05)) # avoid cut off of label
+
+
+
+```
+
+
+
+
+
+
+
+
+<hr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Education, Work and Career
+
+## Education
+
+### Highest level of formal education <a name="highest_education"></a>
+
+Most of the survey participants have at least a secondary high-school degree whereas half of the students have a secondary high school degree and 85% of the professional developer have a Bachelor's or Master's degree.
+
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=b8}
+
+barplot_ordered(my_df = compute_perc(Qs, highest_edu_18), 
+                a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
+                title = "")
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=b8}
+
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), highest_edu_18), 
+                a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
+                title = "")
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=b8}
+
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), highest_edu_18), 
+                a_factor = highest_edu_18, its_values = perc, labels = perc_label, 
+                title = "")
+
+```
+:::
+:::::
+
+
+### Primary field of study <a name="study_field"></a>
+
+Most participants study or studied Computer Science or Computer Engineering, followed by Information Technology and other Engineering fields as well as Mathematics/Statistics and Business.
+
+::::: {.panelset}
+::: {.panel}
+
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height = b18}
+
+basic_barplot(my_df = compute_perc(Qs, prim_study_19), 
+              a_factor = prim_study_19, its_values = perc, labels = perc_label, 
+              title = "",
+              label_spacing = 0.08)
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height = b18}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), prim_study_19), 
+              a_factor = prim_study_19, its_values = perc, labels = perc_label, 
+              title = "",
+              label_spacing = 0.08)
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height = b18}
+
+basic_barplot(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), prim_study_19), 
+              a_factor = prim_study_19, its_values = perc, labels = perc_label, 
+              title = "",
+              label_spacing = 0.08)
+
+```
+:::
+:::::
+
+#### Does the primary field of study matter for the salary as a professional developer?
+There seems no clear primary field of study where a high salary is guaranteed among professional developers.
+
+```{r, fig.align='center', out.width = '100%', fig.height=4, warning=FALSE, message=FALSE}
+
+
+prim_study_19_28_prof <- Qs %>%
+  filter(profession_1 == "I am a developer by profession") 
+
+
+runningcounts.df <- as.data.frame(table(prim_study_19_28_prof$prim_study_19, prim_study_19_28_prof$monthly_salary_28_7))
+
+relation_ordinal_Q19_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
+                                                       prim_study_19 = Var1)
+
+levels(relation_ordinal_Q19_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q19_28$monthly_salary_28))
+levels(relation_ordinal_Q19_28$monthly_salary_28) <- sub("Less than GHS 1,500", "<GHS 1,500", 
+                                                         levels(relation_ordinal_Q19_28$monthly_salary_28))
+levels(relation_ordinal_Q19_28$monthly_salary_28) <- sub("Greater than GHS 15,000", ">GHS 15,000", 
+                                                         levels(relation_ordinal_Q19_28$monthly_salary_28))
+levels(relation_ordinal_Q19_28$prim_study_19) <- sub(" ", "\n", levels(relation_ordinal_Q19_28$prim_study_19))
+levels(relation_ordinal_Q19_28$prim_study_19) <- sub("/", "\n", levels(relation_ordinal_Q19_28$prim_study_19))
+levels(relation_ordinal_Q19_28$prim_study_19) <- sub("Computer\nScience\nEngineering", "Computer Science/\nEngineering", levels(relation_ordinal_Q19_28$prim_study_19))
+
+relation_ordinal_Q19_28 <- relation_ordinal_Q19_28 %>%
+  # prepare text for tooltip
+  mutate(text = paste(Freq, "respondent/s")) %>%
+  filter(Freq > 0)
+
+
+names(colours_8) <- levels(relation_ordinal_Q19_28$monthly_salary_28)
+colScale <- scale_colour_manual(name = "monthly_salary_28",values = colours_8)
+
+bubble_Q19_28_resp = ggplot(data = relation_ordinal_Q19_28, 
+                            aes(x=monthly_salary_28, y=prim_study_19, color=monthly_salary_28)) +
+  geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
+                             tooltip = text)) +
+  colScale +
+  labs(x = "", y = "") +
+  bubble_plotly_theme() +
+  theme(axis.text.x = element_text(angle = 20))+
+  theme(axis.text=element_text(color = "black")) +
+  scale_size_area(max_size = 12) # to scale by area and not radius! 
+
+girafe(ggobj = bubble_Q19_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 7, 
+       height_svg = 4.5,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
+
+```
+
+
+#### How do primary study field, highest degree and salary relate to each other among professional developers?
+<span style="color:#af8cde;">Bachelor graduates</span> have various salaries independent of their primary study field. The <span style="color:#df4b4f;">Master graduates</span> from computer science and engineering as well as mathematics and statistics tend to have a higher salary than the rest of the respondents.
+<span style="color:#59b0e3;">Graduates of secondary high school</span> tend to have, independent of the study field, salaries in the lower range. Only respondents who indicated being professional developers are included in the plot.
+
+```{r, fig.align='center', out.width = '100%', fig.height=3, warning=FALSE}
+prim_study_19_28_prof <- Qs %>%
+  filter(profession_1 == "I am a developer by profession",
+         highest_edu_18 == "Bachelor" |
+           highest_edu_18 == "Master" |
+           highest_edu_18 == "Secondary High School" |
+           highest_edu_18 == "Higher National Diploma")
+
+
+# drop Education Levels that have 0 respondents
+prim_study_19_28_prof$prim_study_19<- droplevels(prim_study_19_28_prof$prim_study_19)
+prim_study_19_28_prof$highest_edu_18<- droplevels(prim_study_19_28_prof$highest_edu_18)
+
+runningcounts.df <- as.data.frame(table(prim_study_19_28_prof$prim_study_19, prim_study_19_28_prof$monthly_salary_28_7, prim_study_19_28_prof$highest_edu_18))
+
+
+prim_study_19_28_prof <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
+                                                     prim_study_19 = Var1,
+                                                     highest_edu_18 = Var3)
+
+# prepare text for tooltip
+prim_study_19_28_prof <- prim_study_19_28_prof %>%
+  mutate(text = paste("Highest Education: ", highest_edu_18,"\n", Freq, "respondent/s"))
+
+
+# colours_7_3D = c("#58AFE2", "#817BB5","#AB4887","#D4145A","white", "grey")
+colours_7_3D <- HL_colors[c(1,3,4,5,2)]
+
+names(colours_7_3D) <- levels(prim_study_19_28_prof$highest_edu_18)
+colScale <- scale_colour_manual(name = "highest_edu_18",values = colours_7_3D)
+
+
+levels(prim_study_19_28_prof$monthly_salary_28) <- gsub(" - ", "\n", levels(prim_study_19_28_prof$monthly_salary_28))
+levels(prim_study_19_28_prof$monthly_salary_28) <- sub("Greater than GHS 15,000", ">GHS\n15,000", levels(prim_study_19_28_prof$monthly_salary_28))
+
+levels(prim_study_19_28_prof$monthly_salary_28) <- sub("Less than GHS 1,500", "<GHS\n1,500", levels(prim_study_19_28_prof$monthly_salary_28))
+
+levels(prim_study_19_28_prof$highest_edu_18) <- gsub(" ", "\n", levels(prim_study_19_28_prof$highest_edu_18))
+
+bubble_Q19_28_resp = ggplot(data = prim_study_19_28_prof, 
+                            aes(x=monthly_salary_28, y=prim_study_19, color= highest_edu_18,
+                                alpha = 0.8)) +
+  geom_jitter_interactive(width = 0.25,height =0.15, aes(size=ifelse(Freq==0, NA, Freq),
+                                                         tooltip = text)) +
+  scale_size_binned(range = c(1, 15))+
+  colScale +
+  labs(x = "", y = "") +
+  bubble_plotly_theme()+
+  theme_bw() +
+  theme(legend.position="none")+
+  theme(axis.text.x = element_text(angle = 20))+ 
+  theme(axis.text.x = element_text(vjust=0.5)) +
+  theme(axis.text=element_text(size=16, color = "black"))
+
+
+girafe(ggobj = bubble_Q19_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 13, 
+       height_svg = 7,
+       pointsize = 15,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
+
+
+
+
+```
+
+### How important is formal education, such as a university degree in computer science, to your career?
+
+Half of the respondents find a formal education very or even critically important for their career.
+
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height= 2}
+
+barplot_ordered(my_df = compute_perc(Qs, edu_importance_20), 
+                a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
+                title = "",
+                label_spacing = 0.09)
+
+```
+:::
+::: {.panel}
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height= 2}
+
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a developer by profession"), edu_importance_20), 
+                a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
+                title = "",
+                label_spacing = 0.09)
+
+```
+:::
+::: {.panel}
+##### Students {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height= 2}
+
+barplot_ordered(my_df = compute_perc(Qs %>% filter(profession_1 == "I am a student who is learning to code"), edu_importance_20), 
+                a_factor = edu_importance_20, its_values = perc, labels = perc_label, 
+                title = "",
+                label_spacing = 0.09)
+
+```
+:::
+:::::
+
+
+### If you could go back and change your educational path (but end up in the same career), what would you change?
+More than 1/3 of the respondents won't change anything. Studying Computer Science and changing the field of study are on the second and the third position.
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+
+change_edu_filt <- Qs %>%
+  filter(change_edu_21 != "NA")
+
+basic_barplot(my_df = compute_perc(change_edu_filt, change_edu_21 ), 
+                a_factor = change_edu_21 , its_values = perc, labels = perc_label, 
+                title = "",
+                label_spacing = 0.09)
+
+# table(Qs$change_edu_21)
+```
+
+
+## Working Conditions 
+<a name="work_cond"></a>  
+
+### How many people are employed by the company or organization you currently work for?  
+
+Half of the respondents work in a small company with less than 10 workers. Only 10% of the respondents work in a big company with more than 100 workers.
+
+```{r, fig.align='center', out.width = '100%', fig.height= 2}
+
+#Removing NA
+
+company_size_23_NA_remov <- Qs %>%
+  filter(company_size_23 != "NA")
+
+barplot_ordered(my_df = compute_perc(company_size_23_NA_remov, company_size_23 ), 
+                a_factor = company_size_23 , its_values = perc, labels = perc_label, 
+                title = "")
+```
+
+### On average, how many hours per week do you work?
+
+Working hours are quite evenly scattered across the scale from 0 to 80 hours a week.
+
+```{r, fig.align='center', out.width = '80%', fig.height=2.5}
+
+ggplot(compute_perc(Qs,weekly_work_hours_24), aes(x=weekly_work_hours_24)) + 
+  geom_histogram(color = "white", fill= highlight_col, binwidth = 10) + 
+  labs(x="Weekly working hours", y = "Number of Respondents") +
+  scale_x_continuous(breaks = seq(0, 120, by=10)) +
+  theme_minimal() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        axis.line = element_line(colour = "black"))
+
+
+```
+
+
+### How often do you work overtime or beyond the formal time expectation of your job?
+
+Around 50% of the respondents work overtime on 3 or more days in a week.
+
+```{r, fig.align='center', out.width = '100%', fig.height= 2.5}
+
+barplot_ordered(my_df = compute_perc(Qs, overtime_work_25 ), 
+                a_factor = overtime_work_25 , its_values = perc, labels = perc_label, 
+                title = "")
+
+```
+
+
+
+
+### Job satisfaction
+
+A little bit more than 50% of the respondents are slightly satisfied or satisfied with their current jobs.
+Whereas 20% are slightly dissatisfied or dissatisfied.
+
+```{r, fig.align='center', out.width = '100%', fig.height=2}
+
+barplot_ordered(my_df = compute_perc(Qs, job_satisfaction_22 ), 
+                a_factor = job_satisfaction_22 , 
+                its_values = perc, 
+                labels = perc_label, 
+                title = "")
+
+
+```
+
+#### Relationship between job satisfaction and overtime work
+
+Interestingly, people who work overtime more than three times a week are satisfied with their job. It seems that there is no relationship that indicates less job satisfaction with more overtime work. The tendency is rather the opposite. 
+
+```{r, include = FALSE, fig.align='center', out.width = '100%', fig.height=3}
+
+# Bubble chart: Relationship between job satisfaction and overtime work
+
+
+# bubble_Q22_25<-bubble_plot(df = relation_ordinal_Q22_25,
+#                            x_value = overtime_work_25,
+#                            y_value = job_satisfaction_22, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
+#
+# # ggplotly(bubble_Q22_25, tooltip="text", width = 800, height = 600)
+```
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+# Responsive Bubble Chart for Relationship between Job Satisfaction and Overtime Work
+
+runningcounts.df <- as.data.frame(table(Qs$job_satisfaction_22, Qs$overtime_work_25))
+
+relation_ordinal_Q22_25 <- runningcounts.df %>% rename(overtime_work_25 = Var2,
+                                                       job_satisfaction_22 = Var1) %>%
+  mutate(overtime_work_25 = recode(overtime_work_25,
+                                   "Often: 1-2 days per week" = "1-2 days per week",
+                                   "Sometimes: 1-2 days per month but less than weekly" = "1-2 days per month",
+                                   "Rarely: 1-2 days per year or less" = "<1-2 days per year",
+                                   "Occasionally: 1-2 days per quarter but less than monthly" = "1-2 days per quarter",
+                                   "Frequently: 3 or more days per week" = ">3 days per week"))
+
+levels(relation_ordinal_Q22_25$overtime_work_25) <- gsub("days", "days\n", levels(relation_ordinal_Q22_25$overtime_work_25))
+levels(relation_ordinal_Q22_25$job_satisfaction_22) <- gsub(" ", "\n", levels(relation_ordinal_Q22_25$job_satisfaction_22))
+
+
+
+relation_ordinal_Q22_25 <- relation_ordinal_Q22_25 %>%
+  # prepare text for tooltip
+  mutate(text = paste(Freq, "respondent/s"))
+
+
+names(colours) <- levels(relation_ordinal_Q22_25$overtime_work_25)
+colScale <- scale_colour_manual(name = "overtime_work_25",values = colours_6)
+
+bubble_Q22_25_resp = ggplot(data = relation_ordinal_Q22_25, aes(x=overtime_work_25, y=job_satisfaction_22, color=overtime_work_25)) +
+  geom_point_interactive(aes(size = Freq, tooltip = text)) +
+  colScale +
+  labs(x = "", y = "") +
+  bubble_plotly_theme()+
+  theme(axis.text.x = element_text(angle = 20))+
+  theme(axis.text=element_text(color = "black")) +
+  scale_size_area(max_size = 20) # to scale by area and not radius! 
+
+girafe(ggobj = bubble_Q22_25_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 6, 
+       height_svg = 4,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
+```
+
+
+
+
+
+
+## Salary <a name="salary"></a>
+
+
+### How much is your monthly salary in Ghana Cedis?
+
+64% of women and 61% of men earn less than GHS 2000 monthly. 3.2% of the respondents earn more than GHS 10,000. The majority (52.5%) of the respondents who indicated being professional developers earn more than GHS 2000 monthly.  
+
+```{r}
+monthly_salary_data <- Qs %>%
+  filter(monthly_salary_28 != "NA")
+
+```
+
+::::: {.panelset}
+::: {.panel}
+##### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+barplot_ordered(my_df = compute_perc(Qs, monthly_salary_28 ), 
+                a_factor = monthly_salary_28 , its_values = perc, labels = perc_label, 
+                title = "")
+
+```
+:::
+::: {.panel}
+
+##### Only Women {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 == "Woman"), monthly_salary_28), 
+                a_factor = monthly_salary_28, its_values = perc, labels = perc_label,
+                title = "")
+```
+:::
+::: {.panel}
+
+##### Only Men {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(gender_35 == "Man"), monthly_salary_28), 
+                a_factor = monthly_salary_28, its_values = perc, labels = perc_label,
+                title = "")
+
+```
+:::
+:::: {.panel}
+
+##### Only Professional Developers {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+barplot_ordered(my_df = compute_perc(monthly_salary_data %>% filter(profession_1 == "I am a developer by profession"), monthly_salary_28), 
+                a_factor = monthly_salary_28, its_values = perc, labels = perc_label,
+                title = "")
+
+```
+:::
+::::
+
+
+#### Relationship between Size of Company and Salary
+
+The student respondents don't earn more than 2000 GHS but do work in companies of various sizes. Professional developers earn larger salaries. Most developers work in companies with less than 100 employees.   
+It seems that there is no clear relationship between the company size and the salary.  
+
+::::: {.panelset}
+
+::: {.panel}
+
+##### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3, warning=FALSE}
+company_size_23_NA_remov <- Qs  %>%
+  mutate(company_size_23_binned = recode(company_size_23, 
+                                         "I don't know" = "NA",
+                                         "I’m not sure"= "NA",  
+                                         "more"= "NA",
+                                         "N/A"= "NA")) %>%
+  filter(company_size_23_binned != "NA") 
+
+company_size_23_NA_remov$company_size_23_binned<- droplevels(company_size_23_NA_remov$company_size_23_binned)
+
+
+runningcounts.df <- as.data.frame(table(company_size_23_NA_remov$company_size_23_binned, company_size_23_NA_remov$monthly_salary_28_7))
+
+relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
+                                                       company_size_23 = Var1)
+
+levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
+levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub("than ", "than\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
+
+levels(relation_ordinal_Q23_28$company_size_23) <- sub("One Person Company", "One Person\nCompany", levels(relation_ordinal_Q23_28$company_size_23))
+
+relation_ordinal_Q23_28 <- relation_ordinal_Q23_28 %>%
+  # prepare text for tooltip
+  mutate(text = paste(Freq, "respondent/s")) 
+
+
+# Heatmap as an alternative
+# ggHeatmap(relation_ordinal_Q23_28,
+#           aes(x = company_size_23,
+#               y = monthly_salary_28,
+#               fill = Freq),
+#           addlabel=FALSE,
+#           interactive=TRUE,
+#           tooltip = text)
+
+
+names(colours_6) <- levels(relation_ordinal_Q23_28$company_size_23)
+colScale <- scale_colour_manual(name = "company_size_23",values = colours_6)
+
+bubble_Q23_28_resp = ggplot(data = relation_ordinal_Q23_28, aes(x=company_size_23, y=monthly_salary_28, color=company_size_23)) +
+  geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
+                             tooltip = text)) +
+  colScale +
+  labs(x = "", y = "") +
+  bubble_plotly_theme()+
+  theme(axis.text.x = element_text(angle = 20))+
+  theme(axis.text=element_text(color = "black")) +
+  scale_size_area(max_size = 13) # to scale by area and not radius! 
+
+
+girafe(ggobj = bubble_Q23_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 6, 
+       height_svg = 4,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
+
+
+
+# plot responsive plotly
+# bubble_Q23_28<-bubble_plot(df = relation_ordinal_Q23_28, x_value = company_size_23, y_value = monthly_salary_28, freq = Freq, colour_choice = colours, title = "") + bubble_plotly_theme()
+# ggplotly(bubble_Q23_28, tooltip="text", width = 800, height = 600)
+```
+
+:::
+
+::: {.panel}
+
+##### Only Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+company_size_23_NA_remov <- Qs  %>%
+  filter(profession_1 == "I am a developer by profession") %>%
+  mutate(company_size_23_binned = recode(company_size_23, 
+                                         "I don't know" = "NA",
+                                         "I’m not sure"= "NA",  
+                                         "more"= "NA",
+                                         "N/A"= "NA")) %>%
+  filter(company_size_23_binned != "NA") 
+
+company_size_23_NA_remov$company_size_23_binned<- droplevels(company_size_23_NA_remov$company_size_23_binned)
+
+
+runningcounts.df <- as.data.frame(table(company_size_23_NA_remov$company_size_23_binned, company_size_23_NA_remov$monthly_salary_28_7))
+
+relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
+                                                       company_size_23 = Var1)
+
+levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
+levels(relation_ordinal_Q23_28$company_size_23) <- sub("One Person Company", "One Person\nCompany", levels(relation_ordinal_Q23_28$company_size_23))
+levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub("than ", "than\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
+
+
+relation_ordinal_Q23_28 <- relation_ordinal_Q23_28 %>%
+  # prepare text for tooltip
+  mutate(text = paste(Freq, "respondent/s")) 
+
+
+
+names(colours_6) <- levels(relation_ordinal_Q23_28$company_size_23)
+colScale <- scale_colour_manual(name = "company_size_23",values = colours_6)
+
+bubble_Q23_28_resp = ggplot(data = relation_ordinal_Q23_28, aes(x=company_size_23, y=monthly_salary_28, color=company_size_23)) +
+  geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
+                             tooltip = text)) +
+  colScale +
+  labs(x = "", y = "") +
+  bubble_plotly_theme()+
+  theme(axis.text.x = element_text(angle = 20))+
+  theme(axis.text=element_text(color = "black")) +
+  scale_size_area(max_size = 13) # to scale by area and not radius! 
+
+
+girafe(ggobj = bubble_Q23_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 6, 
+       height_svg = 4,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
+```
+
+:::
+
+::: {.panel}
+
+##### Only Students {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+company_size_23_NA_remov <- Qs  %>%
+  filter(profession_1 == "I am a student who is learning to code") %>%
+  mutate(company_size_23_binned = recode(company_size_23, 
+                                         "I don't know" = "NA",
+                                         "I’m not sure"= "NA",  
+                                         "more"= "NA",
+                                         "N/A"= "NA")) %>%
+  filter(company_size_23_binned != "NA") 
+
+company_size_23_NA_remov$company_size_23_binned<- droplevels(company_size_23_NA_remov$company_size_23_binned)
+
+
+runningcounts.df <- as.data.frame(table(company_size_23_NA_remov$company_size_23_binned, company_size_23_NA_remov$monthly_salary_28_7))
+
+relation_ordinal_Q23_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
+                                                       company_size_23 = Var1)
+
+levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
+levels(relation_ordinal_Q23_28$company_size_23) <- sub("One Person Company", "One Person\nCompany", levels(relation_ordinal_Q23_28$company_size_23))
+levels(relation_ordinal_Q23_28$monthly_salary_28) <- gsub("than ", "than\n", levels(relation_ordinal_Q23_28$monthly_salary_28))
+
+
+relation_ordinal_Q23_28 <- relation_ordinal_Q23_28 %>%
+  # prepare text for tooltip
+  mutate(text = paste(Freq, "respondent/s")) 
+
+
+# Heatmap as an alternative
+# ggHeatmap(relation_ordinal_Q23_28,
+#           aes(x = company_size_23,
+#               y = monthly_salary_28,
+#               fill = Freq),
+#           addlabel=FALSE,
+#           interactive=TRUE,
+#           tooltip = text)
+
+
+names(colours_6) <- levels(relation_ordinal_Q23_28$company_size_23)
+colScale <- scale_colour_manual(name = "company_size_23",values = colours_6)
+
+bubble_Q23_28_resp = ggplot(data = relation_ordinal_Q23_28, aes(x=company_size_23, y=monthly_salary_28, color=company_size_23)) +
+  geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
+                             tooltip = text)) +
+  colScale +
+  labs(x = "", y = "") +
+  bubble_plotly_theme()+
+  theme(axis.text.x = element_text(angle = 20))+
+  theme(axis.text=element_text(color = "black")) +
+  scale_size_area(max_size = 13) # to scale by area and not radius! 
+
+
+
+girafe(ggobj = bubble_Q23_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 6, 
+       height_svg = 4,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
+```
+:::
+
+::::
+
+#### Relationship between Highest Education and Salary among Professional Developers
+
+A Bachelor's degree is associated with a broad range of salary options. There are respondents with a Bachelors's degree who receive salaries as high as respondents with a Master's degree. However, people with a Master's degree tend to have higher salaries than others on average. Only respondents who indicated being professional developers are included in the plot. 
+
+```{r, fig.align='center', out.width = '100%', fig.height=3, warnings = FALSE}
+# Variables: highest_edu_18, monthly_salary_28
+
+monthly_salary_28_Prof <- Qs  %>%
+  filter(profession_1 == "I am a developer by profession",
+         highest_edu_18 == "Bachelor" | 
+           highest_edu_18 == "Master" |
+           highest_edu_18 == "Secondary High School" |
+           highest_edu_18 == "Higher National Diploma")
+
+
+monthly_salary_28_Prof$highest_edu_18<- droplevels(monthly_salary_28_Prof$highest_edu_18)
+# levels(monthly_salary_28_Prof$highest_edu_18)
+
+runningcounts.df <- as.data.frame(table(monthly_salary_28_Prof$highest_edu_18, monthly_salary_28_Prof$monthly_salary_28_7))
+
+relation_ordinal_Q18_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
+                                                       highest_edu_18 = Var1)
+
+levels(relation_ordinal_Q18_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q18_28$monthly_salary_28))
+levels(relation_ordinal_Q18_28$monthly_salary_28) <- gsub("than ", "than\n", levels(relation_ordinal_Q18_28$monthly_salary_28))
+levels(relation_ordinal_Q18_28$highest_edu_18) <- gsub(" ", "\n", levels(relation_ordinal_Q18_28$highest_edu_18))
+
+
+
+relation_ordinal_Q18_28 <- relation_ordinal_Q18_28 %>%
+  # prepare text for tooltip
+  mutate(text = paste(Freq, "respondent/s")) 
+
+
+names(colours_4) <- levels(relation_ordinal_Q18_28$highest_edu_18)
+colScale <- scale_colour_manual(name = "highest_edu_18",values = colours_4)
+
+bubble_Q18_28_resp = ggplot(data = relation_ordinal_Q18_28, aes(x=highest_edu_18, y=monthly_salary_28, color=highest_edu_18)) +
+  geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
+                             tooltip = text)) +
+  colScale +
+  labs(x = "", y = "") +
+  bubble_plotly_theme()+
+  theme(axis.text=element_text(color = "black"))+
+  scale_size_area(max_size = 13) # to scale by area and not radius! 
+
+
+
+girafe(ggobj = bubble_Q18_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 6, 
+       height_svg = 4,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
+
+# ggplotly(bubble_Q18_28, tooltip="text", width = 800, height = 600)
+
+```
+
+#### Relationship between overtime work and salary among professional developers
+
+There seems to be a tendency that a higher salary is associated with overtime work. However, there a lot of respondents who have a salary in the lower range and still work more than 3 days per week overtime. Only respondents who indicated being professional developers are included in the plot.  
+
+```{r, fig.align='center', out.width = '100%', fig.height=3, warnings = FALSE}
+overtime_work_25_28_prof <- Qs %>%
+  filter(profession_1 == "I am a developer by profession") 
+
+
+runningcounts.df <- as.data.frame(table(overtime_work_25_28_prof$overtime_work_25, overtime_work_25_28_prof$monthly_salary_28_7))
+
+relation_ordinal_Q25_28 <- runningcounts.df %>% rename(monthly_salary_28 = Var2,
+                                                       overtime_work_25 = Var1)
+
+levels(relation_ordinal_Q25_28$monthly_salary_28) <- gsub(" - ", "\n", levels(relation_ordinal_Q25_28$monthly_salary_28))
+levels(relation_ordinal_Q25_28$monthly_salary_28) <- gsub("than ", "than\n", 
+                                                          levels(relation_ordinal_Q25_28$monthly_salary_28))
+levels(relation_ordinal_Q25_28$overtime_work_25) <- sub("days", "days \n", levels(relation_ordinal_Q25_28$overtime_work_25))
+
+
+relation_ordinal_Q25_28 <- relation_ordinal_Q25_28 %>%
+  # prepare text for tooltip
+  mutate(text = paste(Freq, "respondent/s")) 
+
+
+# Heatmap as an alternative
+# ggHeatmap(relation_ordinal_Q23_28,
+#           aes(x = company_size_23,
+#               y = monthly_salary_28,
+#               fill = Freq),
+#           addlabel=FALSE,
+#           interactive=TRUE,
+#           tooltip = text)
+
+
+names(colours_6) <- levels(relation_ordinal_Q25_28$overtime_work_25)
+colScale <- scale_colour_manual(name = "overtime_work_25",values = colours_6)
+
+bubble_Q25_28_resp = ggplot(data = relation_ordinal_Q25_28, aes(x=overtime_work_25, y=monthly_salary_28, color=overtime_work_25)) +
+  geom_point_interactive(aes(size=ifelse(Freq==0, NA, Freq),
+                             tooltip = text)) +
+  colScale +
+  labs(x = "", y = "") +
+  bubble_plotly_theme()+
+  theme(axis.text.x = element_text(angle = 20))+
+  theme(axis.text=element_text(color = "black"))+
+  scale_size_area(max_size = 13) # to scale by area and not radius! 
+
+
+
+girafe(ggobj = bubble_Q25_28_resp, 
+       fonts = list(sans = "Arial"),
+       width_svg = 6, 
+       height_svg = 4,
+       options = list(
+         opts_tooltip(use_fill = TRUE)))
+
+```
+
+
+
+## Employee On-boarding 
+
+### Do you think your company has a good onboarding process?
+
+
+```{r, fig.align='center', out.width = '100%', fig.height = b2}
+
+basic_barplot(my_df = compute_perc(Qs, company_onboarding_process_26 ), 
+              a_factor = company_onboarding_process_26 , its_values = perc, labels = perc_label, 
+              title = "")
+
+```
+
+### How could onboarding at your company be improved?
+
+A clearer structure and standardization at the company was mentioned as an improvement potential as well as providing a better orientation for new workers.  
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+improve_onboarding_27_filt <- Qs %>%
+  filter(improve_onboarding_27 != "NA")
+
+barplot_ordered(my_df = compute_perc(improve_onboarding_27_filt, improve_onboarding_27), 
+                a_factor = improve_onboarding_27 , its_values = perc, labels = perc_label, 
+                title = "",
+                label_spacing = 0.1)
+
+```
+
+
+
+## Job Search  
+
+### Which of the following best describes your current job-seeking status?
+
+60% of the respondents are open to new job opportunities and one in three respondents is even actively looking for a job.
+
+```{r, fig.align='center', out.width = '100%', fig.height=b3}
+
+basic_barplot(my_df = compute_perc(Qs, job_status_29 ), 
+              a_factor = job_status_29 , its_values = perc, labels = perc_label, 
+              title = "",
+              label_spacing = 0.1)
+
+
+```
+
+### In general, what drives you to look for a new job?
+
+The main reason for developers is more income whereas for students it is gaining more experience and skills improvement.
+
+::::: {.panelset}
+
+::: {.panel}
+
+##### All Respondents {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=b6}
+
+drivers_for_new_jobs_30_split<-Qs%>% select(drivers_for_new_jobs_30, profession_1) %>%
+  separate_rows(drivers_for_new_jobs_30, sep = ";")
+
+
+drivers_for_new_jobs_30_split<-drivers_for_new_jobs_30_split[!(is.na(drivers_for_new_jobs_30_split$drivers_for_new_jobs_30) | drivers_for_new_jobs_30_split$drivers_for_new_jobs_30==""), ]
+
+drivers_for_new_jobs_30_split <-drivers_for_new_jobs_30_split %>% 
+  mutate( drivers_for_new_jobs_30 = recode(drivers_for_new_jobs_30, 
+                                           "A job i love and how challenging it is" = "Other",
+                                           "A Fulltime / Stable Employment " = "Other",
+                                           "Building Credibility and Connections(Relationships). As well making my skills practical." = "Other",
+                                           "Funds to seed stuffs" = "Other",
+                                           "I am focussed on running my business." = "Other",
+                                           "I have a self motivated personality" = "Other",
+                                           "to be in an environment where am challenged beyond my current capabilities" = "Other"
+  ))
+
+basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split, drivers_for_new_jobs_30), 
+              a_factor = drivers_for_new_jobs_30, its_values = perc, labels = perc_label, 
+              title = "",
+              label_spacing = 0.15) + 
+  scale_y_continuous(expand = c(0, .03)) # avoid cut off of label
+
+```
+
+:::
+
+::: {.panel}
+
+##### Professional Developers {.panel-name}
+```{r, fig.align='center', out.width = '100%', fig.height=b6}
+
+basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split %>% filter(profession_1 == "I am a developer by profession"), drivers_for_new_jobs_30), 
+              a_factor = drivers_for_new_jobs_30, its_values = perc, labels = perc_label, 
+              title = "",
+              label_spacing = 0.15) + 
+  scale_y_continuous(expand = c(0, .03)) # avoid cut off of label
+```
+:::
+
+::: {.panel}
+
+##### Students {.panel-name}
+
+```{r, fig.align='center', out.width = '100%', fig.height=b6}
+
+basic_barplot(my_df = compute_perc(drivers_for_new_jobs_30_split %>% filter(profession_1 == "I am a student who is learning to code"), drivers_for_new_jobs_30), 
+              a_factor = drivers_for_new_jobs_30, its_values = perc, labels = perc_label, 
+              title = "",
+              label_spacing = 0.15) + 
+  scale_y_continuous(expand = c(0, .03)) # avoid cut off of label
+
+```
+:::
+
+::::
+
+### When job searching, how do you learn more about a company?
+
+The most popular method to find out more about a company among the respondents is researching company media. There also seem to be no differences between developers and students.
+
+```{r, fig.align='center', out.width = '100%', fig.height=3}
+
+how_learn_about_company_31_split <- Qs %>% 
+  select(how_learn_about_company_31, profession_1) %>%
+  separate_rows(how_learn_about_company_31, sep = ";") %>%
+  filter(!(is.na(how_learn_about_company_31)),
+         how_learn_about_company_31 != "") %>%
+  mutate(how_learn_about_company_31  = as_factor(how_learn_about_company_31)) %>%
+  mutate(how_learn_about_company_31 = 
+           recode(how_learn_about_company_31, 
+                  "Company reviews from third party sites (e.g. Glassdoor, Blind)" = "Company reviews from third-party sites\n(e.g. Glassdoor, Blind)",
+                  "Publicly available financial information (e.g. Crunchbase)" = "Publicly available financial information\n(e.g. Crunchbase)",
+                  "Personal network - friends or family" = "Personal network - friends or family",
+                  "Online (Linkedin" = "LinkedIn",
+                  "Company website" =  "Read company media, such as employees blogs\nor company culture videos",
+                  "linkedin" = "LinkedIn",
+                  "Websites " = "Company website",
+                  "Google & their website" = "Company website",
+                  "Just going there frequently just access their interpersonal relationships with each other "  = "Make personal contact with company",
+                  "Personal assessment.. Occasionally going to the company to see how they cooperate with one another " = "Make personal contact with company",
+                  "Read company media, such as employees blogs or company culture videos" = "Read company media, such as employees blogs\nor company culture videos"
+           )
+  )
+                  
+basic_barplot(my_df = compute_perc(how_learn_about_company_31_split, how_learn_about_company_31 ), 
+              a_factor = how_learn_about_company_31 , its_values = perc, labels = perc_label, 
+              title = "",
+              label_spacing = 0.1) + 
+  scale_y_continuous(expand = c(0, .03)) # avoid cut off of label
+
+
+```
+
+
+
+## Developer Communities
+<a name="dev_communities"></a>  
+
+More than two in three respondents are members of a developer community.  
+
+```{r, fig.align='center', out.width = '100%', fig.height=1}
+
+basic_barplot(my_df = compute_perc(Qs, dev_community_member_32 ), 
+              a_factor = dev_community_member_32 , its_values = perc, labels = perc_label, 
+              title = "Are you a member of any other online/offline developer communities?")
+
+```
+
+
+The 272 respondents listed 122 communities. The three largest communities to which respondents indicated membership were DevCongress (13.6%), Facebook Developer Circle (9.6%), and the Hacklab Foundation (7.4%).  
+
+```{r, fig.align='center', out.width = '100%', fig.height=5.5, dev = "svg", dpi = 600}
+# Warning! Check that all communities are in the plot. Depends on the size (height) of the figure and scale. 
+# Wordcloud excludes if names are too large (typically Facebook , Developer Circle or DevCongress)
+# I tried to pick a scale where the smallest was still legible.
+
+# note: respondents can be members of several communities,
+# we just count them all.
+counted_communities <- Qs %>% select(ID, which_dev_community_33) %>%
+  separate_rows(which_dev_community_33, sep = ";") %>% 
+  drop_na() %>% 
+  count(which_dev_community_33) %>% 
+  arrange(-n) %>%
+  mutate(perc_of_resp = n/number_of_respondents*100)
+
+set.seed(2021)
+wordcloud(words = counted_communities$which_dev_community_33, freq = counted_communities$n, min.freq = 1,
+          max.words = 122, random.order = TRUE, rot.per = 0, scale = c(2.2,0.5),
+          colors = HL_colors)
+
+```
+
+
+
+
+
+
+
+
+
