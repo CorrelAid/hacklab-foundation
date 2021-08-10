@@ -21,7 +21,9 @@ The Foundation is known for its annual Hacklab Hackathon in Ghana that brings 10
 
 -----
 
-## Project Organization
+## Project Organization and Methods
+
+The report was built with the R language ([r-project.org](https://www.r-project.org/)) and some bits of HTML and CSS for the design. The result is a standalone HTML report which can be hosted anywhere and offers more interactivity than a PDF.   
 
 Run [Hacklab_Ghana_Developer_Census_2020.Rmd](https://github.com/CorrelAid/hacklab-foundation/blob/main/Hacklab_Ghana_Developer_Census_2020.Rmd) Rmarkdown to reproduce the HTML [report](https://github.com/CorrelAid/hacklab-foundation/blob/main/Hacklab_Ghana_Developer_Census_2020.html).  
 
