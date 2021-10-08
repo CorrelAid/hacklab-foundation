@@ -1,6 +1,6 @@
 # Repository of the Analytical Report of the Hacklab Ghana Developer Census 2020
 
-This repository contains all the code and data of the [Hacklab Ghana Developer Census 2020](). **Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana**. The report was developed by CorrelAid in a Data4Good project in collaboration with the Hacklab Foundation.  
+This repository contains all the code and data of the [Hacklab Ghana Developer Census 2020](https://hacklabfoundation.org/Developer-Census-2020-Report.html). **Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana**. The report was developed by CorrelAid in a Data4Good project in collaboration with the Hacklab Foundation.  
 
 272 participants responded to the 41 questions of the **survey conducted by Hacklab Research** between November and December 2020. CorrelAid volunteers created a report of the survey results and here you have access to the code to replicate and extend the analyses and insights of the report. The anonymized results of the survey are [available for download](https://github.com/Hacklab-Foundation/Developer-Census-2020) under the [Open Database License (ODbL)](https://opendatacommons.org/licenses/odbl/1-0/).
 
@@ -25,7 +25,7 @@ The Foundation is known for its annual Hacklab Hackathon in Ghana that brings 10
 
 The report was built with the R language ([r-project.org](https://www.r-project.org/)) and some bits of HTML and CSS for the design. The result is a standalone HTML report which can be hosted anywhere and offers more interactivity than a PDF.   
 
-Run [Hacklab_Ghana_Developer_Census_2020.Rmd](https://github.com/CorrelAid/hacklab-foundation/blob/main/Hacklab_Ghana_Developer_Census_2020.Rmd) Rmarkdown to reproduce the HTML [report](https://github.com/CorrelAid/hacklab-foundation/blob/main/Hacklab_Ghana_Developer_Census_2020.html).  
+Run [Hacklab_Ghana_Developer_Census_2020.Rmd](https://github.com/CorrelAid/hacklab-foundation/blob/main/Developer%20Census%202020%20Report.Rmd) Rmarkdown to reproduce the HTML [report](https://github.com/CorrelAid/hacklab-foundation/blob/main/Developer-Census-2020-Report.html).  
 
 To compile, the .Rmd needs:
 1. the [cleaned data](https://github.com/CorrelAid/hacklab-foundation/blob/main/data/clean/clean_all_Qs.rds), that contains the answers to all the questions except questions 9-13 (the skills). 
