@@ -1,15 +1,15 @@
 # Repository of the Analytical Report of the Hacklab Ghana Developer Census 2020
 
-This repository contains all the code and data of the [Hacklab Ghana Developer Census 2020](). Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana. The report was developed by CorrelAid in a Data4Good project in collaboration with the Hacklab Foundation.  
+This repository contains all the code and data of the [Hacklab Ghana Developer Census 2020](). **Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana**. The report was developed by CorrelAid in a Data4Good project in collaboration with the Hacklab Foundation.  
 
-272 participants responded to the 41 questions of the survey conducted by Hacklab Research between November and December 2020. CorrelAid volunteers created a report of the survey results and here you have access to the code to replicate and extend the analyses and insights of the report. The anonymized results of the survey are [available for download](https://github.com/Hacklab-Foundation/Developer-Census-2020) under the [Open Database License (ODbL)](https://opendatacommons.org/licenses/odbl/1-0/).
+272 participants responded to the 41 questions of the **survey conducted by Hacklab Research** between November and December 2020. CorrelAid volunteers created a report of the survey results and here you have access to the code to replicate and extend the analyses and insights of the report. The anonymized results of the survey are [available for download](https://github.com/Hacklab-Foundation/Developer-Census-2020) under the [Open Database License (ODbL)](https://opendatacommons.org/licenses/odbl/1-0/).
 
 ----- 
 
 ## Summary of the [CorrelAid Project](https://correlaid.org/)
 The role of CorrelAid was to summarize the Census in an insightful and visual report about Ghana’s developer community to gain a better understanding of the developers’ skills and characteristics. The creation of the report included data exploration as well as data analysis and visualization.
 
-The final report can be found [here](insert link to the final published report).
+The **final report can be found [here](https://hacklabfoundation.org/Developer-Census-2020-Report.html)**.
 
 ## About [CorrelAid](https://correlaid.org/about/)
 CorrelAid is a non-profit network of data science enthusiasts who want to engage themselves and use their knowledge for common good and to help social organizations on a fully voluntary basis. CorrelAid's work focuses on the social sector and aims to make the world a better place. Furthermore, the volunteers at CorrelAid educate social organizations on data-related topics and emphasizes the dialogue about the importance of data and data analysis for common good.
