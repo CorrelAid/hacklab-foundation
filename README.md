@@ -1,6 +1,6 @@
 # Repository of the Analytical Report of the Hacklab Ghana Developer Census 2020
 
-This repository contains all the code and data of the [Hacklab Ghana Developer Census 2020](https://hacklabfoundation.org/Developer-Census-2020-Report.html). **Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana**. The report was developed by CorrelAid in a Data4Good project in collaboration with the Hacklab Foundation.  
+This repository contains all the code and data of the [Hacklab Ghana Developer Census 2020](https://correlaid.github.io/hacklab-foundation/Developer-Census-2020-Report.html). **Hacklab Ghana Developer Census 2020 is the first and most comprehensive survey of people who code in Ghana**. The report was developed by CorrelAid in a Data4Good project in collaboration with the Hacklab Foundation.  
 
 272 participants responded to the 41 questions of the **survey conducted by Hacklab Research** between November and December 2020. CorrelAid volunteers created a report of the survey results and here you have access to the code to replicate and extend the analyses and insights of the report. The anonymized results of the survey are [available for download](https://github.com/Hacklab-Foundation/Developer-Census-2020) under the [Open Database License (ODbL)](https://opendatacommons.org/licenses/odbl/1-0/).
 
