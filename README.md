@@ -9,12 +9,12 @@ This repository contains all the code and data of the [Hacklab Ghana Developer C
 ## Summary of the [CorrelAid Project](https://correlaid.org/)
 The role of CorrelAid was to summarize the Census in an insightful and visual report about Ghana’s developer community to gain a better understanding of the developers’ skills and characteristics. The creation of the report included data exploration as well as data analysis and visualization.
 
-The **final report can be found [here](https://hacklabfoundation.org/Developer-Census-2020-Report.html)**.
+The **final report can be found [here](https://correlaid.github.io/hacklab-foundation/Developer-Census-2020-Report.html)**.
 
 ## About [CorrelAid](https://correlaid.org/about/)
 CorrelAid is a non-profit network of data science enthusiasts who want to engage themselves and use their knowledge for common good and to help social organizations on a fully voluntary basis. CorrelAid's work focuses on the social sector and aims to make the world a better place. Furthermore, the volunteers at CorrelAid educate social organizations on data-related topics and emphasizes the dialogue about the importance of data and data analysis for common good.
 
-## About the [Hacklab Foundation](https://hacklabfoundation.org/)
+## About the Hacklab Foundation
 The Hacklab Foundation is an international nonprofit organization headquartered in Ghana with a focus on preparing the youth for future digital jobs through technology education and skills development. The Hacklab Foundation achieves this through various events such as bootcamps, hackathons, mentorships, skills training and job placement.
 The Foundation is known for its annual Hacklab Hackathon in Ghana that brings 1000+ developers, engineers, designers, entrepreneurs, policymakers, development partners and other stakeholders in technology to meet and discuss critical issues impacting the Global South.
 
